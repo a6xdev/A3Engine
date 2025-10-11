@@ -73,10 +73,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)thirdparty/libs;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)thirdparty/libs;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)thirdparty/libs;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)thirdparty/libs;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,9 +86,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty/include</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,9 +117,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty/include</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,9 +143,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\common\UniqueID.h" />
     <ClInclude Include="src\core\Engine.h" />
     <ClInclude Include="src\core\EObject.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="src\core\SceneManager.h" />
     <ClInclude Include="src\renderer\Renderer.h" />
+    <ClInclude Include="src\scene\Components.h" />
+    <ClInclude Include="src\scene\GameObject.h" />
+    <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="thirdparty\include\glad\glad.h" />
     <ClInclude Include="thirdparty\include\GLFW\glfw3.h" />
     <ClInclude Include="thirdparty\include\GLFW\glfw3native.h" />
@@ -435,6 +443,7 @@
     <ClInclude Include="thirdparty\include\glm\vec3.hpp" />
     <ClInclude Include="thirdparty\include\glm\vec4.hpp" />
     <ClInclude Include="thirdparty\include\glm\vector_relational.hpp" />
+    <ClInclude Include="thirdparty\include\json\json.hpp" />
     <ClInclude Include="thirdparty\include\KHR\khrplatform.h" />
     <ClInclude Include="thirdparty\include\stb\stb_image.h" />
     <ClInclude Include="thirdparty\include\stb\stb_image_write.h" />
@@ -580,14 +589,41 @@
     <None Include="thirdparty\include\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="glad.c" />
+    <ClCompile Include="glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\common\UniqueID.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\core\Engine.cpp" />
     <ClCompile Include="src\core\EObject.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\renderer\Renderer.cpp" />
-    <ClCompile Include="thirdparty\include\glm\detail\glm.cpp" />
-    <ClCompile Include="thirdparty\include\stb\stb_image.cpp" />
-    <ClCompile Include="thirdparty\include\stb\stb_image_write.cpp" />
+    <ClCompile Include="src\scene\Components.cpp" />
+    <ClCompile Include="src\scene\GameObject.cpp" />
+    <ClCompile Include="src\scene\Scene.cpp" />
+    <ClCompile Include="thirdparty\include\glm\detail\glm.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="thirdparty\include\stb\stb_image.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="thirdparty\include\stb\stb_image_write.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="thirdparty\libs\glfw3.lib" />

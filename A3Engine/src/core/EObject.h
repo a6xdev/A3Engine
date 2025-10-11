@@ -3,13 +3,15 @@
 
 class EObject {
 public:
+	EObject(unsigned int gameObjectId);
+
 	virtual void init();
 	virtual void process();
 	virtual void shutdown();
 
 	int getEObjectID();
 private:
-	unsigned int id = 0;
+	unsigned int UniqueID = 0;
 };
 
 #endif // !EOBJECT_H

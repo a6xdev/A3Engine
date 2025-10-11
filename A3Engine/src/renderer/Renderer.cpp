@@ -1,3 +1,4 @@
+#include "../../pch.h"
 #include "Renderer.h"
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
