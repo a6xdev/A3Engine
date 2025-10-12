@@ -87,6 +87,6 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 
 //	if (engine.currentCam)
 		//engine.currentCam->setProjection(width, height);
-	Renderer::currentWindow->m_width = width;
-	Renderer::currentWindow->m_height = height;
+	Renderer::currentWindow->m_width = float(width);
+	Renderer::currentWindow->m_height = float(height);
 }

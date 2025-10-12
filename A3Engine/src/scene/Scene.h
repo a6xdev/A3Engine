@@ -6,9 +6,9 @@
 
 class Scene {
 public:
-	void initObjects();
-	void processObjects();
-	void shutdownObject();
+	virtual void init();
+	virtual void process();
+	virtual void shutdown();
 
 	/*void saveSceneData();
 	void loadSceneData();*/
@@ -20,7 +20,8 @@ public:
 		return new_obj;
 	}
 
-	GameObject* getGameObject(int id);
+	std::vector<GameObject*>	getGameObjects();
+	GameObject*					getGameObject(int id);
 private:
 	std::vector<GameObject*> gameObjects;
 };

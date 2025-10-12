@@ -2,15 +2,14 @@
 
 #include "Engine.h"
 #include "../renderer/Renderer.h"
+#include "../core/AssetManager.h"
 
-#include "../scene/Scene.h"
+#include "../../game/game.h"
 
 namespace Engine {
 	double lastTime = 0.0;
 	double currentTime = 0.0;
 	unsigned int counter = 0;
-
-	Scene mainScene;
 
 	void init() {
 		printf("\n");
@@ -18,7 +17,8 @@ namespace Engine {
 		printf("\n");
 
 		Renderer::init();
-		mainScene.initObjects();
+		Game::initGame();
+		AssetManager::init();
 
 		m_isRunning = true;
 	}
@@ -35,7 +35,8 @@ namespace Engine {
 			}
 
 			Renderer::process();
-			mainScene.processObjects();
+			AssetManager::process();
+			Game::processGame();
 
 			glfwPollEvents();
 		}
@@ -45,7 +46,8 @@ namespace Engine {
 
 	void shutdown() {
 		Renderer::shutdown();
-		mainScene.shutdownObject();
+		AssetManager::shutdown();
+		Game::shutdownGame();
 		m_isRunning = false;
 		glfwTerminate();
 	}

@@ -143,12 +143,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="game\game.h" />
+    <ClInclude Include="game\scenes\testScene.h" />
     <ClInclude Include="src\common\UniqueID.h" />
+    <ClInclude Include="src\core\AssetManager.h" />
     <ClInclude Include="src\core\Engine.h" />
     <ClInclude Include="src\core\EObject.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="src\core\SceneManager.h" />
     <ClInclude Include="src\renderer\Renderer.h" />
+    <ClInclude Include="src\resources\Material.h" />
+    <ClInclude Include="src\resources\Resource.h" />
+    <ClInclude Include="src\resources\Shader.h" />
+    <ClInclude Include="src\resources\Texture.h" />
     <ClInclude Include="src\scene\Components.h" />
     <ClInclude Include="src\scene\GameObject.h" />
     <ClInclude Include="src\scene\Scene.h" />
@@ -449,6 +456,10 @@
     <ClInclude Include="thirdparty\include\stb\stb_image_write.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shaders\fs.shader" />
+    <None Include="src\shaders\fs_debug.shader" />
+    <None Include="src\shaders\vs.shader" />
+    <None Include="src\shaders\vs_debug.shader" />
     <None Include="thirdparty\include\glm\detail\func_common.inl" />
     <None Include="thirdparty\include\glm\detail\func_common_simd.inl" />
     <None Include="thirdparty\include\glm\detail\func_exponential.inl" />
@@ -589,6 +600,8 @@
     <None Include="thirdparty\include\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="game\game.cpp" />
+    <ClCompile Include="game\scenes\testScene.cpp" />
     <ClCompile Include="glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -602,6 +615,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\core\AssetManager.cpp" />
     <ClCompile Include="src\core\Engine.cpp" />
     <ClCompile Include="src\core\EObject.cpp" />
     <ClCompile Include="pch.cpp">
@@ -609,6 +623,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\renderer\Renderer.cpp" />
+    <ClCompile Include="src\resources\Material.cpp" />
+    <ClCompile Include="src\resources\Resource.cpp" />
+    <ClCompile Include="src\resources\Shader.cpp" />
+    <ClCompile Include="src\resources\Texture.cpp" />
     <ClCompile Include="src\scene\Components.cpp" />
     <ClCompile Include="src\scene\GameObject.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
@@ -627,6 +645,11 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="thirdparty\libs\glfw3.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\textures\awesomeface.png" />
+    <Image Include="res\textures\container.jpg" />
+    <Image Include="res\textures\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

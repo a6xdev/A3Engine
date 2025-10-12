@@ -1,19 +1,19 @@
 #include "../../pch.h"
 #include "Scene.h"
 
-void Scene::initObjects() {
+void Scene::init() {
 	for (auto* obj : gameObjects) {
 		obj->init();
 	}
 }
 
-void Scene::processObjects() {
+void Scene::process() {
 	for (auto* obj : gameObjects) {
 		obj->process();
 	}
 }
 
-void Scene::shutdownObject() {
+void Scene::shutdown() {
 	for (auto* obj : gameObjects) {
 		obj->shutdown();
 	}
@@ -27,4 +27,8 @@ GameObject* Scene::getGameObject(int id) {
 		else
 			return nullptr;
 	}
+}
+
+std::vector<GameObject*> Scene::getGameObjects() {
+	return gameObjects;
 }
