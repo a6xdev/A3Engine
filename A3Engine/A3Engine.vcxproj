@@ -144,19 +144,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="game\game.h" />
+    <ClInclude Include="game\objects\testObject.h" />
     <ClInclude Include="game\scenes\testScene.h" />
     <ClInclude Include="src\common\UniqueID.h" />
     <ClInclude Include="src\core\AssetManager.h" />
     <ClInclude Include="src\core\Engine.h" />
-    <ClInclude Include="src\core\EObject.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="src\core\EObject.h" />
+    <ClInclude Include="src\core\GOCS\Component.h" />
     <ClInclude Include="src\core\SceneManager.h" />
     <ClInclude Include="src\renderer\Renderer.h" />
     <ClInclude Include="src\resources\Material.h" />
+    <ClInclude Include="src\resources\Model.h" />
     <ClInclude Include="src\resources\Resource.h" />
     <ClInclude Include="src\resources\Shader.h" />
     <ClInclude Include="src\resources\Texture.h" />
-    <ClInclude Include="src\scene\Components.h" />
     <ClInclude Include="src\scene\GameObject.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="thirdparty\include\glad\glad.h" />
@@ -454,8 +456,11 @@
     <ClInclude Include="thirdparty\include\KHR\khrplatform.h" />
     <ClInclude Include="thirdparty\include\stb\stb_image.h" />
     <ClInclude Include="thirdparty\include\stb\stb_image_write.h" />
+    <ClInclude Include="thirdparty\include\tiny_gltf\tiny_gltf.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\models\monkey\monkey.bin" />
+    <None Include="res\models\monkey\monkey.gltf" />
     <None Include="src\shaders\fs.shader" />
     <None Include="src\shaders\fs_debug.shader" />
     <None Include="src\shaders\vs.shader" />
@@ -601,6 +606,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game\game.cpp" />
+    <ClCompile Include="game\objects\testObject.cpp" />
     <ClCompile Include="game\scenes\testScene.cpp" />
     <ClCompile Include="glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -617,17 +623,20 @@
     </ClCompile>
     <ClCompile Include="src\core\AssetManager.cpp" />
     <ClCompile Include="src\core\Engine.cpp" />
-    <ClCompile Include="src\core\EObject.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\core\EObject.cpp" />
+    <ClCompile Include="src\core\GOCS\Component.cpp" />
+    <ClCompile Include="src\core\GOCS\ModelRenderer.cpp" />
+    <ClCompile Include="src\core\SceneManager.cpp" />
     <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\resources\Material.cpp" />
+    <ClCompile Include="src\resources\Model.cpp" />
     <ClCompile Include="src\resources\Resource.cpp" />
     <ClCompile Include="src\resources\Shader.cpp" />
     <ClCompile Include="src\resources\Texture.cpp" />
-    <ClCompile Include="src\scene\Components.cpp" />
     <ClCompile Include="src\scene\GameObject.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="thirdparty\include\glm\detail\glm.cpp">
@@ -642,6 +651,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="thirdparty\include\tiny_gltf\tiny_gltf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="thirdparty\libs\glfw3.lib" />

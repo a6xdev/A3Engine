@@ -1,34 +1,23 @@
-#include "../../pch.h"
 #include "Scene.h"
 
-void Scene::init() {
-	for (auto* obj : gameObjects) {
-		obj->init();
+#include "../core/SceneManager.h"
+
+Scene::Scene(const std::string sceneName) {
+	m_sceneName = sceneName;
+}
+
+void Scene::loadSceneData() {
+	for (int i = 0; i < m_sceneGameObjects.size(); i++) {
+		GameObject* object = m_sceneGameObjects[i];
 	}
 }
 
-void Scene::process() {
-	for (auto* obj : gameObjects) {
-		obj->process();
-	}
-}
-
-void Scene::shutdown() {
-	for (auto* obj : gameObjects) {
-		obj->shutdown();
-	}
-}
-
-GameObject* Scene::getGameObject(int id) {
-	for (int i = 0; i < gameObjects.size(); i++) {
-		GameObject* object = gameObjects[i];
-		if (object->getEObjectID() == id)
+GameObject* Scene::getGameObjectByID(int id) {
+	for (int i = 0; i < m_sceneGameObjects.size(); i++) {
+		GameObject* object = m_sceneGameObjects[i];
+		if (object->getUniqueID() == id)
 			return object;
 		else
 			return nullptr;
 	}
-}
-
-std::vector<GameObject*> Scene::getGameObjects() {
-	return gameObjects;
 }

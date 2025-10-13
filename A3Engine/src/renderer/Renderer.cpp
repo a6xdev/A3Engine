@@ -53,7 +53,7 @@ namespace Renderer {
 		currentWindow = new Window(window_name, window_width, window_height);
 	}
 
-	GLFWwindow* getCurrentWindow() {
+	GLFWwindow* getCurrentGLFWWindow() {
 		return currentWindow->m_window;
 	}
 }

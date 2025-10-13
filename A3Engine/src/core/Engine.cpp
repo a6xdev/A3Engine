@@ -2,7 +2,9 @@
 
 #include "Engine.h"
 #include "../renderer/Renderer.h"
-#include "../core/AssetManager.h"
+
+#include "AssetManager.h"
+#include "SceneManager.h"
 
 #include "../../game/game.h"
 
@@ -19,12 +21,13 @@ namespace Engine {
 		Renderer::init();
 		Game::initGame();
 		AssetManager::init();
+		SceneManager::loadScene();
 
 		m_isRunning = true;
 	}
 
 	void process() {
-		while (!glfwWindowShouldClose(Renderer::getCurrentWindow())) {
+		while (!glfwWindowShouldClose(Renderer::getCurrentGLFWWindow())) {
 			currentTime = glfwGetTime();
 			m_deltaTime = currentTime - lastTime;
 			counter++;
@@ -37,7 +40,9 @@ namespace Engine {
 			Renderer::process();
 			AssetManager::process();
 			Game::processGame();
+			SceneManager::updateScene();
 
+			glfwSwapBuffers(Renderer::getCurrentGLFWWindow());
 			glfwPollEvents();
 		}
 
@@ -48,6 +53,7 @@ namespace Engine {
 		Renderer::shutdown();
 		AssetManager::shutdown();
 		Game::shutdownGame();
+		SceneManager::shutdownScene();
 		m_isRunning = false;
 		glfwTerminate();
 	}

@@ -3,7 +3,8 @@
 #include "../../src/scene/Scene.h"
 
 class testScene : public Scene {
-	void init() override;
-	void process() override;
-	void shutdown() override;
+public:
+	testScene() : Scene("testScene") {};
+
+	void setupGameObjects() override;
 };

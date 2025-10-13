@@ -9,8 +9,7 @@ Material::Material(std::string r_name, std::string r_path, std::string vs_path, 
 	m_resourceID = UniqueID::getNext();
 	m_resourceName = r_name;
 	m_resourcePath = r_path;
-	//AssetManager::registerResource(this);
-	AssetManager::loadedMaterials[r_path] = this;
+	AssetManager::registerResource(this);
 	shader = new Shader(vs_path.c_str(), fs_path.c_str());
 }
 
@@ -48,6 +47,7 @@ void Material::hotReload() {
 	load();
 }
 
-void Material::setAlbedoTexture(Texture tex) {
-	albedoTexture = &tex;
+void Material::setAlbedoTexture(std::string r_name, std::string r_path) {
+	Texture* new_texture = new Texture(r_name, r_path, 0);
+	albedoTexture = new_texture;
 }

@@ -22,7 +22,7 @@ namespace Renderer {
 
 	void createWindow(std::string window_name = "Window", int window_width = 800, int window_height = 600);
 
-	GLFWwindow* getCurrentWindow();
+	GLFWwindow* getCurrentGLFWWindow();
 }
 
 #endif // !RENDERER_H

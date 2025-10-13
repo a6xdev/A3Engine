@@ -1,7 +1,14 @@
-#include "../scene/Scene.h"
+#pragma once
 
-class SceneManager {
-public:
-private:
-	Scene* m_currentScene = nullptr;
-};
+#include <vector>
+
+class Scene;
+
+namespace SceneManager {
+	void loadScene();
+	void updateScene();
+	void shutdownScene();
+
+
+	void setCurrentScene(Scene* scene);
+}

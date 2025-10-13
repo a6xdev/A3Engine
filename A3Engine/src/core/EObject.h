@@ -1,17 +1,17 @@
-#ifndef EOBJECT_H
-#define EOBJECT_H
+#pragma once
+
+#include <string>
+#include <vector>
 
 class EObject {
 public:
-	EObject(unsigned int gameObjectId);
+	EObject();
 
-	virtual void init();
-	virtual void process();
-	virtual void shutdown();
+	virtual void init() {};
+	virtual void process() {};
+	virtual void shutdown() {};
 
-	int getEObjectID();
+	int getUniqueID() { return ObjectID; };
 private:
-	unsigned int UniqueID = 0;
+	unsigned int ObjectID;
 };
-
-#endif // !EOBJECT_H

@@ -7,19 +7,20 @@
 class Resource;
 class Material;
 class Texture;
+class Model;
 
 namespace AssetManager {
-	static std::unordered_map<std::string, Material*> loadedMaterials;
-	static std::unordered_map<std::string, Texture*> loadedTextures;
-
 	void init();
 	void process();
 	void shutdown();
 
 	void registerResource(Resource* res);
 
-	Material* getMaterialByPath(std::string r_path);
+	Material* getMaterialByName(std::string r_name);
 	Texture* getTextureByPath(std::string r_path);
+	Model* getModelByPath(std::string r_path);
+
+	std::vector<Resource*> getResourceList();
 
 	void hotReload();
 	void loadAllResources();

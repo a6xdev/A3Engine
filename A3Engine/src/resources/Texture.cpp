@@ -10,7 +10,6 @@ Texture::Texture(std::string r_name, std::string r_path, unsigned int t_slot) {
 	m_resourcePath = r_path;
 	m_slot = t_slot;
 	AssetManager::registerResource(this);
-	AssetManager::loadedTextures[r_path] = this;
 }
 
 void Texture::load() {

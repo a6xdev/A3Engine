@@ -21,7 +21,7 @@ public:
 	void hotReload() override;
 
 	void setAlbedoColor(glm::vec4 color) { albedoColor = color; };
-	void setAlbedoTexture(Texture tex);
+	void setAlbedoTexture(std::string r_name, std::string r_path);
 
 	void setModelMatrix(glm::mat4 new_ModelMatrix) { modelMatrix = new_ModelMatrix; };
 private:

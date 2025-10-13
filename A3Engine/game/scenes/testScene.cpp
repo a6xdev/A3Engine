@@ -3,14 +3,17 @@
 
 #include "../../src/resources/Material.h"
 #include "../../src/resources/Texture.h"
+#include "../../src/resources/Model.h"
 
-void testScene::init() {
-	Texture* wallTexture = new Texture("wall_texture", "res/textures/wall.jpg", 0);
-	Texture* containerTexture = new Texture("container_texture", "res/textures/container.jpg", 0);
-}
+// Game Objects Include
+#include "../objects/testObject.h"
 
-void testScene::process() {
-}
+void testScene::setupGameObjects() {
+	Model* monkeyModel = new Model("monkey", "res/models/monkey/monkey.gltf");
+	Material* monkeyMaterial = new Material("monkey_material", "path", "src/shaders/vs.shader", "src/shaders/fs.shader");
+	monkeyMaterial->setAlbedoTexture("wall_texture", "res/textures/wall.jpg");
 
-void testScene::shutdown() {
+	TestObject* obj = createGameObject<TestObject>();
+
+	loadSceneData();
 }

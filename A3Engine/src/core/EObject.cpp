@@ -1,19 +1,6 @@
-#include "../../pch.h"
 #include "EObject.h"
+#include "../common/UniqueID.h"
 
-EObject::EObject(unsigned int gameObjectId) {
-	UniqueID = gameObjectId;
-}
-
-void EObject::init() {
-}
-
-void EObject::process() {
-}
-
-void EObject::shutdown() {
-}
-
-int EObject::getEObjectID() {
-	return UniqueID;
+EObject::EObject() {
+	ObjectID = UniqueID::getNext();
 }

@@ -6,22 +6,23 @@
 
 class Scene {
 public:
-	virtual void init();
-	virtual void process();
-	virtual void shutdown();
+	std::string m_sceneName = "Scene";
 
-	/*void saveSceneData();
-	void loadSceneData();*/
+	Scene(const std::string sceneName);
+
+	virtual void				setupGameObjects()		{};
+	//void						saveSceneData();
+	void				loadSceneData();
 
 	template<typename T>
 	T* createGameObject() {
-		T* new_obj = new T(UniqueID::getNext());
-		gameObjects.push_back(new_obj);
+		T* new_obj = new T();
+		m_sceneGameObjects.push_back(new_obj);
 		return new_obj;
 	}
 
-	std::vector<GameObject*>	getGameObjects();
-	GameObject*					getGameObject(int id);
+	std::vector<GameObject*>	getGameObjects()		{ return m_sceneGameObjects; };
+	GameObject*					getGameObjectByID(int id);
 private:
-	std::vector<GameObject*> gameObjects;
+	std::vector<GameObject*> m_sceneGameObjects;
 };

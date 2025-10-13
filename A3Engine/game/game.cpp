@@ -1,25 +1,25 @@
-#include "../pch.h"
 #include "game.h"
 
 #include "../src/core/AssetManager.h"
+#include "../src/core/SceneManager.h"
+
 #include "scenes/testScene.h"
 
 namespace Game {
 	Scene* currentScene = new testScene();
 
+
 	void initGame() {
-		currentScene->init();
+		currentScene->setupGameObjects();
+		SceneManager::setCurrentScene(currentScene); // Remember set the scene
 	}
 
 	void processGame() {
 		if (AssetManager::isLoadingComplete()) {
-			currentScene->process();
 		}
 	}
 
 	void shutdownGame() {
-		currentScene->shutdown();
-
 		delete currentScene;
 	}
 }
