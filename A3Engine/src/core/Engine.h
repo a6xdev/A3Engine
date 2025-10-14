@@ -5,14 +5,15 @@
 #include <GLFW/glfw3.h>
 
 namespace Engine {
-	static bool m_isPaused = false;
-	static bool m_isRunning = false;
 	static double m_deltaTime;
 	static float m_fps;
 
 	void init();
 	void process();
 	void shutdown();
+
+	bool isDebugMode();
+	bool isRunning();
 }
 
 #endif // !ENGINE_HEADER

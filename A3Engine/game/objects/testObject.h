@@ -15,4 +15,6 @@ public:
 	void init() override;
 	void process() override;
 	void shutdown() override;
+
+	void movementController();
 };

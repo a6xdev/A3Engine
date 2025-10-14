@@ -152,13 +152,17 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="src\core\EObject.h" />
     <ClInclude Include="src\core\GOCS\Component.h" />
+    <ClInclude Include="src\core\input\Input.h" />
+    <ClInclude Include="src\core\input\keycodes.h" />
     <ClInclude Include="src\core\SceneManager.h" />
+    <ClInclude Include="src\editor\ImGuiLayer.h" />
     <ClInclude Include="src\renderer\Renderer.h" />
     <ClInclude Include="src\resources\Material.h" />
     <ClInclude Include="src\resources\Model.h" />
     <ClInclude Include="src\resources\Resource.h" />
     <ClInclude Include="src\resources\Shader.h" />
     <ClInclude Include="src\resources\Texture.h" />
+    <ClInclude Include="src\scene\Camera.h" />
     <ClInclude Include="src\scene\GameObject.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="thirdparty\include\glad\glad.h" />
@@ -452,6 +456,17 @@
     <ClInclude Include="thirdparty\include\glm\vec3.hpp" />
     <ClInclude Include="thirdparty\include\glm\vec4.hpp" />
     <ClInclude Include="thirdparty\include\glm\vector_relational.hpp" />
+    <ClInclude Include="thirdparty\include\ImGui\imconfig.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imgui.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imgui_impl_glfw.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imgui_impl_opengl2.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imgui_internal.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imstb_textedit.h" />
+    <ClInclude Include="thirdparty\include\ImGui\imstb_truetype.h" />
     <ClInclude Include="thirdparty\include\json\json.hpp" />
     <ClInclude Include="thirdparty\include\KHR\khrplatform.h" />
     <ClInclude Include="thirdparty\include\stb\stb_image.h" />
@@ -630,19 +645,31 @@
     <ClCompile Include="src\core\EObject.cpp" />
     <ClCompile Include="src\core\GOCS\Component.cpp" />
     <ClCompile Include="src\core\GOCS\ModelRenderer.cpp" />
+    <ClCompile Include="src\core\input\Input.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
+    <ClCompile Include="src\editor\ImGuiLayer.cpp" />
     <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\resources\Material.cpp" />
     <ClCompile Include="src\resources\Model.cpp" />
     <ClCompile Include="src\resources\Resource.cpp" />
     <ClCompile Include="src\resources\Shader.cpp" />
     <ClCompile Include="src\resources\Texture.cpp" />
+    <ClCompile Include="src\scene\Camera.cpp" />
     <ClCompile Include="src\scene\GameObject.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="thirdparty\include\glm\detail\glm.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="thirdparty\include\ImGui\imgui.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="thirdparty\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="thirdparty\include\stb\stb_image.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

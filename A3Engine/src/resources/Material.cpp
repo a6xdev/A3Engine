@@ -1,9 +1,13 @@
 #include "../../pch.h"
 #include "Material.h"
-#include "../common/UniqueID.h"
-#include "../core/AssetManager.h"
 #include "Texture.h"
 #include "Shader.h"
+
+#include "../common/UniqueID.h"
+#include "../core/AssetManager.h"
+#include "../renderer/Renderer.h"
+
+#include "../scene/Camera.h"
 
 Material::Material(std::string r_name, std::string r_path, std::string vs_path, std::string fs_path) {
 	m_resourceID = UniqueID::getNext();
@@ -16,15 +20,18 @@ Material::Material(std::string r_name, std::string r_path, std::string vs_path, 
 void Material::process() {
 	if (m_loaded) {
 		shader->use();
+
 		shader->setMat4("Model", modelMatrix);
 		shader->setVec4("Color", albedoColor);
 
-		if (albedoTexture) {
-			shader->setInt("albedo_texture", albedoTexture->getResourceID());
+		if (Renderer::getCurrentCamera()) {
+			shader->setMat4("Projection", Renderer::getCurrentCamera()->getCameraProjection());
+			shader->setMat4("View", Renderer::getCurrentCamera()->getCameraView());
+		}
 
-			if (albedoTexture->getResourcePath() != "") {
-				albedoTexture->bind();
-			}
+		if (albedoTexture) {
+			shader->setInt("albedo_texture", 0);
+			albedoTexture->bind(0);
 		}
 	}
 }
@@ -48,6 +55,6 @@ void Material::hotReload() {
 }
 
 void Material::setAlbedoTexture(std::string r_name, std::string r_path) {
-	Texture* new_texture = new Texture(r_name, r_path, 0);
+	Texture* new_texture = new Texture(r_name, r_path);
 	albedoTexture = new_texture;
 }

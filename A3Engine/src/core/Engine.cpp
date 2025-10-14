@@ -1,14 +1,23 @@
 #include "../../pch.h"
 
 #include "Engine.h"
-#include "../renderer/Renderer.h"
 
+#include "../renderer/Renderer.h"
 #include "AssetManager.h"
 #include "SceneManager.h"
+#include "input/Input.h"
 
+// Editor
+#include "../editor/ImGuiLayer.h"
+
+// Game
 #include "../../game/game.h"
 
 namespace Engine {
+	bool m_debugMode = true;
+	bool m_isRunning = false;
+	bool m_paused = false;
+
 	double lastTime = 0.0;
 	double currentTime = 0.0;
 	unsigned int counter = 0;
@@ -21,7 +30,9 @@ namespace Engine {
 		Renderer::init();
 		Game::initGame();
 		AssetManager::init();
+		Input::init(Renderer::getCurrentGLFWWindow());
 		SceneManager::loadScene();
+		ImGuiLayer::init();
 
 		m_isRunning = true;
 	}
@@ -37,11 +48,19 @@ namespace Engine {
 				counter = 0;
 			}
 
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+
 			Renderer::process();
 			AssetManager::process();
+			Input::process();
 			Game::processGame();
 			SceneManager::updateScene();
+			ImGuiLayer::process();
 
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 			glfwSwapBuffers(Renderer::getCurrentGLFWWindow());
 			glfwPollEvents();
 		}
@@ -54,7 +73,11 @@ namespace Engine {
 		AssetManager::shutdown();
 		Game::shutdownGame();
 		SceneManager::shutdownScene();
+		ImGuiLayer::shutdown();
 		m_isRunning = false;
 		glfwTerminate();
 	}
+
+	bool isRunning() { return isRunning; };
+	bool isDebugMode() { return m_debugMode; }
 }

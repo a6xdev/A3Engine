@@ -42,13 +42,13 @@ void ModelRenderer::init() {
 void ModelRenderer::process() {
     if (objectOwner->isVisible()) {
         if (m_material) {
-            m_material->process();
             m_material->setModelMatrix(objectOwner->getGlobalModelMatrix());
+            m_material->process();
         }
 
-       glBindVertexArray(VAO);
-       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-       glDrawElements(GL_TRIANGLES, m_model->getIndices().size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glDrawElements(GL_TRIANGLES, m_model->getIndices().size(), GL_UNSIGNED_INT, 0);
     }
 }
 

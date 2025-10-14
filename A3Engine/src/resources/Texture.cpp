@@ -4,16 +4,16 @@
 #include "../core/Engine.h"
 #include "../core/AssetManager.h"
 
-Texture::Texture(std::string r_name, std::string r_path, unsigned int t_slot) {
+Texture::Texture(std::string r_name, std::string r_path) {
 	m_resourceID = UniqueID::getNext();
 	m_resourceName = r_name;
 	m_resourcePath = r_path;
-	m_slot = t_slot;
 	AssetManager::registerResource(this);
 }
 
 void Texture::load() {
 	glGenTextures(1, &m_resourceID);
+	glBindTexture(GL_TEXTURE_2D, m_resourceID);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -44,7 +44,7 @@ void Texture::hotReload() {
 	load();
 }
 
-void Texture::bind() {
-	glActiveTexture(GL_TEXTURE0 + m_slot);
+void Texture::bind(unsigned int slot) {
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, m_resourceID);
 }

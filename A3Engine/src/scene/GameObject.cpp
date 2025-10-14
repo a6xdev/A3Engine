@@ -1,6 +1,7 @@
 #include "GameObject.h"
 
 #include "../core/SceneManager.h"
+#include "../editor/ImGuiLayer.h"
 
 #include "../core/GOCS/Component.h"
 
@@ -28,6 +29,8 @@ void GameObject::shutdownComponents() {
 	m_components.clear();
 }
 
+void GameObject::editorProcess() {}
+
 void GameObject::addComponent(Component* comp) {
 	m_components.push_back(comp);
 }
@@ -45,7 +48,7 @@ void GameObject::setScale(float x, float y, float z) {
 }
 
 glm::mat4 GameObject::getGlobalModelMatrix() const {
-	if (m_parent) {
+	if (m_parent != NULL) {
 		return m_parent->getGlobalModelMatrix() * getLocalModelMatrix();
 	}
 	return getLocalModelMatrix();

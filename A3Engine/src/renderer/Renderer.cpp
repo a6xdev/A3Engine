@@ -1,10 +1,13 @@
 #include "../../pch.h"
 #include "Renderer.h"
 
+#include "../scene/Camera.h"
+
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
 namespace Renderer {
 	Window* currentWindow = nullptr;
+	Camera* currentCamera = nullptr;
 	int m_vsync = -1;
 
 	int init() {
@@ -53,9 +56,14 @@ namespace Renderer {
 		currentWindow = new Window(window_name, window_width, window_height);
 	}
 
-	GLFWwindow* getCurrentGLFWWindow() {
-		return currentWindow->m_window;
+	void setCamera(Camera* cam) {
+		currentCamera = cam;
+		cam->setCameraProjection(currentWindow->getCurrentWidth(), currentWindow->getCurrentHeight());
 	}
+
+	GLFWwindow* getCurrentGLFWWindow() { return currentWindow->m_window; }
+	Window* getCurrentWindow() { return currentWindow; }
+	Camera* getCurrentCamera() { return currentCamera; }
 }
 
 // Window
@@ -85,8 +93,7 @@ float Window::getCurrentHeight() {
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 
-//	if (engine.currentCam)
-		//engine.currentCam->setProjection(width, height);
+	Renderer::getCurrentCamera()->setCameraProjection(width, height);
 	Renderer::currentWindow->m_width = float(width);
 	Renderer::currentWindow->m_height = float(height);
 }

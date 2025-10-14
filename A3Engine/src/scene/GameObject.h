@@ -3,6 +3,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "../core/EObject.h"
 
@@ -15,10 +16,10 @@ public:
 	void						init() override {};
 	void						process() override {};
 	void						shutdown() override {};
-
 	void						initComponents();
 	void						updateComponents();
 	void						shutdownComponents();
+	virtual void				editorProcess();
 
 	void						addComponent(Component* comp);
 
@@ -39,11 +40,12 @@ public:
 	glm::mat4					getGlobalModelMatrix() const;
 	glm::mat4					getLocalModelMatrix() const;
 protected:
+	std::string					m_name = "GameObject";
 	bool						m_visible = true;
 
-	glm::vec3					m_position;
-	glm::vec3					m_rotation;
-	glm::vec3					m_scale;
+	glm::vec3					m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3					m_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3					m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
 private:
 	GameObject*					m_parent = nullptr;
 	std::vector<GameObject*>	m_children;
