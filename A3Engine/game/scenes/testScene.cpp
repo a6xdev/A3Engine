@@ -17,17 +17,14 @@
 #include "../../src/core/GOCS/Component.h"
 
 void testScene::setupGameObjects() {
+	Model* testScene= new Model("testScene", "res/models/testScene/testScene.gltf");
 	Model* monkeyModel = new Model("monkey", "res/models/monkey/monkey.gltf");
-
-	Material* monkeyMaterial = new Material("monkey_material", "path", "src/shaders/vs.shader", "src/shaders/fs.shader");
-	monkeyMaterial->setAlbedoTexture("wall_texture", "res/textures/wall.jpg");
 
 	Material* testMaterial = new Material("testMaterial", "path", "src/shaders/vs.shader", "src/shaders/fs.shader");
 	testMaterial->setAlbedoTexture("container_texture", "res/textures/container.jpg");
 
 	TestObject* obj = createGameObject<TestObject>();
 	GameObject* obj2 = createGameObject<GameObject>();
-	TestObject* obj3 = createGameObject<TestObject>();
 	Camera* camera = createGameObject<Camera>();
 
 	auto* modelRenderer = new ModelRenderer(obj2, "res/models/monkey/monkey.gltf", "testMaterial");

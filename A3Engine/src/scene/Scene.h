@@ -12,7 +12,7 @@ public:
 
 	virtual void				setupGameObjects()		{};
 	//void						saveSceneData();
-	void				loadSceneData();
+	void						loadSceneData();
 
 	template<typename T>
 	T* createGameObject() {

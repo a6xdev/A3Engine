@@ -3,6 +3,8 @@
 #include "../core/SceneManager.h"
 #include "../editor/ImGuiLayer.h"
 
+#include "Scene.h"
+
 #include "../core/GOCS/Component.h"
 
 GameObject::GameObject() {

@@ -5,11 +5,13 @@
 class Scene;
 
 namespace SceneManager {
-	void loadScene();
-	void updateScene();
-	void shutdownScene();
+	void		loadScene();
+	void		updateScene();
+	void		shutdownScene();
 	
-	void updateSceneDebug();
+	void		updateSceneDebug();
 
-	void setCurrentScene(Scene* scene);
+	void		setCurrentScene(Scene* scene);
+
+	Scene*		getCurrentScene();
 }

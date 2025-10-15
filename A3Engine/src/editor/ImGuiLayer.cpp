@@ -1,6 +1,7 @@
 #include "ImGuiLayer.h"
 
 #include "../renderer/Renderer.h"
+#include "../core/Engine.h"
 #include "../core/SceneManager.h"
 
 namespace ImGuiLayer {
@@ -16,6 +17,17 @@ namespace ImGuiLayer {
 
 	void process() {
 		// Editor Here
+		if (ImGui::BeginMainMenuBar()) {
+			if (ImGui::BeginMenu("Debug")) {
+				ImGui::Text("oi");
+				ImGui::EndMenu();
+			}
+
+			ImGui::Text("DELTA: %s", std::to_string(Engine::getDeltaTime()).c_str());
+			ImGui::Text("FPS: %s", std::to_string(Engine::getEngineFPS()).c_str());
+
+			ImGui::EndMainMenuBar();
+		}
 		SceneManager::updateSceneDebug();
 	}
 

@@ -53,4 +53,6 @@ namespace SceneManager {
 		m_currentScene = scene;
 		currentSceneGameObjects = scene->getGameObjects();
 	}
+
+	Scene* getCurrentScene() { return m_currentScene; }
 }

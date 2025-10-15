@@ -43,10 +43,18 @@ void Material::shutdown() {
 
 void Material::load() {
 	m_loaded = true;
+
+	if (albedoTexture) {
+		albedoTexture->load();
+	}
 }
 
 void Material::unload() {
 	m_loaded = false;
+
+	if (albedoTexture) {
+		albedoTexture->unload();
+	}
 }
 
 void Material::hotReload() {
@@ -55,6 +63,12 @@ void Material::hotReload() {
 }
 
 void Material::setAlbedoTexture(std::string r_name, std::string r_path) {
+	auto* test = AssetManager::getTextureByPath(r_path);
+	if (test) {
+		albedoTexture = test;
+		return;
+	}
+
 	Texture* new_texture = new Texture(r_name, r_path);
 	albedoTexture = new_texture;
 }

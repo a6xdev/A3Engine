@@ -30,6 +30,9 @@ void Texture::load() {
 		glGenerateMipmap(GL_TEXTURE_2D);
 		stbi_image_free(data);
 	}
+	else {
+		std::cout << "Error to load image in Texture: " << m_resourcePath << std::endl;
+	}
 
 	m_loaded = true;
 };

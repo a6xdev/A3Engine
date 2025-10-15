@@ -17,6 +17,8 @@ namespace Engine {
 	bool m_debugMode = true;
 	bool m_isRunning = false;
 	bool m_paused = false;
+	float m_fps;
+	double m_deltaTime;
 
 	double lastTime = 0.0;
 	double currentTime = 0.0;
@@ -78,6 +80,8 @@ namespace Engine {
 		glfwTerminate();
 	}
 
+	float getDeltaTime() { return m_deltaTime; };
+	float getEngineFPS() { return m_fps; };
 	bool isRunning() { return isRunning; };
 	bool isDebugMode() { return m_debugMode; }
 }

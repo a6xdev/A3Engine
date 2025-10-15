@@ -1426,6 +1426,14 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\models\monkey\monkey.gltf" />
+    <None Include="res\models\testScene\testScene.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\models\testScene\testScene.gltf" />
+    <None Include="res\models\objCrazy\objCrazy.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\models\objCrazy\objCrazy.gltf" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\include\glm\detail\glm.cpp">
@@ -1551,6 +1559,18 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\textures\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\models\testScene\texture_08.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\models\testScene\texture_09.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\models\objCrazy\Bricks102_1K-JPG_Color.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\models\testScene\texture_08-1.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

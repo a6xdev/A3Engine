@@ -9,70 +9,91 @@
 
 ModelRenderer::ModelRenderer(GameObject* owner, std::string r_model, std::string n_material) : Component(owner) {
     m_model = AssetManager::getModelByPath(r_model);
-    m_material = AssetManager::getMaterialByName(n_material);
+
+    for (int i = 0; i < m_model->GLTFNodes.size(); i++) {
+        auto* GLTFNode = m_model->GLTFNodes[i];
+        if (GLTFNode->hasMaterial()) {
+            // They already load your own texture
+            return;
+        }
+        else {
+            GLTFNode->m_material = AssetManager::getMaterialByName(n_material);
+        }
+    }
 }
 
 void ModelRenderer::init() {
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    glBindVertexArray(VAO);
+    for (int i = 0; i < m_model->GLTFNodes.size(); i++) {
+        auto* GLTFNode = m_model->GLTFNodes[i];
 
-    std::vector<Vertex> vertices = m_model->getVertices();
-    std::vector<uint32_t> indices = m_model->getIndices();
+        glGenVertexArrays(1, &GLTFNode->VAO);
+        glGenBuffers(1, &GLTFNode->VBO);
+        glGenBuffers(1, &GLTFNode->EBO);
+        glBindVertexArray(GLTFNode->VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+        std::vector<Vertex> vertices = GLTFNode->getVertices();
+        std::vector<uint32_t> indices = GLTFNode->getIndices();
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, GLTFNode->VBO);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
-    // Pos
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-    glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLTFNode->EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
 
-    // Tex
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+        // Pos
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+        glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+        // Tex
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
 }
 
 void ModelRenderer::process() {
-    if (objectOwner->isVisible()) {
-        if (m_material) {
-            m_material->setModelMatrix(objectOwner->getGlobalModelMatrix());
-            m_material->process();
-        }
+    for (int i = 0; i < m_model->GLTFNodes.size(); i++) {
+        auto* GLTFNode = m_model->GLTFNodes[i];
 
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glDrawElements(GL_TRIANGLES, m_model->getIndices().size(), GL_UNSIGNED_INT, 0);
+        if (objectOwner->isVisible()) {
+            if (GLTFNode->m_material && not GLTFNode->m_material->isLoaded()) { GLTFNode->m_material->load(); }
+
+            if (GLTFNode->m_material) {
+                GLTFNode->m_material->setModelMatrix(objectOwner->getGlobalModelMatrix() * GLTFNode->getNodeMatrix());
+                GLTFNode->m_material->process();
+            }
+
+            glBindVertexArray(GLTFNode->VAO);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLTFNode->EBO);
+            glDrawElements(GL_TRIANGLES, GLTFNode->getIndices().size(), GL_UNSIGNED_INT, 0);
+        }
+        else {
+            if (GLTFNode->m_material && GLTFNode->m_material->isLoaded()) {
+                GLTFNode->m_material->unload();
+            }
+        }
     }
 }
 
 void ModelRenderer::shutdown() {
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    for (int i = 0; i < m_model->GLTFNodes.size(); i++) {
+        auto* GLTFNode = m_model->GLTFNodes[i];
+        GLTFNode->m_material = nullptr;
+
+        glDeleteVertexArrays(1, &GLTFNode->VAO);
+        glDeleteBuffers(1, &GLTFNode->VBO);
+        glDeleteBuffers(1, &GLTFNode->EBO);
+    }
 
     m_model = nullptr;
-    m_material = nullptr;
 }
 
 Model* ModelRenderer::getModel() {
     return m_model;
 }
 
-Material* ModelRenderer::getMaterial() {
-    return m_material;
-}
-
 void ModelRenderer::setModel(std::string r_path) {
     m_model = AssetManager::getModelByPath(r_path);
-}
-
-void ModelRenderer::setMaterial(std::string r_path) {
-    m_material = AssetManager::getMaterialByName(r_path);
 }

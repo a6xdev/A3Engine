@@ -57,7 +57,8 @@ namespace AssetManager {
 		if (it != loadedTextures.end()) {
 			return it->second;
 		}
-		std::cout << "Failed to get texture with path: " << r_path << std::endl;
+		// FIX: pegando a textura antes da hora
+		//std::cout << "Failed to get texture with path: " << r_path << std::endl;
 		return NULL;
 	}
 
@@ -87,10 +88,11 @@ namespace AssetManager {
 		std::cout << "Materials Size: " << loadedMaterials.size() << std::endl;
 		std::cout << "Textures Size: " << loadedTextures.size() << std::endl;
 		std::cout << "Models Size: " << loadedModels.size() << std::endl;
+		printf("\n");
 
 		for (int i = 0; i < loadedResources.size(); i++) {
 			auto resource = loadedResources[i];
-			std::cout << "loading resource: " << resource->getResourceName() << std::endl;
+			std::cout << "loading resource: " << resource->getResourceName() << ", " << resource->getResourcePath() << std::endl;
 			resource->load();
 		}
 	}

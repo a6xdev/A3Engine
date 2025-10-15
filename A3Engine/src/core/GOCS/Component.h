@@ -21,8 +21,6 @@ struct Component {
 
 struct ModelRenderer : Component {
 	Model* m_model;
-	Material* m_material;
-	unsigned int VAO, VBO, EBO;
 
 	ModelRenderer(GameObject* owner, std::string r_model, std::string n_material);
 
@@ -31,8 +29,6 @@ struct ModelRenderer : Component {
 	void			shutdown() override;
 
 	Model*			getModel();
-	Material*		getMaterial();
 
 	void			setModel(std::string r_path);
-	void			setMaterial(std::string r_path);
 };

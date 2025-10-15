@@ -89,6 +89,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)thirdparty/include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,6 +121,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)thirdparty/include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -476,6 +478,10 @@
   <ItemGroup>
     <None Include="res\models\monkey\monkey.bin" />
     <None Include="res\models\monkey\monkey.gltf" />
+    <None Include="res\models\objCrazy\objCrazy.bin" />
+    <None Include="res\models\objCrazy\objCrazy.gltf" />
+    <None Include="res\models\testScene\testScene.bin" />
+    <None Include="res\models\testScene\testScene.gltf" />
     <None Include="src\shaders\fs.shader" />
     <None Include="src\shaders\fs_debug.shader" />
     <None Include="src\shaders\vs.shader" />
@@ -684,6 +690,10 @@
     <Library Include="thirdparty\libs\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\models\objCrazy\Bricks102_1K-JPG_Color.jpg" />
+    <Image Include="res\models\testScene\texture_08-1.png" />
+    <Image Include="res\models\testScene\texture_08.png" />
+    <Image Include="res\models\testScene\texture_09.png" />
     <Image Include="res\textures\awesomeface.png" />
     <Image Include="res\textures\container.jpg" />
     <Image Include="res\textures\wall.jpg" />
