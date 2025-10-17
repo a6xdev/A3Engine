@@ -3,6 +3,7 @@
 #include "Engine.h"
 
 #include "../renderer/Renderer.h"
+#include "physics/Physics.h"
 #include "AssetManager.h"
 #include "SceneManager.h"
 #include "input/Input.h"
@@ -30,6 +31,7 @@ namespace Engine {
 		printf("\n");
 
 		Renderer::init();
+		Physics::init();
 		Game::initGame();
 		AssetManager::init();
 		Input::init(Renderer::getCurrentGLFWWindow());
@@ -55,6 +57,7 @@ namespace Engine {
 			ImGui::NewFrame();
 
 			Renderer::process();
+			Physics::process();
 			AssetManager::process();
 			Input::process();
 			Game::processGame();
@@ -72,6 +75,7 @@ namespace Engine {
 
 	void shutdown() {
 		Renderer::shutdown();
+		Physics::shutdown();
 		AssetManager::shutdown();
 		Game::shutdownGame();
 		SceneManager::shutdownScene();

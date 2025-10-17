@@ -42,7 +42,10 @@ public:
 	GameObject*					getParent() const { return m_parent; };
 	std::vector<GameObject*>	getChildren() const { return m_children; };
 	std::vector<Component*>		getComponents() const { return m_components; };
+	template <typename T>
+	T* GetComponentByType();	// This function are in GameObject.inl
 
+	std::string					getName() const { return m_name; };
 	glm::vec3					getPosition() const { return m_position; };
 	glm::vec3					getRotation() const { return m_rotation; };
 	glm::vec3					getScale() const { return m_scale; };
@@ -62,3 +65,5 @@ private:
 	std::vector<GameObject*>	m_children;
 	std::vector<Component*>		m_components;
 };
+
+#include "GameObject.inl"

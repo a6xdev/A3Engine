@@ -17,8 +17,8 @@
 #include "../../src/core/GOCS/Component.h"
 
 void testScene::setupGameObjects() {
-	Model* testScene= new Model("testScene", "res/models/testScene/testScene.gltf");
 	Model* monkeyModel = new Model("monkey", "res/models/monkey/monkey.gltf");
+	Model* suzanneModel02 = new Model("suzanne_02", "res/models/monkey/suzanne_02.gltf");
 
 	Material* testMaterial = new Material("testMaterial", "path", "src/shaders/vs.shader", "src/shaders/fs.shader");
 	testMaterial->setAlbedoTexture("container_texture", "res/textures/container.jpg");

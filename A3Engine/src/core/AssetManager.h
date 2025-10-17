@@ -8,6 +8,7 @@ class Resource;
 class Material;
 class Texture;
 class Model;
+class Collision;
 
 namespace AssetManager {
 	void init();
@@ -19,6 +20,7 @@ namespace AssetManager {
 	Material* getMaterialByName(std::string r_name);
 	Texture* getTextureByPath(std::string r_path);
 	Model* getModelByPath(std::string r_path);
+	Collision* getCollisionByName(std::string r_name);
 
 	std::vector<Resource*> getResourceList();
 

@@ -5,12 +5,14 @@
 #include "../resources/Material.h"
 #include "../resources/Texture.h"
 #include "../resources/Model.h"
+#include "../resources/Collision.h"
 
 namespace AssetManager {
 	std::vector<Resource*> loadedResources;
 	std::unordered_map<std::string, Material*> loadedMaterials;
 	std::unordered_map<std::string, Texture*> loadedTextures;
 	std::unordered_map<std::string, Model*> loadedModels;
+	std::unordered_map<std::string, Collision*> loadedCollisions;
 
 	bool isLoadingAssets = false;
 
@@ -41,6 +43,11 @@ namespace AssetManager {
 		else if (auto* model = dynamic_cast<Model*>(res)) {
 			AssetManager::loadedModels[model->getResourcePath()] = model;
 		}
+
+		else if (auto* collision = dynamic_cast<Collision*>(res)) {
+			// it is saved with name because collisions dont are a physical file.
+			loadedCollisions[res->getResourceName()] = collision;
+		}
 	}
 
 	Material* getMaterialByName(std::string r_name) {
@@ -68,6 +75,15 @@ namespace AssetManager {
 			return it->second;
 		}
 		std::cout << "Failed to get model with path: " << r_path << std::endl;
+		return NULL;
+	}
+
+	Collision* getCollisionByName(std::string r_name) {
+		auto it = loadedCollisions.find(r_name);
+		if (it != loadedCollisions.end()) {
+			return it->second;
+		}
+		std::cout << "Failed to get Collision with path: " << r_name << std::endl;
 		return NULL;
 	}
 

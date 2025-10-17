@@ -6,6 +6,7 @@
 #include "Resource.h"
 
 class Material;
+class Collision;
 
 struct Vertex {
 	glm::vec3 pos;
@@ -19,6 +20,7 @@ struct ModelGLTFNode {
 	std::string						m_materialName;
 
 	Material*						m_material = nullptr;
+	Collision*						m_collision = nullptr;
 	bool							m_hasMaterial = false;
 
 	glm::mat4						matrix = glm::mat4(1.0f);
@@ -26,12 +28,13 @@ struct ModelGLTFNode {
 	std::vector<Vertex>				vertices;
 	std::vector<uint32_t>			indices;
 
-	std::vector<Vertex>				getVertices() const { return vertices; };
-	std::vector<uint32_t>			getIndices() const { return indices; };
+	std::vector<Vertex>				getVertices() { return vertices; };
+	std::vector<uint32_t>			getIndices() { return indices; };
 
 	glm::mat4						getNodeMatrix() const { return matrix;  };
 	std::string						getNodeName() const { return m_nodeName; };
 	std::string						getMaterialName() const { return m_materialName; };
+	Collision*						getCollision() const { return m_collision; };
 	bool							hasMaterial() const { return m_hasMaterial; };
 };
 

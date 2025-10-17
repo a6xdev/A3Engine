@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Material.h"
 #include "Texture.h"
+#include "Collision.h"
 
 #include "../common/UniqueID.h"
 #include "../core/AssetManager.h"
@@ -31,20 +32,35 @@ void Model::loadModel(std::string m_path) {
 
 		const tinygltf::Node& node = model.nodes[nodeIndex];
 
+		// If node has name "Collision", it return because they dont need be rendered
+		if (node.name.find("collision") != std::string::npos) { return; };
+
 		if (node.mesh >= 0) {
 			ModelGLTFNode* GLTFNode = new ModelGLTFNode();
 			GLTFNode->m_nodeName = node.name;
 
+			// Get Collision with node.children
+			// Create Collision resource
+			//node.children
+
 			GLTFNodes.push_back(GLTFNode);
 
-			const tinygltf::Mesh& mesh = model.meshes[node.mesh];
+			// Find node child Collision
+			for (int childIndex : node.children) {
+				const auto& child = model.nodes[childIndex];
+				if (child.name.find("collision") != std::string::npos) {
+					GLTFNode->m_collision = new Collision(node.name + "_" + child.name);
+				}
+			}
 
+			const tinygltf::Mesh& mesh = model.meshes[node.mesh];
 			for (const tinygltf::Primitive& primitive : mesh.primitives) {
 				// Matrix
 				GLTFNode->matrix = GetLocalTransform(node);
 
 				// Vertices
 				Vertex v;
+
 				int posAccessorIndex = primitive.attributes.at("POSITION");
 				const tinygltf::Accessor& posAccessor = model.accessors[posAccessorIndex];
 				const tinygltf::BufferView& posView = model.bufferViews[posAccessor.bufferView];
@@ -102,6 +118,11 @@ void Model::loadModel(std::string m_path) {
 						GLTFNode->indices.push_back(buf[i]);
 				}
 
+				// Set ConvexCollision
+				if (GLTFNode->m_collision) {
+					GLTFNode->m_collision->createConvexShape(GLTFNode);
+				}
+
 				// Materials
 				if (primitive.material >= 0) {
 					GLTFNode->m_hasMaterial = true; // if this bool is true, you dont need create a external material
@@ -131,8 +152,6 @@ void Model::loadModel(std::string m_path) {
 						GLTFNode->m_material->setAlbedoColor(baseColor);
 					}
 				}
-
-				std::cout << "GLTFNode: " << node.name << ", VERTICES: " << GLTFNode->getVertices().size() << std::endl;
 			}
 		}
 	}

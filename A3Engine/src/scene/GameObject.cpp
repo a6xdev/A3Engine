@@ -13,6 +13,7 @@ GameObject::GameObject() {
 
 void GameObject::initComponents() {
 	for (auto* comp : m_components) {
+		std::cout << "initing component: " << comp->getComponentType() << std::endl;
 		comp->init();
 	}
 }
