@@ -10,6 +10,7 @@ namespace Input {
 
 	bool keyDown(unsigned int keycode);
 	bool keyPressed(unsigned int keycode);
+	float keyStrength(unsigned int keycode);
 
 	bool isMouseWheelUp();
 	bool isMouseWheelDown();

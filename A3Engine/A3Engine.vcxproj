@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="game\game.h" />
+    <ClInclude Include="game\objects\Player.h" />
     <ClInclude Include="game\objects\testObject.h" />
     <ClInclude Include="game\scenes\testScene.h" />
     <ClInclude Include="src\common\UniqueID.h" />
@@ -771,14 +772,14 @@
     <ClInclude Include="thirdparty\include\tiny_gltf\tiny_gltf.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\models\Alien_I\alien_i.bin" />
-    <None Include="res\models\Alien_I\alien_i.gltf" />
     <None Include="res\models\monkey\monkey.bin" />
     <None Include="res\models\monkey\monkey.gltf" />
     <None Include="res\models\monkey\suzanne_02.bin" />
     <None Include="res\models\monkey\suzanne_02.gltf" />
     <None Include="res\models\objCrazy\objCrazy.bin" />
     <None Include="res\models\objCrazy\objCrazy.gltf" />
+    <None Include="res\models\primitives\plane.bin" />
+    <None Include="res\models\primitives\plane.gltf" />
     <None Include="res\models\testScene\testScene.bin" />
     <None Include="res\models\testScene\testScene.gltf" />
     <None Include="src\scene\GameObject.inl" />
@@ -941,6 +942,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game\game.cpp" />
+    <ClCompile Include="game\objects\Player.cpp" />
     <ClCompile Include="game\objects\testObject.cpp" />
     <ClCompile Include="game\scenes\testScene.cpp" />
     <ClCompile Include="glad.c">
@@ -963,10 +965,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\core\EObject.cpp" />
+    <ClCompile Include="src\core\GOCS\CharacterBody.cpp" />
     <ClCompile Include="src\core\GOCS\CollisionShape.cpp" />
     <ClCompile Include="src\core\GOCS\Component.cpp" />
     <ClCompile Include="src\core\GOCS\ModelRenderer.cpp" />
     <ClCompile Include="src\core\GOCS\RigidBody.cpp" />
+    <ClCompile Include="src\core\GOCS\StaticBody.cpp" />
     <ClCompile Include="src\core\input\Input.cpp" />
     <ClCompile Include="src\core\physics\Physics.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
@@ -1142,7 +1146,6 @@
     <Library Include="thirdparty\libs\Jolt.lib" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\models\Alien_I\texture_08.png" />
     <Image Include="res\models\monkey\grid_image.png" />
     <Image Include="res\models\objCrazy\Bricks102_1K-JPG_Color.jpg" />
     <Image Include="res\models\testScene\texture_08-1.png" />

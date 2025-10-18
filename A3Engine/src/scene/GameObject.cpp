@@ -13,7 +13,6 @@ GameObject::GameObject() {
 
 void GameObject::initComponents() {
 	for (auto* comp : m_components) {
-		std::cout << "initing component: " << comp->getComponentType() << std::endl;
 		comp->init();
 	}
 }
@@ -48,6 +47,20 @@ void GameObject::setRotation(float x, float y, float z) {
 
 void GameObject::setScale(float x, float y, float z) {
 	m_scale = glm::vec3(x, y, z);
+}
+
+glm::vec3 GameObject::getGlobalPosition() {
+	if (m_parent) {
+		return m_parent->getGlobalPosition() + getPosition();
+	}
+	return getPosition();
+}
+
+glm::vec3 GameObject::getGlobalRotation() {
+	if (m_parent) {
+		return m_parent->getGlobalRotation() + getRotation();
+	}
+	return getRotation();
 }
 
 glm::mat4 GameObject::getGlobalModelMatrix() const {

@@ -11,13 +11,20 @@
 
 void TestObject::init() {
 	m_name = "TestObject";
+
+	setPosition(0.0f, 100.0f, 0.0f);
+
 	auto* modelRenderer = new ModelRenderer(this, "res/models/monkey/suzanne_02.gltf", "noPath");
 	auto* bodyCollision = new CollisionShape(this, "Suzanne_collision");
-	auto* rigidBody = new RigidBody(this);
+	auto* JoltBody = new RigidBody(this);
 }
 
 void TestObject::process() {
 	movementController();
+
+	if (Input::keyPressed(A3_KEY_P)) {
+		m_canMove = true;
+	}
 }
 
 void TestObject::shutdown() {

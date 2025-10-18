@@ -10,6 +10,7 @@ namespace Input {
 	bool A3KeyDown[372];
 	bool A3KeyPressed[372];
 	bool A3KeyDownLastFrame[372];
+	float A3KeyStrength[372];
 
 	double mouseDeltaX = 0;
 	double mouseDeltaY = 0;
@@ -55,16 +56,22 @@ namespace Input {
 		// keyboard
 		for (int i = 32; i < 349; i++) {
 			// key down
-			if (glfwGetKey(g_window, i) == GLFW_PRESS)
+			if (glfwGetKey(g_window, i) == GLFW_PRESS) {
 				A3KeyDown[i] = true;
-			else
+				A3KeyStrength[i] = 1.0;
+			}
+			else {
 				A3KeyDown[i] = false;
+				A3KeyStrength[i] = 0.0;
+			}
 
 			// pressed
-			if (A3KeyDown[i] && !A3KeyDownLastFrame[i])
+			if (A3KeyDown[i] && !A3KeyDownLastFrame[i]) {
 				A3KeyPressed[i] = true;
-			else
+			}
+			else {
 				A3KeyPressed[i] = false;
+			}
 
 			A3KeyDownLastFrame[i] = A3KeyDown[i];
 		}
@@ -104,12 +111,16 @@ namespace Input {
 		rightMouseButtonDownLastFrame = rightMouseButtonDown;
 	}
 
-	bool keyDown(unsigned int keycode) {
+	bool keyDown(unsigned int keycode) { // If input is down.
 		return A3KeyDown[keycode];
 	}
 
-	bool keyPressed(unsigned int keycode) {
+	bool keyPressed(unsigned int keycode) { // if user just pressed
 		return A3KeyPressed[keycode];
+	}
+
+	float keyStrength(unsigned int keycode) {
+		return A3KeyStrength[keycode];
 	}
 
 	bool isMouseWheelUp() {

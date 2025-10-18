@@ -9,15 +9,17 @@ Camera::Camera() : GameObject() {
 void Camera::init() {}
 
 void Camera::process() {
-	glm::vec3 front;
-	front.x = cos(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));
-	front.y = sin(glm::radians(m_rotation.x));
-	front.z = sin(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));
-	front = glm::normalize(front);
+	m_cameraDirection.x = cos(glm::radians(getGlobalRotation().y)) * cos(glm::radians(getGlobalRotation().x));
+	m_cameraDirection.y = sin(glm::radians(getGlobalRotation().x));
+	m_cameraDirection.z = sin(glm::radians(getGlobalRotation().y)) * cos(glm::radians(getGlobalRotation().x));
+	m_cameraFront = glm::normalize(m_cameraDirection);
+
+	m_cameraRight = glm::normalize(glm::cross(m_cameraFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+	m_cameraUp = glm::normalize(glm::cross(m_cameraRight, m_cameraFront));
 
 	m_view = glm::lookAt(
-		getPosition(),
-		getPosition() + front,
+		getGlobalPosition(),
+		getGlobalPosition() + m_cameraFront,
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	);
 }

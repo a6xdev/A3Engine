@@ -21,10 +21,10 @@ struct Component {
 	virtual void		shutdown()				{};
 
 	GameObject*			getObjectOwner() { return objectOwner; };
-	virtual std::string getComponentType() { return "Component: this message is not to appear. FIX IT!"; };
 };
 
-struct ModelRenderer : Component {
+// ModelRenderer is reponsible for render the model that you load...
+struct ModelRenderer : Component { 
 	Model* m_model;
 
 	ModelRenderer(GameObject* owner, std::string r_model, std::string n_material);
@@ -36,11 +36,27 @@ struct ModelRenderer : Component {
 	Model*		getModel();
 
 	void		setModel(std::string r_path);
-
-	std::string getComponentType() override { return "ModelRenderer"; };
 };
 
 // Physics Component
+struct CharacterBody : Component {
+	JPH::BodyID	m_bodyID;
+	glm::vec3 m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	CharacterBody(GameObject* owner) : Component(owner) {};
+
+	void		init() override;
+	void		process() override;
+	void		shutdown() override;
+
+	void setBodyPosition(glm::vec3 pos);
+
+	JPH::BodyID getBodyID() const { return m_bodyID; };
+	glm::vec3	getLinearVelocity();
+	glm::vec3	getAngularVelocity();
+};
+
+// Do you want the body drop? use this component.
 struct RigidBody : Component {
 	JPH::BodyID	m_bodyID;
 	float		m_mass = 1.0;
@@ -57,10 +73,22 @@ struct RigidBody : Component {
 	JPH::BodyID getBodyID() const { return m_bodyID; };
 	glm::vec3	getLinearVelocity();
 	glm::vec3	getAngularVelocity();
-
-	std::string getComponentType() override { return "RigidBody"; };
 };
 
+// Do you want the body drop? dont use this component.
+struct StaticBody : Component {
+	JPH::BodyID	m_bodyID;
+
+	StaticBody(GameObject* owner) : Component(owner) {};
+
+	void init() override;
+	void process() override;
+	void shutdown() override;
+
+	JPH::BodyID getBodyID() const { return m_bodyID; };
+};
+
+// The RigidBody and StaticBody need this component to work. Dont let me down.
 struct CollisionShape : Component {
 	Collision*	m_collision;
 	bool		m_disabled = false;
@@ -68,6 +96,4 @@ struct CollisionShape : Component {
 	CollisionShape(GameObject* owner, std::string collision_name);
 
 	Collision* getCollision() const { return m_collision; };
-
-	std::string getComponentType() override { return "CollisionShape"; };
 };

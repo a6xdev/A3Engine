@@ -14,6 +14,8 @@ public:
 	//void						saveSceneData();
 	void						loadSceneData();
 
+	void addGameObject(GameObject* obj);
+
 	template<typename T>
 	T* createGameObject() {
 		T* new_obj = new T();

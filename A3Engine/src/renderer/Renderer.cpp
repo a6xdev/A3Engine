@@ -33,8 +33,8 @@ namespace Renderer {
 		std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
 		printf("\n");
 
-		//glEnable(GL_DEPTH_TEST);
-		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		
 		return 0;

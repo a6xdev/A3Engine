@@ -104,6 +104,7 @@ namespace AssetManager {
 		std::cout << "Materials Size: " << loadedMaterials.size() << std::endl;
 		std::cout << "Textures Size: " << loadedTextures.size() << std::endl;
 		std::cout << "Models Size: " << loadedModels.size() << std::endl;
+		std::cout << "Collisions Size: " << loadedCollisions.size() << std::endl;
 		printf("\n");
 
 		for (int i = 0; i < loadedResources.size(); i++) {

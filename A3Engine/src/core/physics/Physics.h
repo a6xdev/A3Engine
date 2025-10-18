@@ -30,6 +30,9 @@ namespace Physics {
 
 	JPH::BodyID createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer = Layers::MOVING);
 
+	void setBodyPosition(JPH::BodyID body, glm::vec3 pos);
+	void setBodyLinearVelocity(JPH::BodyID body, glm::vec3 velocity);
+
 	JPH::BodyInterface& getPhysicsBodyInterface();
 	glm::vec3 getBodyLinearVelocity(JPH::BodyID body);
 	glm::vec3 getBodyAngularVelocity(JPH::BodyID body);

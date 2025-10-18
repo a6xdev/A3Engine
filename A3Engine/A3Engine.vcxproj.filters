@@ -1887,6 +1887,9 @@
     <ClInclude Include="src\resources\Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game\objects\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="thirdparty\include\glm\detail\func_common.inl">
@@ -2319,10 +2322,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\models\objCrazy\objCrazy.gltf" />
-    <None Include="res\models\Alien_I\alien_i.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\models\Alien_I\alien_i.gltf" />
     <None Include="thirdparty\include\Jolt\Core\FixedSizeFreeList.inl">
       <Filter>Header Files</Filter>
     </None>
@@ -2372,6 +2371,10 @@
     <None Include="src\scene\GameObject.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="res\models\primitives\plane.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\models\primitives\plane.gltf" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="thirdparty\include\glm\detail\glm.cpp">
@@ -2896,6 +2899,15 @@
     <ClCompile Include="src\core\GOCS\CollisionShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\GOCS\StaticBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game\objects\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\GOCS\CharacterBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="thirdparty\libs\glfw3.lib" />
@@ -2921,9 +2933,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\models\testScene\texture_08-1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\models\Alien_I\texture_08.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\models\monkey\grid_image.png">

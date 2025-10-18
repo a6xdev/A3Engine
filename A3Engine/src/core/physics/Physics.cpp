@@ -73,7 +73,19 @@ namespace Physics {
 		JPH::Factory::sInstance = nullptr;
 	}
 
-	// PHYSICS FUNCTIONS:
+	// Will set something? try here:
+
+	void setBodyPosition(JPH::BodyID body, glm::vec3 pos) {
+		JPH::Vec3 JoltPos = JPH::Vec3(pos.x, pos.y, pos.z);
+		getPhysicsBodyInterface().SetPosition(body, JoltPos, JPH::EActivation::Activate);
+	}
+
+	void setBodyLinearVelocity(JPH::BodyID body, glm::vec3 velocity) {
+		JPH::Vec3 j_velocity = JPH::Vec3(velocity.x, velocity.y, velocity.z);
+		getPhysicsBodyInterface().SetLinearVelocity(body, j_velocity);
+	}
+
+	// Will Get something? yeah is here:
 
 	// Create Physics Body to Return BodyID
 	JPH::BodyID createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer) {
