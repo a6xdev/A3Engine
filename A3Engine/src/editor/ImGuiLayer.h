@@ -10,4 +10,6 @@ namespace ImGuiLayer {
 	void init();
 	void process();
 	void shutdown();
+
+	void renderDockspace();
 }

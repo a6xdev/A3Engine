@@ -4,6 +4,8 @@
 #include "../core/Engine.h"
 #include "../core/SceneManager.h"
 
+#include "../scene/GameObject.h"
+
 namespace ImGuiLayer {
 	void init() {
 		IMGUI_CHECKVERSION();
@@ -28,6 +30,9 @@ namespace ImGuiLayer {
 
 			ImGui::EndMainMenuBar();
 		}
+		
+		ImGui::ShowDemoWindow();
+
 		SceneManager::updateSceneDebug();
 	}
 

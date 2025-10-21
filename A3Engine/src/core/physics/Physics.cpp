@@ -1,13 +1,18 @@
 #include "Physics.h"
 
 #include "../Engine.h"
+#include "../../renderer/PhysicsDebugRenderer.h"
 
 namespace Physics {
 	bool m_isPaused = false;
 	bool m_isRunning = false;
+	bool m_debugPhysics = false;
+
+	PhysicsDebugRenderer* m_debugRenderer = nullptr;
 
 	JPH::PhysicsSystem physicsSystem;
 	JPH::JobSystem* jobSystem;
+	JPH::PhysicsSettings physicsSettings;
 	JPH::BodyManager::DrawSettings drawSettings;
 
 	JPH::TempAllocator* temp_allocator = nullptr;
@@ -49,17 +54,44 @@ namespace Physics {
 			object_vs_object_layer_filter
 		);
 
+		m_debugRenderer = new PhysicsDebugRenderer();
+		DebugRenderer::sInstance = m_debugRenderer;
+
 		// This will print all contact the bodies will do.
 		//physicsSystem.SetBodyActivationListener(&body_activation_listener);
 		//physicsSystem.SetContactListener(&contact_listener);
 		physicsSystem.OptimizeBroadPhase();
 
+		// Config PhysicsSettings
+		physicsSettings.mNumVelocitySteps = 8;
+		physicsSettings.mNumPositionSteps = 3;
+		physicsSettings.mAllowSleeping = true;
+		physicsSystem.SetPhysicsSettings(physicsSettings);
+
+		// Config DrawSettings
+		drawSettings.mDrawShape = true;
+		drawSettings.mDrawShapeWireframe = false;
+		drawSettings.mDrawVelocity = true;
+
 		m_isRunning = true;
 	}
 
 	void process() {
-		if (not m_isPaused)
+		if (not m_isPaused) {
 			physicsSystem.Update(Engine::getDeltaTime(), 1, temp_allocator, jobSystem);
+		}
+
+		m_debugRenderer->clear();
+
+		#ifdef JPH_DEBUG_RENDERER
+		if (m_debugPhysics) {
+			physicsSystem.DrawBodies(drawSettings, m_debugRenderer);
+			physicsSystem.DrawConstraints(m_debugRenderer);
+			physicsSystem.DrawConstraintLimits(m_debugRenderer);
+		}
+		#endif
+
+		m_debugRenderer->draw();
 	}
 
 	void shutdown() {
@@ -73,10 +105,39 @@ namespace Physics {
 		JPH::Factory::sInstance = nullptr;
 	}
 
+	// Create Physics Body to Return BodyID
+	JPH::BodyID createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer) {
+		JPH::BodyCreationSettings settings(shape, position, Quat::sIdentity(), motionType, layer);
+		Body* body = getPhysicsBodyInterface().CreateBody(settings);
+		getPhysicsBodyInterface().AddBody(body->GetID(), EActivation::Activate);
+		return body->GetID();
+	}
+
+	JPH::BodyID createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType) {
+		return createPhysicsBody(JPH::BoxShapeSettings(halfExtent).Create().Get(), position, motionType);
+	}
+
+	JPH::BodyID createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType) {
+		return createPhysicsBody(JPH::SphereShapeSettings(radius).Create().Get(), position, motionType);
+	}
+
+	void moveKinematic(JPH::BodyID body, glm::vec3 targetPos, glm::quat targetRot) {
+		JPH::Vec3 jPos(targetPos.x, targetPos.y, targetPos.z);
+		JPH::Quat JRot(targetRot.x, targetRot.y, targetRot.z, targetRot.w);
+
+		getPhysicsBodyInterface().MoveKinematic(body, jPos, JRot, Engine::getDeltaTime());
+	}
+
+	////////////////////////////////
+	////////////////////////////////
+	////////////////////////////////
 	// Will set something? try here:
+	////////////////////////////////
+	////////////////////////////////
+	////////////////////////////////
 
 	void setBodyPosition(JPH::BodyID body, glm::vec3 pos) {
-		JPH::Vec3 JoltPos = JPH::Vec3(pos.x, pos.y, pos.z);
+		JPH::RVec3 JoltPos((double)pos.x, (double)pos.y, (double)pos.z);
 		getPhysicsBodyInterface().SetPosition(body, JoltPos, JPH::EActivation::Activate);
 	}
 
@@ -85,15 +146,13 @@ namespace Physics {
 		getPhysicsBodyInterface().SetLinearVelocity(body, j_velocity);
 	}
 
+	////////////////////////////////////
+	////////////////////////////////////
+	////////////////////////////////////
 	// Will Get something? yeah is here:
-
-	// Create Physics Body to Return BodyID
-	JPH::BodyID createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer) {
-		JPH::BodyCreationSettings settings(shape, position, Quat::sIdentity(), motionType, layer);
-		Body* body = getPhysicsBodyInterface().CreateBody(settings);
-		getPhysicsBodyInterface().AddBody(body->GetID(), EActivation::Activate);
-		return body->GetID();
-	}
+	////////////////////////////////////
+	////////////////////////////////////
+	////////////////////////////////////
 
 	// Get Body Interface
 	JPH::BodyInterface& getPhysicsBodyInterface() {
@@ -121,7 +180,7 @@ namespace Physics {
 	// Get Body Position in Physics and convert to glm::vec3
 	glm::vec3 getBodyPosition(JPH::BodyID body) {
 		if (!body.IsInvalid()) {
-			JPH::Vec3 joltPos = getPhysicsBodyInterface().GetPosition(body);
+			JPH::RVec3 joltPos = getPhysicsBodyInterface().GetPosition(body);
 			return glm::vec3(joltPos.GetX(), joltPos.GetY(), joltPos.GetZ());
 		}
 		return glm::vec3(0.0f);

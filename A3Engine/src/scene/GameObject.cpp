@@ -38,15 +38,24 @@ void GameObject::addComponent(Component* comp) {
 }
 
 void GameObject::setPosition(float x, float y, float z) {
-	m_position = glm::vec3(x, y, z);
+	m_localPosition = glm::vec3(x, y, z);
 }
 
 void GameObject::setRotation(float x, float y, float z) {
-	m_rotation = glm::vec3(x, y, z);
+	m_localRotation = glm::vec3(x, y, z);
 }
 
 void GameObject::setScale(float x, float y, float z) {
-	m_scale = glm::vec3(x, y, z);
+	m_localScale = glm::vec3(x, y, z);
+}
+
+void GameObject::setRotationDegrees(glm::vec3 rot) {
+	m_localRotation = glm::radians(rot);
+}
+
+void GameObject::setParent(GameObject* obj) {
+	m_parent = obj;
+	obj->m_children.push_back(obj);
 }
 
 glm::vec3 GameObject::getGlobalPosition() {

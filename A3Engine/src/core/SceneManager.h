@@ -6,13 +6,15 @@ class Scene;
 class GameObject;
 
 namespace SceneManager {
-	void		loadScene();
-	void		updateScene();
-	void		shutdownScene();
+	void						loadScene();
+	void						updateScene();
+	void						shutdownScene();
 
-	void		updateSceneDebug();
+	void						updateSceneDebug();
 
-	void		setCurrentScene(Scene* scene);
+	void						addNewGameObject(GameObject* obj);
+	void						setCurrentScene(Scene* scene);
 
-	Scene*		getCurrentScene();
+	Scene*						getCurrentScene();
+	std::vector<GameObject*>	getSceneGameObjects();
 };

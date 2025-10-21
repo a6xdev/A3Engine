@@ -12,8 +12,11 @@ namespace Engine {
 	float getDeltaTime();
 	float getEngineFPS();
 
+	void setPauseMode(bool value);
+
 	bool isDebugMode();
 	bool isRunning();
+	bool isPaused();
 }
 
 #endif // !ENGINE_HEADER

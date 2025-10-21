@@ -19,12 +19,19 @@ void RigidBody::init() {
 void RigidBody::process() {
 	if (Physics::isRunning() && not m_bodyID.IsInvalid() && objectOwner->canMove()) {
 		glm::vec3 j_pos = Physics::getBodyPosition(m_bodyID);
+		glm::vec3 j_rot = Physics::getBodyRotation(m_bodyID);
+
 		objectOwner->setPosition(j_pos.x, j_pos.y, j_pos.z);
+		objectOwner->setRotation(j_rot.x, j_rot.y, j_rot.z);
 	}
 }
 
 void RigidBody::shutdown() {
 	//Physics::getPhysicsBodyInterface().DestroyBody(m_bodyID);
+}
+
+void RigidBody::setBodyPosition(glm::vec3 pos) {
+	Physics::setBodyPosition(m_bodyID, pos);
 }
 
 glm::vec3 RigidBody::getLinearVelocity() { return Physics::getBodyLinearVelocity(m_bodyID); }

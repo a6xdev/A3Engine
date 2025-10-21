@@ -4,7 +4,7 @@
 
 class Camera : public GameObject {
 public:
-	float m_fov = 45.0f;
+	float m_fov = 75.0f;
 
 	Camera();
 

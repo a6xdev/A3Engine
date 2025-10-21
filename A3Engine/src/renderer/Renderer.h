@@ -19,7 +19,7 @@ struct Window {
 
 namespace Renderer {
 	static float m_near = 0.1f;
-	static float m_far = 1000.0f;
+	static float m_far = 10000.0f;
 
 	int init();
 	void process();

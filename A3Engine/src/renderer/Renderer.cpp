@@ -8,7 +8,7 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 namespace Renderer {
 	Window* currentWindow = nullptr;
 	Camera* currentCamera = nullptr;
-	int m_vsync = -1;
+	int m_vsync = 1;
 
 	int init() {
 		glfwInit();
@@ -41,11 +41,11 @@ namespace Renderer {
 	}
 
 	void process() {
-		glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDisable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
 	}
 
 	void shutdown() {

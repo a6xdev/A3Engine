@@ -57,12 +57,12 @@ namespace Engine {
 			ImGui::NewFrame();
 
 			Renderer::process();
-			Physics::process();
 			AssetManager::process();
 			Input::process();
 			Game::processGame();
 			SceneManager::updateScene();
 			ImGuiLayer::process();
+			Physics::process();
 
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -75,17 +75,20 @@ namespace Engine {
 
 	void shutdown() {
 		Renderer::shutdown();
-		Physics::shutdown();
 		AssetManager::shutdown();
 		Game::shutdownGame();
 		SceneManager::shutdownScene();
 		ImGuiLayer::shutdown();
 		m_isRunning = false;
+		Physics::shutdown();
 		glfwTerminate();
 	}
+
+	void setPauseMode(bool value) { m_paused = value; }
 
 	float getDeltaTime() { return m_deltaTime; };
 	float getEngineFPS() { return m_fps; };
 	bool isRunning() { return isRunning; };
 	bool isDebugMode() { return m_debugMode; }
+	bool isPaused() { return m_paused; }
 }

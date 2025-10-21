@@ -5,6 +5,7 @@
 #include <thread>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <Jolt/Jolt.h>
 
 #define JPH_DEBUG_RENDERER
@@ -29,6 +30,11 @@ namespace Physics {
 	void shutdown();
 
 	JPH::BodyID createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer = Layers::MOVING);
+	JPH::BodyID createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType);
+	JPH::BodyID createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType);
+
+
+	void moveKinematic(JPH::BodyID body, glm::vec3 targetPos, glm::quat targetRot);
 
 	void setBodyPosition(JPH::BodyID body, glm::vec3 pos);
 	void setBodyLinearVelocity(JPH::BodyID body, glm::vec3 velocity);

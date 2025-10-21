@@ -19,13 +19,13 @@
 
 void testScene::setupGameObjects() {
 	// Create Resources
-	Model* planeModel = new Model("monkey", "res/models/primitives/plane.gltf");
+	Model* planeModel = new Model("plane", "res/models/primitives/plane.gltf");
+	Model* boxModel = new Model("box", "res/models/primitives/box.gltf");
 	Model* suzanneModel02 = new Model("suzanne_02", "res/models/monkey/suzanne_02.gltf");
 
 	Material* testMaterial = new Material("testMaterial", "path", "src/shaders/vs.shader", "src/shaders/fs.shader");
 	testMaterial->setAlbedoTexture("container_texture", "res/textures/container.jpg");
 
-	// Create Objects
 	Player* playerObj = createGameObject<Player>();
 	playerObj->m_head = createGameObject<GameObject>();
 	playerObj->m_camera = createGameObject<Camera>();
@@ -44,7 +44,7 @@ void testScene::setupGameObjects() {
 	playerObj->m_camera->setPosition(0.0f, 1.8f, 0.0f);
 	playerObj->m_camera->setRotation(0.0f, 0.0f, 0.0f);
 
-	planeObj->setScale(20.0, 20.0, 20.0);
+	planeObj->setScale(1.0, 1.0, 1.0);
 
 	Renderer::setCamera(playerObj->m_camera);
 	//Renderer::setCamera(cameraObj);

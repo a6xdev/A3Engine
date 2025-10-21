@@ -7,6 +7,7 @@
 namespace SceneManager {
 	Scene* m_currentScene = nullptr;
 
+	std::vector<GameObject*> pendingGameObjects;
 	std::vector<GameObject*> currentSceneGameObjects;
 
 	void loadScene() {
@@ -22,10 +23,16 @@ namespace SceneManager {
 	}
 
 	void updateScene() {
-		if (m_currentScene) {
+		if (m_currentScene && not Engine::isPaused()) {
 			for (auto* GameObject : currentSceneGameObjects) {
 				GameObject->process();
 				GameObject->updateComponents();
+			}
+
+			if (!pendingGameObjects.empty()) {
+				for (auto* obj : pendingGameObjects)
+					currentSceneGameObjects.push_back(obj);
+				pendingGameObjects.clear();
 			}
 		}
 	}
@@ -49,9 +56,19 @@ namespace SceneManager {
 		}
 	}
 
+	void addNewGameObject(GameObject* obj) {
+		obj->init();
+		obj->initComponents();
+		pendingGameObjects.push_back(obj);
+	}
+
 	void setCurrentScene(Scene* scene) {
 		m_currentScene = scene;
 		currentSceneGameObjects = scene->getGameObjects();
+	}
+
+	std::vector<GameObject*> getSceneGameObjects() {
+		return currentSceneGameObjects;
 	}
 
 	Scene* getCurrentScene() {

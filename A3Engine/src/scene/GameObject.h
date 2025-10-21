@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -30,10 +31,12 @@ public:
 	void						setPosition(float x, float y, float z);
 	void						setRotation(float x, float y, float z);
 	void						setScale(float x, float y, float z);
+	void						setRotationDegrees(glm::vec3 rot);
 	void						setVisibiliy(bool value) { m_visible = value; };
-	void						setParent(GameObject* obj) { m_parent = obj; };
+	void						setParent(GameObject* obj);
 
 	bool						isVisible() const { return m_visible; };
+	bool						hasParent() const { return m_parent; };
 	bool						canMove() const { return m_canMove; };
 	GameObject*					getParent() const { return m_parent; };
 	std::vector<GameObject*>	getChildren() const { return m_children; };
@@ -42,26 +45,32 @@ public:
 	T* GetComponentByType();	// This function are in GameObject.inl
 
 	std::string					getName() const { return m_name; };
-	glm::vec3					getPosition() const { return m_position; };
-	glm::vec3					getRotation() const { return m_rotation; };
-	glm::vec3					getScale() const { return m_scale; };
+	glm::vec3					getPosition() const { return m_localPosition; };
+	glm::vec3					getRotation() const { return m_localRotation; };
+	glm::vec3					getScale() const { return m_localScale; };
 	glm::vec3					getGlobalPosition();
 	glm::vec3					getGlobalRotation();
+	glm::vec3					getRotationDegress() const { return glm::degrees(m_localRotation); };
+	glm::quat					getRotationQuat() const { return glm::quat(glm::radians(m_localRotation)); };
 
 	glm::mat4					getGlobalModelMatrix() const;
 	glm::mat4					getLocalModelMatrix() const;
 protected:
+	GameObject* m_parent = nullptr;
+	std::vector<GameObject*>	m_children;
+	std::vector<Component*>		m_components;
+
 	std::string					m_name = "GameObject";
 	bool						m_visible = true;
 	bool						m_canMove = true;
 
-	glm::vec3					m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3					m_rotation = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3					m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
-private:
-	GameObject*					m_parent = nullptr;
-	std::vector<GameObject*>	m_children;
-	std::vector<Component*>		m_components;
+	glm::vec3					m_localPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3					m_localRotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3					m_localScale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	glm::vec3					m_globalPosition = glm::vec3(0.0f);
+	glm::vec3					m_globalRotation = glm::vec3(0.0f);
+	glm::vec3					m_globalScale = glm::vec3(0.0f);
 };
 
 #include "GameObject.inl"

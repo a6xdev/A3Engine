@@ -160,7 +160,9 @@
     <ClInclude Include="src\core\physics\JoltLayer.h" />
     <ClInclude Include="src\core\physics\Physics.h" />
     <ClInclude Include="src\core\SceneManager.h" />
+    <ClInclude Include="src\renderer\LineRenderer.h" />
     <ClInclude Include="src\editor\ImGuiLayer.h" />
+    <ClInclude Include="src\renderer\PhysicsDebugRenderer.h" />
     <ClInclude Include="src\renderer\Renderer.h" />
     <ClInclude Include="src\resources\Collision.h" />
     <ClInclude Include="src\resources\Material.h" />
@@ -975,6 +977,8 @@
     <ClCompile Include="src\core\physics\Physics.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
     <ClCompile Include="src\editor\ImGuiLayer.cpp" />
+    <ClCompile Include="src\renderer\LineRenderer.cpp" />
+    <ClCompile Include="src\renderer\PhysicsDebugRenderer.cpp" />
     <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\resources\Collision.cpp" />
     <ClCompile Include="src\resources\Material.cpp" />

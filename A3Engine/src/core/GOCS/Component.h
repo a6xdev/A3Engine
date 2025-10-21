@@ -42,6 +42,8 @@ struct ModelRenderer : Component {
 struct CharacterBody : Component {
 	JPH::BodyID	m_bodyID;
 	glm::vec3 m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 m_characterPos = glm::vec3(0.0f);
+	bool m_gravity = false;
 
 	CharacterBody(GameObject* owner) : Component(owner) {};
 
@@ -69,6 +71,8 @@ struct RigidBody : Component {
 	void		init() override;
 	void		process() override;
 	void		shutdown() override;
+
+	void setBodyPosition(glm::vec3 pos);
 
 	JPH::BodyID getBodyID() const { return m_bodyID; };
 	glm::vec3	getLinearVelocity();
