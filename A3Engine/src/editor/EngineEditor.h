@@ -1,8 +1,6 @@
 #pragma once
 
-#include "ImGuiLayer.h"
-
-namespace Editor {
+namespace EngineEditor {
 	void init();
 	void process();
 }

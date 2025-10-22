@@ -23,7 +23,7 @@ void testScene::setupGameObjects() {
 	Model* boxModel = new Model("box", "res/models/primitives/box.gltf");
 	Model* suzanneModel02 = new Model("suzanne_02", "res/models/monkey/suzanne_02.gltf");
 
-	Material* testMaterial = new Material("testMaterial", "path", "src/shaders/vs.shader", "src/shaders/fs.shader");
+	Material* testMaterial = new Material("testMaterial", "noPath", "src/shaders/vs.shader", "src/shaders/fs.shader");
 	testMaterial->setAlbedoTexture("container_texture", "res/textures/container.jpg");
 
 	Player* playerObj = createGameObject<Player>();
@@ -31,20 +31,23 @@ void testScene::setupGameObjects() {
 	playerObj->m_camera = createGameObject<Camera>();
 	playerObj->m_head->setParent(playerObj);
 	playerObj->m_camera->setParent(playerObj->m_head);
+	playerObj->setPosition(0.0, 2.0, 0.0);
+	playerObj->m_camera->setPosition(0.0f, 1.8f, 0.0f);
+	playerObj->m_camera->setRotation(0.0f, 0.0f, 0.0f);
 
 	GameObject* planeObj = createGameObject<GameObject>();
 	auto* modelRenderer = new ModelRenderer(planeObj, "res/models/primitives/plane.gltf", "testMaterial");
 	auto* collision = new CollisionShape(planeObj, "plane_collision");
 	auto* staticBody = new StaticBody(planeObj);
+	planeObj->setScale(1.0, 1.0, 1.0);
+
+	GameObject* objTest = createGameObject<GameObject>();
+	auto* objTestModelRenderer = new ModelRenderer(objTest, "res/models/monkey/suzanne_02.gltf", "testMaterial");
+	auto* objTestCollision = new CollisionShape(objTest, "Suzanne_collision");
+	auto* objTestStaticBody = new StaticBody(objTest);
+	objTest->setPosition(5.0f, 2.0f, 0.0f);
 
 	//Camera* cameraObj = createGameObject<Camera>();
-
-	// Set some shit
-	playerObj->setPosition(0.0, 2.0, 0.0);
-	playerObj->m_camera->setPosition(0.0f, 1.8f, 0.0f);
-	playerObj->m_camera->setRotation(0.0f, 0.0f, 0.0f);
-
-	planeObj->setScale(1.0, 1.0, 1.0);
 
 	Renderer::setCamera(playerObj->m_camera);
 	//Renderer::setCamera(cameraObj);

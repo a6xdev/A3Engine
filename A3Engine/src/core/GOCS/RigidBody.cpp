@@ -18,11 +18,14 @@ void RigidBody::init() {
 
 void RigidBody::process() {
 	if (Physics::isRunning() && not m_bodyID.IsInvalid() && objectOwner->canMove()) {
-		glm::vec3 j_pos = Physics::getBodyPosition(m_bodyID);
-		glm::vec3 j_rot = Physics::getBodyRotation(m_bodyID);
+		glm::vec3 new_pos = Physics::getBodyPosition(m_bodyID);
+		glm::quat new_rot = Physics::getBodyRotation(m_bodyID);
 
-		objectOwner->setPosition(j_pos.x, j_pos.y, j_pos.z);
-		objectOwner->setRotation(j_rot.x, j_rot.y, j_rot.z);
+		glm::vec3 euler = glm::eulerAngles(new_rot);
+		euler = glm::degrees(euler);
+
+		objectOwner->setPosition(new_pos.x, new_pos.y, new_pos.z);
+		objectOwner->setRotation(euler.x, euler.y, euler.z);
 	}
 }
 

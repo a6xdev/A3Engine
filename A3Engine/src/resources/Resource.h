@@ -18,12 +18,14 @@ public:
 	int getResourceID() { return m_resourceID; };
 	std::string getResourceName() { return m_resourceName; };
 	std::string getResourcePath() { return m_resourcePath; };
+	std::string getResourceType() { return m_resourceType; };
 
 	bool isLoaded() const { return m_loaded; };
 protected:
 	unsigned int m_resourceID = 0;
 	std::string m_resourceName = "";
 	std::string m_resourcePath = "";
+	std::string m_resourceType = "Resource";
 
 	bool m_loaded = false;
 	bool m_modified = false;

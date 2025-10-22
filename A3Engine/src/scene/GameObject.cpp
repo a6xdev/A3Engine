@@ -58,14 +58,14 @@ void GameObject::setParent(GameObject* obj) {
 	obj->m_children.push_back(obj);
 }
 
-glm::vec3 GameObject::getGlobalPosition() {
+glm::vec3 GameObject::getGlobalPosition() const {
 	if (m_parent) {
 		return m_parent->getGlobalPosition() + getPosition();
 	}
 	return getPosition();
 }
 
-glm::vec3 GameObject::getGlobalRotation() {
+glm::vec3 GameObject::getGlobalRotation() const {
 	if (m_parent) {
 		return m_parent->getGlobalRotation() + getRotation();
 	}
@@ -81,10 +81,10 @@ glm::mat4 GameObject::getGlobalModelMatrix() const {
 
 glm::mat4 GameObject::getLocalModelMatrix() const {
 	glm::mat4 modelMatrix = glm::mat4(1.0f);
-	modelMatrix = glm::translate(modelMatrix, getPosition());
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(getRotation().x), glm::vec3(1, 0, 0));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(getRotation().y), glm::vec3(0, 1, 0));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(getRotation().z), glm::vec3(0, 0, 1));
+	modelMatrix = glm::translate(modelMatrix, getGlobalPosition());
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(getGlobalRotation().x), glm::vec3(1, 0, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(getGlobalRotation().y), glm::vec3(0, 1, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(getGlobalRotation().z), glm::vec3(0, 0, 1));
 	modelMatrix = glm::scale(modelMatrix, getScale());
 	return modelMatrix;
 }

@@ -8,6 +8,7 @@ Texture::Texture(std::string r_name, std::string r_path) {
 	m_resourceID = UniqueID::getNext();
 	m_resourceName = r_name;
 	m_resourcePath = r_path;
+	m_resourceType = "Texture";
 	AssetManager::registerResource(this);
 }
 

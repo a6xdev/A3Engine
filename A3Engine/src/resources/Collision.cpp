@@ -14,6 +14,7 @@ Collision::Collision(std::string r_name) {
 	m_resourceID = UniqueID::getNext();
 	m_resourceName = r_name;
 	m_resourcePath = "noPath";
+	m_resourceType = "Collision";
 	AssetManager::registerResource(this);
 }
 
@@ -25,7 +26,7 @@ void Collision::shutdown() {
 
 void Collision::createConvexShape(ModelGLTFNode* modelNode) {
 	JPH::Array<Vec3> joltVertices = convertToJoltVertices(modelNode->getVertices());
-	JPH::ConvexHullShapeSettings convexSettings(joltVertices);
+	JPH::ConvexHullShapeSettings convexSettings(joltVertices, 2.0f);
 	convexShape = convexSettings.Create().Get();
 }
 

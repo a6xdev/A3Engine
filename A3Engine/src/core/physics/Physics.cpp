@@ -187,12 +187,12 @@ namespace Physics {
 	}
 
 	// Get Body Rotation in Physics and convert to glm::vec3
-	glm::vec3 getBodyRotation(JPH::BodyID body) {
+	glm::quat getBodyRotation(JPH::BodyID body) {
 		if (!body.IsInvalid()) {
 			JPH::Quat joltPos = getPhysicsBodyInterface().GetRotation(body);
-			return glm::vec3(joltPos.GetX(), joltPos.GetY(), joltPos.GetZ());
+			return glm::quat(joltPos.GetW(), joltPos.GetX(), joltPos.GetY(), joltPos.GetZ());
 		}
-		return glm::vec3(0.0f);
+		return glm::quat(1, 0, 0, 0);
 	}
 
 	bool isPaused() { return m_isPaused; }

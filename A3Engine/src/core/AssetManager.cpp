@@ -50,6 +50,8 @@ namespace AssetManager {
 		}
 	}
 
+	std::vector<Resource*> getAllResources() { return loadedResources; }
+
 	Material* getMaterialByName(std::string r_name) {
 		auto it = loadedMaterials.find(r_name);
 		if (it != loadedMaterials.end()) {

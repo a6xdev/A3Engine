@@ -58,7 +58,7 @@ struct CharacterBody : Component {
 	glm::vec3	getAngularVelocity();
 };
 
-// Do you want the body drop? use this component.
+// Do you want the body fell? use this component.
 struct RigidBody : Component {
 	JPH::BodyID	m_bodyID;
 	float		m_mass = 1.0;
@@ -79,7 +79,7 @@ struct RigidBody : Component {
 	glm::vec3	getAngularVelocity();
 };
 
-// Do you want the body drop? dont use this component.
+// Do you want the body fell? dont use this component.
 struct StaticBody : Component {
 	JPH::BodyID	m_bodyID;
 

@@ -17,6 +17,7 @@ namespace AssetManager {
 
 	void registerResource(Resource* res);
 
+	std::vector<Resource*> getAllResources();
 	Material* getMaterialByName(std::string r_name);
 	Texture* getTextureByPath(std::string r_path);
 	Model* getModelByPath(std::string r_path);

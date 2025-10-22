@@ -160,6 +160,7 @@
     <ClInclude Include="src\core\physics\JoltLayer.h" />
     <ClInclude Include="src\core\physics\Physics.h" />
     <ClInclude Include="src\core\SceneManager.h" />
+    <ClInclude Include="src\editor\EngineEditor.h" />
     <ClInclude Include="src\renderer\LineRenderer.h" />
     <ClInclude Include="src\editor\ImGuiLayer.h" />
     <ClInclude Include="src\renderer\PhysicsDebugRenderer.h" />
@@ -976,6 +977,7 @@
     <ClCompile Include="src\core\input\Input.cpp" />
     <ClCompile Include="src\core\physics\Physics.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
+    <ClCompile Include="src\editor\EngineEditor.cpp" />
     <ClCompile Include="src\editor\ImGuiLayer.cpp" />
     <ClCompile Include="src\renderer\LineRenderer.cpp" />
     <ClCompile Include="src\renderer\PhysicsDebugRenderer.cpp" />

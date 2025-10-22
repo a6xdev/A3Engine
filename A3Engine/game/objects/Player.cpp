@@ -29,6 +29,8 @@ void Player::init() {
 	m_characterBody = new CharacterBody(this);
 
     m_characterBody->m_gravity = true;
+
+	setScale(0.0f, 0.0f, 0.0f);
 }
 
 void Player::process() {

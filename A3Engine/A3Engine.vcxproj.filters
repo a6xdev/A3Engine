@@ -1896,6 +1896,9 @@
     <ClInclude Include="src\renderer\PhysicsDebugRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\editor\EngineEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="thirdparty\include\glm\detail\func_common.inl">
@@ -2918,6 +2921,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\PhysicsDebugRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\EngineEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

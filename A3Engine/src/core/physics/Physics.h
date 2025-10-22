@@ -43,7 +43,7 @@ namespace Physics {
 	glm::vec3 getBodyLinearVelocity(JPH::BodyID body);
 	glm::vec3 getBodyAngularVelocity(JPH::BodyID body);
 	glm::vec3 getBodyPosition(JPH::BodyID body);
-	glm::vec3 getBodyRotation(JPH::BodyID body);
+	glm::quat getBodyRotation(JPH::BodyID body);
 
 	bool isPaused();
 	bool isRunning();

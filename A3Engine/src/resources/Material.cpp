@@ -13,6 +13,7 @@ Material::Material(std::string r_name, std::string r_path, std::string vs_path, 
 	m_resourceID = UniqueID::getNext();
 	m_resourceName = r_name;
 	m_resourcePath = r_path;
+	m_resourceType = "Material";
 	AssetManager::registerResource(this);
 	shader = new Shader(vs_path.c_str(), fs_path.c_str());
 }
