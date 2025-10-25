@@ -40,9 +40,10 @@ struct ModelRenderer : Component {
 
 // Physics Component
 struct CharacterBody : Component {
+	JPH::Body* m_body;
 	JPH::BodyID	m_bodyID;
 	glm::vec3 m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3 m_characterPos = glm::vec3(0.0f);
+	glm::vec3 m_physicsPos = glm::vec3(0.0f);
 	bool m_gravity = false;
 
 	CharacterBody(GameObject* owner) : Component(owner) {};
@@ -60,9 +61,11 @@ struct CharacterBody : Component {
 
 // Do you want the body fell? use this component.
 struct RigidBody : Component {
+	JPH::Body*	m_body;
 	JPH::BodyID	m_bodyID;
 	float		m_mass = 1.0;
 	float		m_gravity_scale = 1.0;
+	float		m_friction = 0.2f;
 	bool		m_sleeping = false;
 	bool		m_canSleep = true;
 
@@ -72,7 +75,14 @@ struct RigidBody : Component {
 	void		process() override;
 	void		shutdown() override;
 
+	void createModelCollision();
+	void createBoxCollision(glm::vec3 size);
+
 	void setBodyPosition(glm::vec3 pos);
+	void setBodyMass(float value);
+	void setBodyGravityScale(float value);
+	void setBodyFriction(float value);
+	void setBodyCenterOfMass(glm::vec3 value);
 
 	JPH::BodyID getBodyID() const { return m_bodyID; };
 	glm::vec3	getLinearVelocity();
@@ -81,6 +91,7 @@ struct RigidBody : Component {
 
 // Do you want the body fell? dont use this component.
 struct StaticBody : Component {
+	JPH::Body*	m_body;
 	JPH::BodyID	m_bodyID;
 
 	StaticBody(GameObject* owner) : Component(owner) {};
@@ -88,6 +99,9 @@ struct StaticBody : Component {
 	void init() override;
 	void process() override;
 	void shutdown() override;
+
+	void createModelCollision();
+	void createBoxCollision(glm::vec3 size);
 
 	JPH::BodyID getBodyID() const { return m_bodyID; };
 };

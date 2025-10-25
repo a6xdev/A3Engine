@@ -13,8 +13,9 @@ void TestObject::init() {
 	m_name = "BoxObject";
 
 	m_modelRenderer = new ModelRenderer(this, "res/models/primitives/box.gltf", "testMaterial");
-	auto* bodyCollision = new CollisionShape(this, "cube_collision");
+	CollisionShape* bodyCollision = new CollisionShape(this, "cube_collision");
 	m_rigidBody = new RigidBody(this);
+	m_rigidBody->createModelCollision();
 	
 	setScale(1.0f, 1.0f, 1.0f);
 }

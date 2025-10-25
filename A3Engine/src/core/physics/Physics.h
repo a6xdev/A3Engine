@@ -29,9 +29,9 @@ namespace Physics {
 	void process();
 	void shutdown();
 
-	JPH::BodyID createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer = Layers::MOVING);
-	JPH::BodyID createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType);
-	JPH::BodyID createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType);
+	JPH::Body* createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer = Layers::MOVING);
+	JPH::Body* createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType);
+	JPH::Body* createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType);
 
 
 	void moveKinematic(JPH::BodyID body, glm::vec3 targetPos, glm::quat targetRot);

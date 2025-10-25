@@ -94,7 +94,11 @@ void Player::movementController() {
     if (glm::length(input_dir) > 0.0f)
         input_dir = glm::normalize(input_dir);
 
-    glm::vec3 worldMoveDir = input_dir.z * m_camera->getCameraFront() + input_dir.x * m_camera->getCameraRight();
+
+	glm::vec3 cameraFront = m_camera->getCameraFront();
+	cameraFront.y = 0.0f; // Need this because the movement speed get low when player look down.
+
+    glm::vec3 worldMoveDir = input_dir.z * cameraFront + input_dir.x * m_camera->getCameraRight();
 
     if (glm::length(worldMoveDir) > 0.0f)
         worldMoveDir = glm::normalize(worldMoveDir);

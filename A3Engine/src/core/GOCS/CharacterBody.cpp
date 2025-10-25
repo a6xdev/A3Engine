@@ -14,18 +14,19 @@ void CharacterBody::init() {
 
 	// Create PhysicsBody
 	JPH::Vec3 p_pos = JPH::Vec3(objectOwner->getPosition().x, objectOwner->getPosition().y, objectOwner->getPosition().z);
-	m_bodyID = Physics::createPhysicsBody(collisionComponent->getCollision()->getConvexShape(), p_pos, JPH::EMotionType::Kinematic);
+	m_body = Physics::createPhysicsBody(collisionComponent->getCollision()->getConvexShape(), p_pos, JPH::EMotionType::Kinematic);
+	m_bodyID = m_body->GetID();
 
 	// Configure whatever you want
-	m_characterPos = Physics::getBodyPosition(m_bodyID);
+	m_physicsPos = Physics::getBodyPosition(m_bodyID);
 }
 
 void CharacterBody::process() {
 	if (Physics::isRunning() && not m_bodyID.IsInvalid() && objectOwner->canMove()) {
-		m_characterPos += m_velocity * Engine::getDeltaTime();
+		m_physicsPos += m_velocity * Engine::getDeltaTime();
 		glm::quat GLMtargetRot = objectOwner->getRotationQuat();
 
-		Physics::moveKinematic(m_bodyID, m_characterPos, GLMtargetRot);
+		Physics::moveKinematic(m_bodyID, m_physicsPos, GLMtargetRot);
 
 		// Set position to see visually
 		glm::vec3 JPos = Physics::getBodyPosition(m_bodyID);

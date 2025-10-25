@@ -106,18 +106,18 @@ namespace Physics {
 	}
 
 	// Create Physics Body to Return BodyID
-	JPH::BodyID createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer) {
+	JPH::Body* createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer) {
 		JPH::BodyCreationSettings settings(shape, position, Quat::sIdentity(), motionType, layer);
 		Body* body = getPhysicsBodyInterface().CreateBody(settings);
 		getPhysicsBodyInterface().AddBody(body->GetID(), EActivation::Activate);
-		return body->GetID();
+		return body;
 	}
 
-	JPH::BodyID createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType) {
+	JPH::Body* createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType) {
 		return createPhysicsBody(JPH::BoxShapeSettings(halfExtent).Create().Get(), position, motionType);
 	}
 
-	JPH::BodyID createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType) {
+	JPH::Body* createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType) {
 		return createPhysicsBody(JPH::SphereShapeSettings(radius).Create().Get(), position, motionType);
 	}
 
