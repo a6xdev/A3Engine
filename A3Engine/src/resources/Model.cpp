@@ -175,7 +175,7 @@ glm::mat4 Model::GetLocalTransform(const tinygltf::Node& node) {
 
 		if (node.scale.size() == 3)
 			matrix = glm::scale(matrix, glm::vec3(
-				node.scale[0], node.scale[1], node.scale[2]));
+				node.scale[0] * 2.0f, node.scale[1] * 2.0f, node.scale[2] * 2.0f));
 	}
 
 	return matrix;

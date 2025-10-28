@@ -1,19 +1,23 @@
 #include "Physics.h"
 
 #include "../Engine.h"
-#include "../../renderer/PhysicsDebugRenderer.h"
+
+#include "Raycast.h"
 
 namespace Physics {
 	bool m_isPaused = false;
 	bool m_isRunning = false;
 	bool m_debugPhysics = false;
+	std::vector<A3Raycast*> m_raycasts;
 
-	PhysicsDebugRenderer* m_debugRenderer = nullptr;
+	std::vector<A3Raycast*> pendingRaycasts;
+
+	//PhysicsDebugRenderer* m_debugRenderer = nullptr;
 
 	JPH::PhysicsSystem physicsSystem;
 	JPH::JobSystem* jobSystem;
 	JPH::PhysicsSettings physicsSettings;
-	JPH::BodyManager::DrawSettings drawSettings;
+	//JPH::BodyManager::DrawSettings drawSettings;
 
 	JPH::TempAllocator* temp_allocator = nullptr;
 	BPLayerInterfaceImpl broad_phase_layer_interface;
@@ -54,13 +58,14 @@ namespace Physics {
 			object_vs_object_layer_filter
 		);
 
-		m_debugRenderer = new PhysicsDebugRenderer();
-		DebugRenderer::sInstance = m_debugRenderer;
+		//m_debugRenderer = new PhysicsDebugRenderer();
+		//DebugRenderer::sInstance = m_debugRenderer;
 
 		// This will print all contact the bodies will do.
 		//physicsSystem.SetBodyActivationListener(&body_activation_listener);
 		//physicsSystem.SetContactListener(&contact_listener);
 		physicsSystem.OptimizeBroadPhase();
+		physicsSystem.SetGravity(JPH::Vec3Arg(0.0f, -25.0f, 0.0f));
 
 		// Config PhysicsSettings
 		physicsSettings.mNumVelocitySteps = 8;
@@ -69,9 +74,9 @@ namespace Physics {
 		physicsSystem.SetPhysicsSettings(physicsSettings);
 
 		// Config DrawSettings
-		drawSettings.mDrawShape = true;
-		drawSettings.mDrawShapeWireframe = false;
-		drawSettings.mDrawVelocity = true;
+		//drawSettings.mDrawShape = true;
+		//drawSettings.mDrawShapeWireframe = false;
+		//drawSettings.mDrawVelocity = true;
 
 		m_isRunning = true;
 	}
@@ -81,7 +86,7 @@ namespace Physics {
 			physicsSystem.Update(Engine::getDeltaTime(), 1, temp_allocator, jobSystem);
 		}
 
-		m_debugRenderer->clear();
+		/*m_debugRenderer->clear();
 
 		#ifdef JPH_DEBUG_RENDERER
 		if (m_debugPhysics) {
@@ -91,18 +96,38 @@ namespace Physics {
 		}
 		#endif
 
-		m_debugRenderer->draw();
+		m_debugRenderer->draw();*/
+
+		for (auto* Raycast : m_raycasts) {
+			Raycast->process();
+		}
+
+		if (!pendingRaycasts.empty()) {
+			for (auto* Raycast : pendingRaycasts)
+				m_raycasts.push_back(Raycast);
+			pendingRaycasts.clear();
+		}
 	}
 
 	void shutdown() {
 		m_isRunning = false;
 		JPH::UnregisterTypes();
 
+		for (auto* Raycast : m_raycasts) {
+			Raycast->shutdown();
+		}
+
 		delete JPH::Factory::sInstance;
 		delete jobSystem;
 
 		jobSystem = nullptr;
 		JPH::Factory::sInstance = nullptr;
+	}
+
+	A3Raycast* createRaycast(GameObject* owner, glm::vec3 target) {
+		A3Raycast* new_ray = new A3Raycast(owner, target);
+		pendingRaycasts.push_back(new_ray);
+		return new_ray;
 	}
 
 	// Create Physics Body to Return BodyID
@@ -121,6 +146,7 @@ namespace Physics {
 		return createPhysicsBody(JPH::SphereShapeSettings(radius).Create().Get(), position, motionType);
 	}
 
+	// To move the KinematicBody
 	void moveKinematic(JPH::BodyID body, glm::vec3 targetPos, glm::quat targetRot) {
 		JPH::Vec3 jPos(targetPos.x, targetPos.y, targetPos.z);
 		JPH::Quat JRot(targetRot.x, targetRot.y, targetRot.z, targetRot.w);
@@ -154,9 +180,12 @@ namespace Physics {
 	////////////////////////////////////
 	////////////////////////////////////
 
-	// Get Body Interface
 	JPH::BodyInterface& getPhysicsBodyInterface() {
 		return physicsSystem.GetBodyInterface();
+	}
+
+	JPH::PhysicsSystem& getPhysicsSystem() {
+		return physicsSystem;
 	}
 
 	// Get Body Linear Velocity
@@ -168,7 +197,6 @@ namespace Physics {
 		return glm::vec3(0.0f);
 	}
 
-	// Get Body Angular Velocity
 	glm::vec3 getBodyAngularVelocity(JPH::BodyID body) {
 		if (!body.IsInvalid()) {
 			JPH::Vec3 joltPos = getPhysicsBodyInterface().GetAngularVelocity(body);
@@ -177,7 +205,6 @@ namespace Physics {
 		return glm::vec3(0.0f);
 	}
 
-	// Get Body Position in Physics and convert to glm::vec3
 	glm::vec3 getBodyPosition(JPH::BodyID body) {
 		if (!body.IsInvalid()) {
 			JPH::RVec3 joltPos = getPhysicsBodyInterface().GetPosition(body);
@@ -186,7 +213,6 @@ namespace Physics {
 		return glm::vec3(0.0f);
 	}
 
-	// Get Body Rotation in Physics and convert to glm::vec3
 	glm::quat getBodyRotation(JPH::BodyID body) {
 		if (!body.IsInvalid()) {
 			JPH::Quat joltPos = getPhysicsBodyInterface().GetRotation(body);

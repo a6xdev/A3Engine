@@ -104,8 +104,8 @@ void Player::movementController() {
         worldMoveDir = glm::normalize(worldMoveDir);
 
 	// Jump
-	if (Input::keyPressed(A3_KEY_SPACE)) {
-		m_characterBody->m_velocity.y += 10.0f;
+	if (Input::keyPressed(A3_KEY_SPACE) && m_characterBody->m_isOnFloor) {
+		m_characterBody->m_velocity.y += 2.0f;
 	}
 
 	// Run

@@ -2,9 +2,12 @@
 
 #include "../../scene/GameObject.h"
 
+#include "../../renderer/GizmoDebugRenderer.h"
 #include "../../resources/Collision.h"
 
-void RigidBody::init() {}
+void RigidBody::init() {
+	m_debug_renderer = new GizmoDebugRenderer();
+}
 
 void RigidBody::process() {
 	if (Physics::isRunning() && not m_bodyID.IsInvalid() && objectOwner->canMove()) {
@@ -21,6 +24,9 @@ void RigidBody::process() {
 
 void RigidBody::shutdown() {
 	//Physics::getPhysicsBodyInterface().DestroyBody(m_bodyID);
+	m_debug_renderer->clear();
+	delete m_debug_renderer;
+	m_debug_renderer = nullptr;
 }
 
 // Create the body based on ModelRenderer loaded collision

@@ -19,7 +19,7 @@
 
 void testScene::setupGameObjects() {
 	// Create Resources
-	//Model* planeModel = new Model("plane", "res/models/primitives/plane.gltf");
+	Model* planeModel = new Model("plane", "res/models/primitives/plane.gltf");
 	Model* boxModel = new Model("box", "res/models/primitives/box.gltf");
 	Model* suzanneModel02 = new Model("suzanne_02", "res/models/monkey/suzanne_02.gltf");
 
@@ -36,10 +36,10 @@ void testScene::setupGameObjects() {
 	playerObj->m_camera->setRotation(0.0f, 0.0f, 0.0f);
 
 	GameObject* planeObj = createGameObject<GameObject>();
-	//auto* modelRenderer = new ModelRenderer(planeObj, "res/models/primitives/plane.gltf", "testMaterial");
+	auto* modelRenderer = new ModelRenderer(planeObj, "res/models/primitives/plane.gltf", "testMaterial");
 	//auto* collision = new CollisionShape(planeObj, "plane_collision");
 	StaticBody* staticBody = new StaticBody(planeObj);
-	staticBody->createBoxCollision(glm::vec3(10.0f, 0.1f, 10.0f));
+	staticBody->createBoxCollision(glm::vec3(10.0f, 1.0f, 10.0f));
 
 	GameObject* objTest = createGameObject<GameObject>();
 	auto* objTestModelRenderer = new ModelRenderer(objTest, "res/models/monkey/suzanne_02.gltf", "testMaterial");

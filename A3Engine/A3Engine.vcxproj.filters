@@ -1893,10 +1893,13 @@
     <ClInclude Include="src\renderer\LineRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\PhysicsDebugRenderer.h">
+    <ClInclude Include="src\renderer\GizmoDebugRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\EngineEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\physics\Raycast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2920,10 +2923,13 @@
     <ClCompile Include="src\renderer\LineRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\PhysicsDebugRenderer.cpp">
+    <ClCompile Include="src\renderer\GizmoDebugRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\editor\EngineEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\physics\Raycast.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

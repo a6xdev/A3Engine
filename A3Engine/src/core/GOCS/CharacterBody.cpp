@@ -1,9 +1,12 @@
 #include "Component.h"
 #include "../Engine.h"
 
-#include "../../scene/GameObject.h"
+#include "../physics/Raycast.h"
 
+#include "../../scene/GameObject.h"
 #include "../../resources/Collision.h"
+
+int frameCount = 10;
 
 void CharacterBody::init() {
 	auto* collisionComponent = objectOwner->GetComponentByType<CollisionShape>();
@@ -16,6 +19,8 @@ void CharacterBody::init() {
 	JPH::Vec3 p_pos = JPH::Vec3(objectOwner->getPosition().x, objectOwner->getPosition().y, objectOwner->getPosition().z);
 	m_body = Physics::createPhysicsBody(collisionComponent->getCollision()->getConvexShape(), p_pos, JPH::EMotionType::Kinematic);
 	m_bodyID = m_body->GetID();
+
+	m_raycast = Physics::createRaycast(objectOwner, glm::vec3(0.0f, -0.1f, 0.0f));
 
 	// Configure whatever you want
 	m_physicsPos = Physics::getBodyPosition(m_bodyID);
@@ -32,10 +37,22 @@ void CharacterBody::process() {
 		glm::vec3 JPos = Physics::getBodyPosition(m_bodyID);
 		objectOwner->setPosition(JPos.x, JPos.y, JPos.z);
 
-		// TODO: isOnFloor
-		/*if (m_gravity && objectOwner->getPosition().y >= 0.0) {
-			m_velocity.y -= Physics::getPhysicsBodyInterface().GetGravityFactor(m_bodyID) * 0.0016;
-		}*/
+		if (frameCount > 0) {
+			frameCount--;
+		}
+		else {
+			if (m_raycast->isColliding() == false) {
+				m_velocity.y += Physics::getPhysicsSystem().GetGravity().GetY() * 2.0f * Engine::getDeltaTime();
+				m_isOnFloor = false;
+			}
+			else {
+				m_isOnFloor = true;
+				float distanceToGround = m_raycast->getHitDistance();
+				if (distanceToGround < 0.1f && m_velocity.y < 0) {
+					m_velocity.y = 0.0f;
+				}
+			}
+		}
 	}
 }
 

@@ -10,6 +10,7 @@ namespace Engine {
 	void shutdown();
 
 	float getDeltaTime();
+	float getPhysicsDeltaTime();
 	float getEngineFPS();
 
 	void setPauseMode(bool value);

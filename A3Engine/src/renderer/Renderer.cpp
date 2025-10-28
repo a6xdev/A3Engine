@@ -16,7 +16,7 @@ namespace Renderer {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		createWindow("A3Engine");
+		createWindow("A3Engine", 1024, 600);
 
 		glfwSetFramebufferSizeCallback(currentWindow->m_window, framebufferSizeCallback);
 

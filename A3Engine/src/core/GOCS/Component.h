@@ -10,9 +10,11 @@ class GameObject;
 class Model;
 class Material;
 class Collision;
+class GizmoDebugRenderer;
 
 struct Component {
 	GameObject*	objectOwner	= nullptr;
+	GizmoDebugRenderer* m_debug_renderer = nullptr;
 
 	Component(GameObject* owner);
 
@@ -45,6 +47,9 @@ struct CharacterBody : Component {
 	glm::vec3 m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 m_physicsPos = glm::vec3(0.0f);
 	bool m_gravity = false;
+	bool m_isOnFloor = false;
+
+	A3Raycast* m_raycast = nullptr;
 
 	CharacterBody(GameObject* owner) : Component(owner) {};
 

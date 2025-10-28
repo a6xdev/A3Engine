@@ -8,7 +8,8 @@
 
 namespace EngineEditor {
 	// Editor variables
-	bool m_activeResoucesBoard = false; // active Resources board
+	bool m_activeResoucesBoard = false;
+	bool m_activeGizmoDebugRenderer = false;
 
 	void init() {}
 
@@ -17,7 +18,8 @@ namespace EngineEditor {
 		if (ImGui::BeginMainMenuBar()) {
 			if (ImGui::BeginMenu("Debug")) {
 				if (ImGui::BeginMenu("Resouce")){
-					ImGui::Checkbox("ResourceBoard", &m_activeResoucesBoard);
+					ImGui::Checkbox("Resource Board", &m_activeResoucesBoard);
+					ImGui::Checkbox("Debug Renderer", &m_activeGizmoDebugRenderer);
 					ImGui::EndMenu();
 				}
 
