@@ -19,12 +19,20 @@
 #include <Jolt/Physics/Collision/RayCast.h>
 #include <Jolt/Physics/Collision/NarrowPhaseQuery.h>
 #include <Jolt/Physics/Collision/CastResult.h>
+#include <Jolt/Physics/Body/BodyCreationSettings.h>
+#include <Jolt/Physics/Body/BodyActivationListener.h>
+#include <Jolt/Physics/Character/Character.h>
+#include <Jolt/Physics/Character/CharacterVirtual.h>
+#include <Jolt/Renderer/DebugRenderer.h>
+
+// Collisions Shapes
 #include <Jolt/Physics/Collision/Shape/ConvexHullShape.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
 #include <Jolt/Physics/Collision/Shape/SphereShape.h>
-#include <Jolt/Physics/Body/BodyCreationSettings.h>
-#include <Jolt/Physics/Body/BodyActivationListener.h>
-#include <Jolt/Renderer/DebugRenderer.h>
+#include <Jolt/Physics/Collision/Shape/CapsuleShape.h>
+#include <Jolt/Physics/Collision/Shape/PlaneShape.h>
+#include <Jolt/Physics/Collision/Shape/MeshShape.h>
+
 
 #include "JoltLayer.h"
 
@@ -36,10 +44,13 @@ namespace Physics {
 	void process();
 	void shutdown();
 
-	A3Raycast* createRaycast(GameObject* owner, glm::vec3 target);
-	JPH::Body* createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer = Layers::MOVING);
-	JPH::Body* createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType);
-	JPH::Body* createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType);
+	A3Raycast* createRaycast(GameObject* owner, glm::vec3 offset, glm::vec3 target);
+
+	JPH::Body* createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer = Layers::MOVING);
+	JPH::Body* createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer);
+	JPH::Body* createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer);
+	JPH::Body* createCapsuleBody(const float height, const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer);
+	//JPH::Body* createPlaneBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties);
 
 	void moveKinematic(JPH::BodyID body, glm::vec3 targetPos, glm::quat targetRot);
 
@@ -48,6 +59,7 @@ namespace Physics {
 
 	JPH::BodyInterface& getPhysicsBodyInterface();
 	JPH::PhysicsSystem& getPhysicsSystem();
+	JPH::TempAllocator& getTempAllocator();
 	glm::vec3 getBodyLinearVelocity(JPH::BodyID body);
 	glm::vec3 getBodyAngularVelocity(JPH::BodyID body);
 	glm::vec3 getBodyPosition(JPH::BodyID body);

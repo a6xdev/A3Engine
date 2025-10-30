@@ -1,6 +1,7 @@
 #include "Input.h"
 
 #include "../Engine.h"
+#include "../Profile.h"
 
 namespace Input {
 	GLFWwindow* g_window;
@@ -43,6 +44,8 @@ namespace Input {
 		lastMouseY = y;
 	}
 	void process() {
+		Profile::Benchmark bench("Input", Profile::BenchmarkType::PROCESS);
+
 		// Scroll
 		scrollWheelDown = false;
 		scrollWheelUp = false;
@@ -109,6 +112,8 @@ namespace Input {
 		else
 			rightMouseButtonPressed = false;
 		rightMouseButtonDownLastFrame = rightMouseButtonDown;
+		
+		bench.stop();
 	}
 
 	bool keyDown(unsigned int keycode) { // If input is down.

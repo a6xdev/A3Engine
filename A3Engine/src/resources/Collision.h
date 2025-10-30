@@ -7,6 +7,7 @@
 #include "../core/physics/Physics.h"
 
 class ModelGLTFNode;
+class Vertex;
 
 class Collision : public Resource {
 public:
@@ -21,8 +22,9 @@ public:
 
 	void						createConvexShape(ModelGLTFNode* modelNode);
 
-	JPH::ShapeRefC				getConvexShape() { return convexShape; };
+	JPH::ShapeRefC				getConvexShape() { return m_convexShape; };
 private:
-	JPH::RefConst<JPH::Shape>	convexShape;
-
+	std::vector<glm::vec3> m_collisionVertices;
+	std::vector<uint32_t> m_collisionIndices;
+	JPH::RefConst<JPH::Shape>	m_convexShape;
 };

@@ -6,63 +6,58 @@
 #include "../../scene/GameObject.h"
 #include "../../resources/Collision.h"
 
-int frameCount = 10;
+int startFrameCount = 10;
 
 void CharacterBody::init() {
-	auto* collisionComponent = objectOwner->GetComponentByType<CollisionShape>();
-	if (collisionComponent == NULL) {
-		std::cout << objectOwner->getName() << " has no CollisionShape Component to create the BodyPhysics" << std::endl;
-		return;
-	}
+	glm::vec3 OriginPos = objectOwner->getPosition();
+	glm::quat OriginRot = objectOwner->getRotationQuat();
+	JPH::RVec3Arg JPos = JPH::Vec3(OriginPos.x, OriginPos.y, OriginPos.z);
+	JPH::QuatArg JRot = JPH::Quat(OriginRot.x, OriginRot.y, OriginRot.z, OriginRot.w);
 
-	// Create PhysicsBody
-	JPH::Vec3 p_pos = JPH::Vec3(objectOwner->getPosition().x, objectOwner->getPosition().y, objectOwner->getPosition().z);
-	m_body = Physics::createPhysicsBody(collisionComponent->getCollision()->getConvexShape(), p_pos, JPH::EMotionType::Kinematic);
-	m_bodyID = m_body->GetID();
+	JPH::CharacterVirtualSettings* settings = new JPH::CharacterVirtualSettings();
+	settings->mMaxSlopeAngle = DegreesToRadians(50.0f);
+	settings->mShape = JPH::CapsuleShapeSettings(m_height, m_radius).Create().Get();
+	settings->mMass = m_mass;
 
-	m_raycast = Physics::createRaycast(objectOwner, glm::vec3(0.0f, -0.1f, 0.0f));
+	// Create Character
+	m_character = new JPH::CharacterVirtual(settings, JPos, JRot, 0, &Physics::getPhysicsSystem());
 
-	// Configure whatever you want
-	m_physicsPos = Physics::getBodyPosition(m_bodyID);
+	//m_raycast = Physics::createRaycast(objectOwner, glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 }
 
 void CharacterBody::process() {
-	if (Physics::isRunning() && not m_bodyID.IsInvalid() && objectOwner->canMove()) {
-		m_physicsPos += m_velocity * Engine::getDeltaTime();
-		glm::quat GLMtargetRot = objectOwner->getRotationQuat();
-
-		Physics::moveKinematic(m_bodyID, m_physicsPos, GLMtargetRot);
-
-		// Set position to see visually
-		glm::vec3 JPos = Physics::getBodyPosition(m_bodyID);
-		objectOwner->setPosition(JPos.x, JPos.y, JPos.z);
-
-		if (frameCount > 0) {
-			frameCount--;
-		}
-		else {
-			if (m_raycast->isColliding() == false) {
-				m_velocity.y += Physics::getPhysicsSystem().GetGravity().GetY() * 2.0f * Engine::getDeltaTime();
-				m_isOnFloor = false;
-			}
-			else {
-				m_isOnFloor = true;
-				float distanceToGround = m_raycast->getHitDistance();
-				if (distanceToGround < 0.1f && m_velocity.y < 0) {
-					m_velocity.y = 0.0f;
-				}
-			}
+	if (m_character->GetGroundState() == JPH::CharacterVirtual::EGroundState::OnGround) {
+		JPH::Vec3 normal = m_character->GetGroundNormal();
+		std::cout << normal.GetY() << std::endl;
+		if (normal.GetY() < 1.5f) {
+			m_isOnFloor = true;
 		}
 	}
+	else {
+		m_isOnFloor = false;
+	}
+
+	m_character->SetLinearVelocity(JPH::Vec3Arg(m_velocity.x, m_velocity.y, m_velocity.z));
+
+	m_character->Update(Engine::getDeltaTime(), Physics::getPhysicsSystem().GetGravity(), Physics::getPhysicsSystem().GetDefaultBroadPhaseLayerFilter(Layers::MOVING), Physics::getPhysicsSystem().GetDefaultLayerFilter(Layers::MOVING), JPH::BodyFilter(), JPH::ShapeFilter(), Physics::getTempAllocator());
+
+	JPH::Vec3 JPos = m_character->GetPosition();
+	objectOwner->setPosition(JPos.GetX(), JPos.GetY(), JPos.GetZ());
 }
 
 void CharacterBody::shutdown() {
-	//Physics::getPhysicsBodyInterface().DestroyBody(m_bodyID);
+	/*Physics::getPhysicsBodyInterface().RemoveBody(m_bodyID);
+	Physics::getPhysicsBodyInterface().DestroyBody(m_bodyID);*/
 }
 
 void CharacterBody::setBodyPosition(glm::vec3 pos) {
-	Physics::setBodyPosition(m_bodyID, pos);
+	//m_physicsPos = pos;
+	m_character->SetPosition(JPH::Vec3Arg(pos.x, pos.y, pos.z));
 }
 
-glm::vec3 CharacterBody::getLinearVelocity() { return Physics::getBodyLinearVelocity(m_bodyID); }
-glm::vec3 CharacterBody::getAngularVelocity() { return Physics::getBodyAngularVelocity(m_bodyID); }
+bool CharacterBody::isOnFloor() const { return m_isOnFloor; }
+
+glm::vec3 CharacterBody::getLinearVelocity() { 
+	JPH::Vec3 JPos = m_character->GetLinearVelocity();
+	return glm::vec3(JPos.GetX(), JPos.GetY(), JPos.GetZ());
+}

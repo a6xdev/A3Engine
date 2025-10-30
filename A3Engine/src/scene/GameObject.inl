@@ -5,7 +5,7 @@
 
 template <typename T>
 T* GameObject::GetComponentByType() {
-	for (Component* comp : getComponents()) {
+	for (auto& comp : getComponents()) {
 		if (auto casted = dynamic_cast<T*>(comp)) {
 			return casted;
 		}

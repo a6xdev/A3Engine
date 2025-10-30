@@ -31,21 +31,24 @@ void testScene::setupGameObjects() {
 	playerObj->m_camera = createGameObject<Camera>();
 	playerObj->m_head->setParent(playerObj);
 	playerObj->m_camera->setParent(playerObj->m_head);
-	playerObj->setPosition(0.0, 2.0, 0.0);
 	playerObj->m_camera->setPosition(0.0f, 1.8f, 0.0f);
 	playerObj->m_camera->setRotation(0.0f, 0.0f, 0.0f);
 
 	GameObject* planeObj = createGameObject<GameObject>();
-	auto* modelRenderer = new ModelRenderer(planeObj, "res/models/primitives/plane.gltf", "testMaterial");
-	//auto* collision = new CollisionShape(planeObj, "plane_collision");
-	StaticBody* staticBody = new StaticBody(planeObj);
-	staticBody->createBoxCollision(glm::vec3(10.0f, 1.0f, 10.0f));
+	planeObj->m_name = "Plane";
+	auto* pObj_modelRenderer = planeObj->addComponent<ModelRenderer>("res/models/primitives/plane.gltf", "testMaterial");
+	auto* pObj_collision = planeObj->addComponent<CollisionShape>("plane_collision");
+	auto* pObj_staticBody = planeObj->addComponent<StaticBody>();
+	pObj_staticBody->createBoxCollision(1.0f, glm::vec3(10.0f, 1.0f, 10.0f));
 
-	GameObject* objTest = createGameObject<GameObject>();
-	auto* objTestModelRenderer = new ModelRenderer(objTest, "res/models/monkey/suzanne_02.gltf", "testMaterial");
-	auto* objTestCollision = new CollisionShape(objTest, "Suzanne_collision");
-	auto* objTestStaticBody = new StaticBody(objTest);
-	objTest->setPosition(5.0f, 2.0f, 0.0f);
+	// I love Suzanne
+	GameObject* SuzanneObj = createGameObject<GameObject>();
+	auto* sObj_modelRenderer = SuzanneObj->addComponent<ModelRenderer>("res/models/monkey/suzanne_02.gltf", "noPath");
+	auto* sObj_collision = SuzanneObj->addComponent<CollisionShape>("Suzanne_collision");
+	auto* sObj_staticBody = SuzanneObj->addComponent<StaticBody>();
+	//sObj_staticBody->createConvexCollision(sObj_collision, 1.0f);
+	sObj_staticBody->createBoxCollision(1.0f, glm::vec3(1.0f, 2.0f, 1.0f));
+	SuzanneObj->setPosition(5.0f, 2.0f, 0.0f);
 
 	//Camera* cameraObj = createGameObject<Camera>();
 

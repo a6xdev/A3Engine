@@ -1,6 +1,7 @@
 #include "Physics.h"
 
 #include "../Engine.h"
+#include "../Profile.h"
 
 #include "Raycast.h"
 
@@ -27,6 +28,8 @@ namespace Physics {
 	MyContactListener contact_listener;
 
 	void init() {
+		Profile::Benchmark bench("Physics", Profile::BenchmarkType::INIT);
+
 		JPH::RegisterDefaultAllocator();
 
 		temp_allocator = new TempAllocatorImpl(10 * 1024 * 1024);
@@ -79,9 +82,13 @@ namespace Physics {
 		//drawSettings.mDrawVelocity = true;
 
 		m_isRunning = true;
+
+		bench.stop();
 	}
 
 	void process() {
+		Profile::Benchmark bench("Physics", Profile::BenchmarkType::PROCESS);
+
 		if (not m_isPaused) {
 			physicsSystem.Update(Engine::getDeltaTime(), 1, temp_allocator, jobSystem);
 		}
@@ -107,9 +114,13 @@ namespace Physics {
 				m_raycasts.push_back(Raycast);
 			pendingRaycasts.clear();
 		}
+
+		bench.stop();
 	}
 
 	void shutdown() {
+		Profile::Benchmark bench("Physics", Profile::BenchmarkType::SHUTDOWN);
+
 		m_isRunning = false;
 		JPH::UnregisterTypes();
 
@@ -122,29 +133,39 @@ namespace Physics {
 
 		jobSystem = nullptr;
 		JPH::Factory::sInstance = nullptr;
+
+		bench.stop();
 	}
 
-	A3Raycast* createRaycast(GameObject* owner, glm::vec3 target) {
-		A3Raycast* new_ray = new A3Raycast(owner, target);
+	A3Raycast* createRaycast(GameObject* owner, glm::vec3 offset, glm::vec3 target) {
+		A3Raycast* new_ray = new A3Raycast(owner, offset, target);
 		pendingRaycasts.push_back(new_ray);
 		return new_ray;
 	}
 
 	// Create Physics Body to Return BodyID
-	JPH::Body* createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::ObjectLayer layer) {
+	JPH::Body* createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer) {
 		JPH::BodyCreationSettings settings(shape, position, Quat::sIdentity(), motionType, layer);
+		settings.mMassPropertiesOverride = mass_properties;
+
 		Body* body = getPhysicsBodyInterface().CreateBody(settings);
 		getPhysicsBodyInterface().AddBody(body->GetID(), EActivation::Activate);
 		return body;
 	}
 
-	JPH::Body* createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType) {
-		return createPhysicsBody(JPH::BoxShapeSettings(halfExtent).Create().Get(), position, motionType);
+	JPH::Body* createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer) {
+		return createPhysicsBody(JPH::BoxShapeSettings(halfExtent).Create().Get(), position, motionType, mass_properties);
 	}
 
-	JPH::Body* createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType) {
-		return createPhysicsBody(JPH::SphereShapeSettings(radius).Create().Get(), position, motionType);
+	JPH::Body* createSphereBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer) {
+		return createPhysicsBody(JPH::SphereShapeSettings(radius).Create().Get(), position, motionType, mass_properties);
 	}
+
+	JPH::Body* createCapsuleBody(const float height, const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer) {
+		return createPhysicsBody(JPH::CapsuleShapeSettings(height, radius).Create().Get(), position, motionType, mass_properties);
+	}
+
+	//JPH::Body* createPlaneBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties) {}
 
 	// To move the KinematicBody
 	void moveKinematic(JPH::BodyID body, glm::vec3 targetPos, glm::quat targetRot) {
@@ -186,6 +207,10 @@ namespace Physics {
 
 	JPH::PhysicsSystem& getPhysicsSystem() {
 		return physicsSystem;
+	}
+
+	JPH::TempAllocator& getTempAllocator() {
+		return *temp_allocator;
 	}
 
 	// Get Body Linear Velocity

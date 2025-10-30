@@ -4,5 +4,4 @@
 
 Component::Component(GameObject* owner) {
 	objectOwner = owner;
-	owner->addComponent(this);
 }

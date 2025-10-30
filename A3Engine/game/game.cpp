@@ -2,6 +2,7 @@
 
 #include "../src/core/AssetManager.h"
 #include "../src/core/SceneManager.h"
+#include "../src/core/Profile.h"
 
 #include "scenes/testScene.h"
 
@@ -10,8 +11,12 @@ namespace Game {
 
 
 	void initGame() {
+		Profile::Benchmark bench("Game", Profile::BenchmarkType::INIT);
+
 		currentScene->setupGameObjects();
 		SceneManager::setCurrentScene(currentScene); // Remember set the scene
+
+		bench.stop();
 	}
 
 	void processGame() {

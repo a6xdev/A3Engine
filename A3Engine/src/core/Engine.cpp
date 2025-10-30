@@ -4,6 +4,7 @@
 
 #include "../renderer/Renderer.h"
 #include "physics/Physics.h"
+#include "Profile.h"
 #include "AssetManager.h"
 #include "SceneManager.h"
 #include "input/Input.h"
@@ -26,6 +27,8 @@ namespace Engine {
 	unsigned int counter = 0;
 
 	void init() {
+		Profile::Benchmark bench("Engine", Profile::BenchmarkType::INIT);
+
 		printf("\n");
 		printf("Starting Engine");
 		printf("\n");
@@ -39,10 +42,16 @@ namespace Engine {
 		ImGuiLayer::init();
 
 		m_isRunning = true;
+		
+		bench.stop();
+
+		Profile::printInitResult();
 	}
 
 	void process() {
 		while (!glfwWindowShouldClose(Renderer::getCurrentGLFWWindow())) {
+			Profile::Benchmark bench("Engine", Profile::BenchmarkType::PROCESS);
+
 			currentTime = glfwGetTime();
 			m_deltaTime = currentTime - lastTime;
 			counter++;
@@ -68,19 +77,28 @@ namespace Engine {
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 			glfwSwapBuffers(Renderer::getCurrentGLFWWindow());
 			glfwPollEvents();
+
+			bench.stop();
 		}
 
 		shutdown();
 	}
 
 	void shutdown() {
+		Profile::Benchmark bench("Engine", Profile::BenchmarkType::SHUTDOWN);
+
 		Renderer::shutdown();
 		AssetManager::shutdown();
 		Game::shutdownGame();
 		SceneManager::shutdownScene();
 		ImGuiLayer::shutdown();
-		m_isRunning = false;
 		Physics::shutdown();
+		m_isRunning = false;
+
+		bench.stop();
+
+		Profile::printShutdownResult();
+
 		glfwTerminate();
 	}
 

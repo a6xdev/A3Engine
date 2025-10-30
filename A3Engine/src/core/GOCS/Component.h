@@ -14,7 +14,6 @@ class GizmoDebugRenderer;
 
 struct Component {
 	GameObject*	objectOwner	= nullptr;
-	GizmoDebugRenderer* m_debug_renderer = nullptr;
 
 	Component(GameObject* owner);
 
@@ -22,6 +21,7 @@ struct Component {
 	virtual void		process()				{};
 	virtual void		shutdown()				{};
 
+	virtual std::string getCompName() { return "Comp"; };
 	GameObject*			getObjectOwner() { return objectOwner; };
 };
 
@@ -40,83 +40,101 @@ struct ModelRenderer : Component {
 	void		setModel(std::string r_path);
 };
 
+// !!ALERT!!
+// The RigidBody and StaticBody need this component to work. Dont let me down.
+struct CollisionShape : Component {
+	Collision* m_collision;
+	bool		m_disabled = false;
+
+	GizmoDebugRenderer* m_debug_renderer = nullptr;
+
+	CollisionShape(GameObject* owner, std::string collision_name);
+
+	void init() override {};
+	void process() override;
+	void shutdown() override;
+
+	Collision* getCollision() const { return m_collision; };
+	std::string getCompName() override { return "CollisionShape"; };
+
+};
+
 // Physics Component
 struct CharacterBody : Component {
-	JPH::Body* m_body;
-	JPH::BodyID	m_bodyID;
+	Ref<JPH::CharacterVirtual> m_character;
 	glm::vec3 m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 m_physicsPos = glm::vec3(0.0f);
-	bool m_gravity = false;
 	bool m_isOnFloor = false;
 
-	A3Raycast* m_raycast = nullptr;
+	float m_height = 1.8f;
+	float m_radius = 0.8f;
+	float m_mass = 1.0f;
 
-	CharacterBody(GameObject* owner) : Component(owner) {};
-
-	void		init() override;
-	void		process() override;
-	void		shutdown() override;
-
-	void setBodyPosition(glm::vec3 pos);
-
-	JPH::BodyID getBodyID() const { return m_bodyID; };
-	glm::vec3	getLinearVelocity();
-	glm::vec3	getAngularVelocity();
-};
-
-// Do you want the body fell? use this component.
-struct RigidBody : Component {
-	JPH::Body*	m_body;
-	JPH::BodyID	m_bodyID;
-	float		m_mass = 1.0;
-	float		m_gravity_scale = 1.0;
-	float		m_friction = 0.2f;
-	bool		m_sleeping = false;
-	bool		m_canSleep = true;
-
-	RigidBody(GameObject* owner) : Component(owner) {};
-
-	void		init() override;
-	void		process() override;
-	void		shutdown() override;
-
-	void createModelCollision();
-	void createBoxCollision(glm::vec3 size);
-
-	void setBodyPosition(glm::vec3 pos);
-	void setBodyMass(float value);
-	void setBodyGravityScale(float value);
-	void setBodyFriction(float value);
-	void setBodyCenterOfMass(glm::vec3 value);
-
-	JPH::BodyID getBodyID() const { return m_bodyID; };
-	glm::vec3	getLinearVelocity();
-	glm::vec3	getAngularVelocity();
-};
-
-// Do you want the body fell? dont use this component.
-struct StaticBody : Component {
-	JPH::Body*	m_body;
-	JPH::BodyID	m_bodyID;
-
-	StaticBody(GameObject* owner) : Component(owner) {};
+	CharacterBody(GameObject* owner, float mass, float height, float radius) : Component(owner) {
+		m_mass = mass;
+		m_height = height;
+		m_radius = m_radius;
+	};
 
 	void init() override;
 	void process() override;
 	void shutdown() override;
 
-	void createModelCollision();
-	void createBoxCollision(glm::vec3 size);
+	void setBodyPosition(glm::vec3 pos);
 
+	bool isOnFloor() const;
+	glm::vec3	getLinearVelocity();
+};
+
+struct PhysicsBody : Component {
+	JPH::Body* m_body;
+	JPH::BodyID	m_bodyID;
+	JPH::EMotionType m_motionType = JPH::EMotionType::Static;
+	JPH::ObjectLayer m_layer = Layers::NON_MOVING;
+
+	PhysicsBody(GameObject* owner, JPH::EMotionType motionType, JPH::ObjectLayer layer) : Component(owner), m_motionType(motionType), m_layer(layer) {};
+
+	virtual void init() override {};
+	virtual void process() override {};
+	virtual void shutdown() override {};
+
+	void createConvexCollision(CollisionShape* BComponent, const float BMass);
+	void createBoxCollision(const float BMass, glm::vec3 BSize);
+	void createCapsuleCollision(const float BMass, const float CHeight, const float CRadius);
+
+	JPH::Body* getBody() const { return m_body; };
 	JPH::BodyID getBodyID() const { return m_bodyID; };
 };
 
-// The RigidBody and StaticBody need this component to work. Dont let me down.
-struct CollisionShape : Component {
-	Collision*	m_collision;
-	bool		m_disabled = false;
+// Do you want the body fell? use this component.
+struct RigidBody : PhysicsBody {
+	float		m_gravity_scale = 1.0f;
+	float		m_friction = 0.2f;
+	bool		m_sleeping = false;
+	bool		m_canSleep = true;
 
-	CollisionShape(GameObject* owner, std::string collision_name);
+	RigidBody(GameObject* owner, float gravity_scale = 1.0f) : PhysicsBody(owner, JPH::EMotionType::Dynamic, m_layer = Layers::MOVING) {
+		m_gravity_scale = gravity_scale;
+	};
 
-	Collision* getCollision() const { return m_collision; };
+	void		init() override;
+	void		process() override;
+	void		shutdown() override;
+
+	void setBodyPosition(glm::vec3 pos);
+	void setBodyGravityScale(float value);
+	void setBodyFriction(float value);
+	void setBodyCenterOfMass(glm::vec3 value);
+
+	glm::vec3	getLinearVelocity();
+	glm::vec3	getAngularVelocity();
+};
+
+// Do you want the body fell? dont use this component.
+struct StaticBody : PhysicsBody {
+	StaticBody(GameObject* owner) : PhysicsBody(owner, JPH::EMotionType::Static, m_layer = Layers::NON_MOVING) {};
+
+	void init() override;
+	void process() override;
+	void shutdown() override;
 };

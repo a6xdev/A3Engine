@@ -1,5 +1,6 @@
 #include "../../pch.h"
 #include "Renderer.h"
+#include "../core/Profile.h"
 
 #include "../scene/Camera.h"
 
@@ -11,6 +12,8 @@ namespace Renderer {
 	int m_vsync = 1;
 
 	int init() {
+		Profile::Benchmark bench("Renderer", Profile::BenchmarkType::INIT);
+
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -37,6 +40,7 @@ namespace Renderer {
 		//glDisable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		
+		bench.stop();
 		return 0;
 	}
 
@@ -49,8 +53,12 @@ namespace Renderer {
 	}
 
 	void shutdown() {
+		Profile::Benchmark bench("Renderer", Profile::BenchmarkType::SHUTDOWN);
+
 		delete currentWindow;
 		currentWindow = nullptr;
+
+		bench.stop();
 	}
 
 	void createWindow(std::string window_name, int window_width, int window_height) {

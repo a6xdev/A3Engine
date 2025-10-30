@@ -3,6 +3,8 @@
 #include "../core/physics/Physics.h"
 #include "../editor/EngineEditor.h"
 
+#include "../resources/Model.h"
+
 #include "../scene/Camera.h"
 #include "LineRenderer.h"
 
@@ -92,6 +94,43 @@ void GizmoDebugRenderer::DrawSphere(glm::vec3 center, float radius, glm::vec3 co
             glm::vec3 p2 = center + radius * glm::vec3(cos(lng1) * zr, z, sin(lng1) * zr);
 
             DrawLine(p1, p2, color);
+        }
+    }
+}
+
+void GizmoDebugRenderer::DrawConvexShape(std::vector<glm::vec3> vertices, std::vector<uint32_t> indices, glm::vec3 pos, glm::vec3 rot, glm::vec3 color) {
+    glm::mat4 transform = glm::mat4(1.0f);
+    transform = glm::translate(glm::mat4(1.0f), pos);
+    transform = glm::rotate(transform, glm::radians(rot.x), glm::vec3(1, 0, 0));
+    transform = glm::rotate(transform, glm::radians(rot.y), glm::vec3(0, 1, 0));
+    transform = glm::rotate(transform, glm::radians(rot.z), glm::vec3(0, 0, 1));
+
+    std::set<std::pair<uint32_t, uint32_t>> drawnEdges;
+
+    for (size_t i = 0; i + 2 < indices.size(); i += 3)
+    {
+        uint32_t i1 = indices[i];
+        uint32_t i2 = indices[i + 1];
+        uint32_t i3 = indices[i + 2];
+
+        // Cria pares de arestas (ordenados para evitar duplicatas)
+        std::pair<uint32_t, uint32_t> edges[3] = {
+            { std::min(i1, i2), std::max(i1, i2) },
+            { std::min(i2, i3), std::max(i2, i3) },
+            { std::min(i3, i1), std::max(i3, i1) }
+        };
+
+        // Desenha cada aresta
+        for (auto& edge : edges)
+        {
+            // Se ainda não desenhamos essa aresta, desenha agora
+            if (drawnEdges.insert(edge).second)
+            {
+                glm::vec4 v1 = transform * glm::vec4(vertices[edge.first], 1.0f);
+                glm::vec4 v2 = transform * glm::vec4(vertices[edge.second], 1.0f);
+
+                DrawLine(glm::vec3(v1), glm::vec3(v2), color);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,6 +16,8 @@ class GameObject : public EObject {
 public:
 	GameObject();
 
+	std::string					m_name = "GameObject";
+
 	void						init() override {};
 	void						process() override {};
 	void						shutdown() override {};
@@ -26,7 +29,13 @@ public:
 	template<typename T> // This function are in GameObject.inl
 	T* createGameObject();
 
-	void						addComponent(Component* comp);
+	template<typename T, typename... Args>
+	T* addComponent(Args&&... args) {
+		auto comp = std::make_unique<T>(this, std::forward<Args>(args)...);
+		T* comp_ptr = comp.get();
+		m_components.push_back(std::move(comp));
+		return comp_ptr;
+	}
 
 	void						setPosition(float x, float y, float z);
 	void						setRotation(float x, float y, float z);
@@ -40,7 +49,13 @@ public:
 	bool						canMove() const { return m_canMove; };
 	GameObject*					getParent() const { return m_parent; };
 	std::vector<GameObject*>	getChildren() const { return m_children; };
-	std::vector<Component*>		getComponents() const { return m_components; };
+	inline std::vector<Component*>		getComponents() const {
+		std::vector<Component*> result;
+		result.reserve(m_components.size());
+		for (auto& comp : m_components)
+			result.push_back(comp.get());
+		return result;
+	}
 	template <typename T>
 	T* GetComponentByType();	// This function are in GameObject.inl
 
@@ -58,10 +73,9 @@ public:
 	glm::mat4					getLocalModelMatrix() const;
 protected:
 	GameObject* m_parent = nullptr;
-	std::vector<GameObject*>	m_children;
-	std::vector<Component*>		m_components;
+	std::vector<GameObject*>					m_children;
+	std::vector<std::unique_ptr<Component>>		m_components;
 
-	std::string					m_name = "GameObject";
 	bool						m_visible = true;
 	bool						m_canMove = true;
 

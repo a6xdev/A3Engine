@@ -12,10 +12,12 @@
 void TestObject::init() {
 	m_name = "BoxObject";
 
-	m_modelRenderer = new ModelRenderer(this, "res/models/primitives/box.gltf", "testMaterial");
-	CollisionShape* bodyCollision = new CollisionShape(this, "cube_collision");
-	m_rigidBody = new RigidBody(this);
-	m_rigidBody->createModelCollision();
+	auto* m_modelRenderer = addComponent<ModelRenderer>("res/models/primitives/box.gltf", "testMaterial");
+	auto* bodyCollision = addComponent<CollisionShape>("cube_collision");
+	auto* m_rigidBody = addComponent<RigidBody>();
+
+	m_rigidBody->createConvexCollision(bodyCollision, 5.0f);
+	m_rigidBody->setBodyPosition(glm::vec3(0.0f, 50.0f, 0.0f));
 	
 	setScale(1.0f, 1.0f, 1.0f);
 }

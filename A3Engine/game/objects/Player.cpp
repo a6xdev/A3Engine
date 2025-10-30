@@ -4,6 +4,7 @@
 #include "../../src/core/input/Input.h"
 #include "../../src/scene/Scene.h"
 
+#include "../../src/renderer/GizmoDebugRenderer.h"
 #include "../../src/renderer/LineRenderer.h"
 
 // Components Include
@@ -20,17 +21,10 @@ Player::Player() : GameObject() {
 
 void Player::init() {
 	m_name = "Player";
+	m_debugRenderer = new GizmoDebugRenderer();
 
-	m_lineRenderer = new LineRenderer();
-	m_lineRenderer->addLine(glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(3.0f, 10.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-	//m_modelRenderer = new ModelRenderer(this, "res/models/primitives/box.gltf", "noPath");
-	m_collisionShape = new CollisionShape(this, "Suzanne_collision");
-	m_characterBody = new CharacterBody(this);
-
-    m_characterBody->m_gravity = true;
-
-	setScale(0.0f, 0.0f, 0.0f);
+	//m_modelRenderer = addComponent<ModelRenderer>("res/models/primitives/box.gltf", "testMaterial");
+	m_characterBody = addComponent<CharacterBody>(1.0f, 1.0f, 0.3f);
 }
 
 void Player::process() {
@@ -39,17 +33,14 @@ void Player::process() {
 
 	//std::cout << "p_pos: X: " << getPosition().x << ", Y: " << getPosition().y << ", Z: " << getPosition().z << std::endl;
 
-	m_lineRenderer->draw();
-
 	if (Input::keyPressed(A3_KEY_Q)) {
-		m_characterBody->setBodyPosition(glm::vec3(0.0f, 2.0f, 0.0f));
+		m_characterBody->setBodyPosition(glm::vec3(0.0f, 10.0f, 0.0f));
 		m_characterBody->m_velocity = glm::vec3(0.0f);
 	}
 
 	if (Input::keyPressed(A3_KEY_F)) {
 		TestObject* obj = SceneManager::getCurrentScene()->createGameObject<TestObject>();
 		SceneManager::addNewGameObject(obj);
-		obj->m_rigidBody->setBodyPosition(glm::vec3(0.0f, 50.0f, 0.0f));
 	}
 
 	if (Input::keyPressed(A3_KEY_ESCAPE)) {
@@ -62,6 +53,14 @@ void Player::process() {
 			Input::showCursor();
 		}
 	}
+
+	if (!m_characterBody->isOnFloor()) {
+		m_characterBody->m_velocity.y += Physics::getPhysicsSystem().GetGravity().GetY() * Engine::getDeltaTime();
+	}
+
+	m_debugRenderer->clear();
+	m_debugRenderer->DrawBox(glm::vec3(getGlobalPosition().x, getGlobalPosition().y, getGlobalPosition().z), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_debugRenderer->draw();
 }
 
 void Player::shutdown() {}
@@ -104,8 +103,8 @@ void Player::movementController() {
         worldMoveDir = glm::normalize(worldMoveDir);
 
 	// Jump
-	if (Input::keyPressed(A3_KEY_SPACE) && m_characterBody->m_isOnFloor) {
-		m_characterBody->m_velocity.y += 2.0f;
+	if (Input::keyDown(A3_KEY_SPACE) && m_characterBody->isOnFloor()) {
+		m_characterBody->m_velocity.y = 5.0f;
 	}
 
 	// Run

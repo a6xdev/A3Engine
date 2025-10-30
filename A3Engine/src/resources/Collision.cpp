@@ -25,9 +25,15 @@ void Collision::shutdown() {
 }
 
 void Collision::createConvexShape(ModelGLTFNode* modelNode) {
+	/*for (auto& vert : modelNode->getVertices()) {
+		m_collisionVertices.push_back(vert.pos);
+	}
+	m_collisionIndices = modelNode->getIndices();*/
+
+	// Need convert vertices to Jolt Vertices to create ConvexShape
 	JPH::Array<Vec3> joltVertices = convertToJoltVertices(modelNode->getVertices());
 	JPH::ConvexHullShapeSettings convexSettings(joltVertices, 2.0f);
-	convexShape = convexSettings.Create().Get();
+	m_convexShape = convexSettings.Create().Get();
 }
 
 JPH::Array<Vec3> convertToJoltVertices(std::vector<Vertex> vertices) {
@@ -40,3 +46,6 @@ JPH::Array<Vec3> convertToJoltVertices(std::vector<Vertex> vertices) {
 	}
 	return joltVertices;
 }
+
+//std::vector<glm::vec3>	Collision::getCollisionVertices() { return m_collisionVertices; }
+//std::vector<uint32_t> Collision::getCollisionIndices() { return m_collisionIndices; }

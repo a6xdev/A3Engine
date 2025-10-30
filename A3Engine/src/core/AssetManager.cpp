@@ -1,5 +1,6 @@
 #include "../../pch.h"
 #include "AssetManager.h"
+#include "Profile.h"
 
 #include "../resources/Resource.h"
 #include "../resources/Material.h"
@@ -17,16 +18,24 @@ namespace AssetManager {
 	bool isLoadingAssets = false;
 
 	void init() {
+		Profile::Benchmark bench("AssetManager", Profile::BenchmarkType::INIT);
+
 		std::cout << "Loading Assets" << std::endl;
 		loadAllResources();
 		isLoadingAssets = true;
 		printf("\n");
+
+		bench.stop();
 	}
 
 	void process() {}
 
 	void shutdown() {
+		Profile::Benchmark bench("AssetManager", Profile::BenchmarkType::SHUTDOWN);
+
 		unloadAllResources();
+
+		bench.stop();
 	}
 
 	void registerResource(Resource* res) {

@@ -5,22 +5,23 @@
 
 #include "../../scene/GameObject.h"
 
-A3Raycast::A3Raycast(GameObject* owner, glm::vec3 target) {
+A3Raycast::A3Raycast(GameObject* owner, glm::vec3 offset, glm::vec3 target) {
 	m_GameObjectOwner = owner;
-	m_target_dir = target;
+	m_offset = offset;
+	m_target = target;
 	m_debug_renderer = new GizmoDebugRenderer();
 }
 
 void A3Raycast::process() {
-	glm::vec3 origin = m_GameObjectOwner->getGlobalPosition();
-	float distance = glm::length(m_target_dir);
+	glm::vec3 origin = m_GameObjectOwner->getGlobalPosition() + m_offset;
+	glm::vec3 dir = glm::normalize(m_target);
 
-	if (distance <= 0.0f)
-		distance = 1.0f;
+	float maxDistance = 2.0f;
+	glm::vec3 end = origin + dir * maxDistance;
 
 	JPH::RRayCast ray(
-		JPH::Vec3(origin.x, origin.y - 1.2f, origin.z),
-		JPH::Vec3(m_target_dir.x * distance, m_target_dir.y * distance, m_target_dir.z * distance)
+		JPH::Vec3(origin.x, origin.y, origin.z),
+		JPH::Vec3(dir.x, dir.y, dir.z)
 	);
 
 	JPH::Vec3 jSPoint = ray.GetPointOnRay(0);
@@ -34,7 +35,15 @@ void A3Raycast::process() {
 	JPH::RayCastResult result;
 	bool hit = Physics::getPhysicsSystem().GetNarrowPhaseQuery().CastRay(ray, result);
 
+	m_debug_renderer->clear();
+
+	m_debug_renderer->DrawLine(origin, end, glm::vec3(0.8f, 0.0f, 1.0f));
+	m_debug_renderer->DrawBox(origin, glm::vec3(0.1f, end.y, 0.1f), glm::vec3(0.8f, 0.0f, 1.0f));
+
 	if (hit) {
+		glm::vec3 hitPoint = origin + dir * (maxDistance * result.mFraction);
+		m_debug_renderer->DrawSphere(hitPoint, 0.2f, glm::vec3(0.0f, 0.0f, 1.0f), 6);
+
 		m_collider = result.mBodyID;
 		m_fraction = result.mFraction;
 		m_isColliding = true;
@@ -45,15 +54,6 @@ void A3Raycast::process() {
 		m_isColliding = false;
 	}
 
-	m_debug_renderer->clear();
-
-	m_debug_renderer->DrawBox(origin, glm::vec3(0.5f, m_target_dir.y, 0.5f), glm::vec3(0.8f, 0.0f, 1.0f));
-
-	m_debug_renderer->DrawLine(m_startPoint, m_endPoint, glm::vec3(0.8f, 0.0f, 1.0f));
-	if (m_isColliding)
-		m_debug_renderer->DrawSphere(m_endPoint, 0.2f, glm::vec3(0.0f, 0.0f, 1.0f), 8);
-	else
-		m_debug_renderer->DrawSphere(m_endPoint, 0.2f, glm::vec3(1.0f, 0.0f, 0.0f), 8);
 	m_debug_renderer->draw();
 }
 

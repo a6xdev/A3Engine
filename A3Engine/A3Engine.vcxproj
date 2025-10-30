@@ -90,10 +90,11 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)thirdparty/libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -151,6 +152,7 @@
     <ClInclude Include="game\scenes\testScene.h" />
     <ClInclude Include="src\common\UniqueID.h" />
     <ClInclude Include="src\core\AssetManager.h" />
+    <ClInclude Include="src\core\Profile.h" />
     <ClInclude Include="src\core\Engine.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="src\core\EObject.h" />
@@ -973,11 +975,13 @@
     <ClCompile Include="src\core\GOCS\CollisionShape.cpp" />
     <ClCompile Include="src\core\GOCS\Component.cpp" />
     <ClCompile Include="src\core\GOCS\ModelRenderer.cpp" />
+    <ClCompile Include="src\core\GOCS\PhysicsBody.cpp" />
     <ClCompile Include="src\core\GOCS\RigidBody.cpp" />
     <ClCompile Include="src\core\GOCS\StaticBody.cpp" />
     <ClCompile Include="src\core\input\Input.cpp" />
     <ClCompile Include="src\core\physics\Physics.cpp" />
     <ClCompile Include="src\core\physics\Raycast.cpp" />
+    <ClCompile Include="src\core\Profile.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
     <ClCompile Include="src\editor\EngineEditor.cpp" />
     <ClCompile Include="src\editor\ImGuiLayer.cpp" />

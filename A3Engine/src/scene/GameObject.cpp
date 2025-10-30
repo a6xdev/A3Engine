@@ -12,30 +12,26 @@ GameObject::GameObject() {
 }
 
 void GameObject::initComponents() {
-	for (auto* comp : m_components) {
+	for (auto& comp : m_components) {
 		comp->init();
 	}
 }
 
 void GameObject::updateComponents() {
-	for (auto* comp : m_components) {
+	for (auto& comp : m_components) {
 		comp->process();
 	}
 }
 
 void GameObject::shutdownComponents() {
-	for (auto* comp : m_components) {
+	for (auto& comp : m_components) {
 		comp->shutdown();
-		delete comp;
 	}
 	m_components.clear();
 }
 
 void GameObject::editorProcess() {}
 
-void GameObject::addComponent(Component* comp) {
-	m_components.push_back(comp);
-}
 
 void GameObject::setPosition(float x, float y, float z) {
 	m_localPosition = glm::vec3(x, y, z);

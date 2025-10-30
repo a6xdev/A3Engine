@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Engine.h"
+#include "Profile.h"
 
 #include "../scene/GameObject.h"
 #include "../scene/Scene.h"
@@ -11,6 +12,8 @@ namespace SceneManager {
 	std::vector<GameObject*> currentSceneGameObjects;
 
 	void loadScene() {
+		Profile::Benchmark bench("SceneManager", Profile::BenchmarkType::INIT);
+
 		if (m_currentScene) {
 			for (auto* GameObject : currentSceneGameObjects) {
 				GameObject->init();
@@ -20,9 +23,13 @@ namespace SceneManager {
 		else {
 			printf("Is missing a Scene");
 		}
+
+		bench.stop();
 	}
 
 	void updateScene() {
+		Profile::Benchmark bench("SceneManager", Profile::BenchmarkType::PROCESS);
+
 		if (m_currentScene && not Engine::isPaused()) {
 			for (auto* GameObject : currentSceneGameObjects) {
 				GameObject->process();
@@ -35,15 +42,21 @@ namespace SceneManager {
 				pendingGameObjects.clear();
 			}
 		}
+
+		bench.stop();
 	}
 
 	void shutdownScene() {
+		Profile::Benchmark bench("SceneManager", Profile::BenchmarkType::SHUTDOWN);
+
 		if (m_currentScene) {
 			for (auto* GameObject : currentSceneGameObjects) {
-				GameObject->shutdown();
 				GameObject->shutdownComponents();
+				GameObject->shutdown();
 			}
 		}
+
+		bench.stop();
 	}
 
 	void updateSceneDebug() {

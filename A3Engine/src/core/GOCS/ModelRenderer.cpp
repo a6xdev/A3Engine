@@ -86,8 +86,6 @@ void ModelRenderer::shutdown() {
         glDeleteBuffers(1, &GLTFNode->VBO);
         glDeleteBuffers(1, &GLTFNode->EBO);
     }
-
-    m_model = nullptr;
 }
 
 Model* ModelRenderer::getModel() {

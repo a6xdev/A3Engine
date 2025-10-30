@@ -5,18 +5,19 @@
 // Objects:
 class Camera;
 // Components
+class LineRenderer;
+class GizmoDebugRenderer;
 struct ModelRenderer;
 struct CharacterBody;
 struct Collision;
-class LineRenderer;
 
 class Player : public GameObject {
 public:
+	GizmoDebugRenderer* m_debugRenderer = nullptr;
 	// Components and Objects
 	ModelRenderer* m_modelRenderer = nullptr;
 	CollisionShape* m_collisionShape = nullptr;
 	CharacterBody* m_characterBody = nullptr;
-	LineRenderer* m_lineRenderer = nullptr;
 
 	GameObject* m_head = nullptr;
 	Camera* m_camera = nullptr;
