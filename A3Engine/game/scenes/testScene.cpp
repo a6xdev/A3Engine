@@ -1,4 +1,3 @@
-#include "../../pch.h"
 #include "testScene.h"
 
 #include "../../src/renderer/Renderer.h"
@@ -19,7 +18,7 @@
 
 void testScene::setupGameObjects() {
 	// Create Resources
-	Model* planeModel = new Model("plane", "res/models/primitives/plane.gltf");
+	Model* mapModel = new Model("map", "res/models/map/simpleMap.gltf");
 	Model* boxModel = new Model("box", "res/models/primitives/box.gltf");
 	Model* suzanneModel02 = new Model("suzanne_02", "res/models/monkey/suzanne_02.gltf");
 
@@ -35,19 +34,19 @@ void testScene::setupGameObjects() {
 	playerObj->m_camera->setRotation(0.0f, 0.0f, 0.0f);
 
 	GameObject* planeObj = createGameObject<GameObject>();
-	planeObj->m_name = "Plane";
-	auto* pObj_modelRenderer = planeObj->addComponent<ModelRenderer>("res/models/primitives/plane.gltf", "testMaterial");
-	auto* pObj_collision = planeObj->addComponent<CollisionShape>("plane_collision");
+	planeObj->m_name = "Map";
+	auto* pObj_modelRenderer = planeObj->addComponent<ModelRenderer>("res/models/map/simpleMap.gltf", "testMaterial");
+	auto* pObj_collision = planeObj->addComponent<CollisionShape>("Plane_collision");
 	auto* pObj_staticBody = planeObj->addComponent<StaticBody>();
-	pObj_staticBody->createBoxCollision(1.0f, glm::vec3(10.0f, 1.0f, 10.0f));
+	pObj_staticBody->createTrimeshCollision(pObj_collision, 1.0f);
 
 	// I love Suzanne
 	GameObject* SuzanneObj = createGameObject<GameObject>();
 	auto* sObj_modelRenderer = SuzanneObj->addComponent<ModelRenderer>("res/models/monkey/suzanne_02.gltf", "noPath");
 	auto* sObj_collision = SuzanneObj->addComponent<CollisionShape>("Suzanne_collision");
-	auto* sObj_staticBody = SuzanneObj->addComponent<StaticBody>();
-	//sObj_staticBody->createConvexCollision(sObj_collision, 1.0f);
-	sObj_staticBody->createBoxCollision(1.0f, glm::vec3(1.0f, 2.0f, 1.0f));
+	auto* sObj_staticBody = SuzanneObj->addComponent<RigidBody>();
+	sObj_staticBody->createConvexCollision(sObj_collision, 1.0f);
+	//sObj_rigidBody->createConvexCollision(sObj_collision, 1.0f);
 	SuzanneObj->setPosition(5.0f, 2.0f, 0.0f);
 
 	//Camera* cameraObj = createGameObject<Camera>();

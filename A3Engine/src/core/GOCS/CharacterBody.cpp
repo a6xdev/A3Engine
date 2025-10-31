@@ -28,7 +28,6 @@ void CharacterBody::init() {
 void CharacterBody::process() {
 	if (m_character->GetGroundState() == JPH::CharacterVirtual::EGroundState::OnGround) {
 		JPH::Vec3 normal = m_character->GetGroundNormal();
-		std::cout << normal.GetY() << std::endl;
 		if (normal.GetY() < 1.5f) {
 			m_isOnFloor = true;
 		}

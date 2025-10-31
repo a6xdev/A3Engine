@@ -32,8 +32,7 @@
 #include <Jolt/Physics/Collision/Shape/CapsuleShape.h>
 #include <Jolt/Physics/Collision/Shape/PlaneShape.h>
 #include <Jolt/Physics/Collision/Shape/MeshShape.h>
-
-
+#include <Jolt/Physics/Collision/Shape/ScaledShape.h>
 #include "JoltLayer.h"
 
 class GameObject;

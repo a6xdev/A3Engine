@@ -2,12 +2,24 @@
 #include "../../scene/GameObject.h"
 #include "../../resources/Collision.h"
 
-void PhysicsBody::createConvexCollision(CollisionShape* BComponent, const float BMass) {
+void PhysicsBody::createTrimeshCollision(CollisionShape* BComponent, const float BMass) {
+	BComponent->createTrimeshShape();
+
 	JPH::MassProperties massProperties;
 	massProperties.mMass = BMass;
 
 	JPH::Vec3 p_pos = JPH::Vec3(objectOwner->getPosition().x, objectOwner->getPosition().y, objectOwner->getPosition().z);
-	m_body = Physics::createPhysicsBody(BComponent->getCollision()->getConvexShape(), p_pos, m_motionType, massProperties, m_layer);
+	m_body = Physics::createPhysicsBody(BComponent->getShape(), p_pos, m_motionType, massProperties, m_layer);
+}
+
+void PhysicsBody::createConvexCollision(CollisionShape* BComponent, const float BMass) {
+	BComponent->createConvexShape();
+
+	JPH::MassProperties massProperties;
+	massProperties.mMass = BMass;
+
+	JPH::Vec3 p_pos = JPH::Vec3(objectOwner->getPosition().x, objectOwner->getPosition().y, objectOwner->getPosition().z);
+	m_body = Physics::createPhysicsBody(BComponent->getShape(), p_pos, m_motionType, massProperties, m_layer);
 	m_bodyID = m_body->GetID();
 }
 

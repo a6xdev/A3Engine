@@ -778,6 +778,8 @@
     <ClInclude Include="thirdparty\include\tiny_gltf\tiny_gltf.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\models\map\simpleMap.bin" />
+    <None Include="res\models\map\simpleMap.gltf" />
     <None Include="res\models\monkey\monkey.bin" />
     <None Include="res\models\monkey\monkey.gltf" />
     <None Include="res\models\monkey\suzanne_02.bin" />
@@ -786,8 +788,6 @@
     <None Include="res\models\objCrazy\objCrazy.gltf" />
     <None Include="res\models\primitives\plane.bin" />
     <None Include="res\models\primitives\plane.gltf" />
-    <None Include="res\models\testScene\testScene.bin" />
-    <None Include="res\models\testScene\testScene.gltf" />
     <None Include="src\scene\GameObject.inl" />
     <None Include="src\shaders\fs.shader" />
     <None Include="src\shaders\fs_debug.shader" />
@@ -1160,8 +1160,6 @@
   <ItemGroup>
     <Image Include="res\models\monkey\grid_image.png" />
     <Image Include="res\models\objCrazy\Bricks102_1K-JPG_Color.jpg" />
-    <Image Include="res\models\testScene\texture_08-1.png" />
-    <Image Include="res\models\testScene\texture_08.png" />
     <Image Include="res\models\testScene\texture_09.png" />
     <Image Include="res\textures\awesomeface.png" />
     <Image Include="res\textures\container.jpg" />

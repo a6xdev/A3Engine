@@ -39,6 +39,7 @@ void Model::loadModel(std::string m_path) {
 		if (node.mesh >= 0) {
 			ModelGLTFNode* GLTFNode = new ModelGLTFNode();
 			GLTFNode->m_nodeName = node.name;
+			GLTFNode->m_collision = new Collision(node.name + "_" + "collision", GLTFNode);
 
 			// Get Collision with node.children
 			// Create Collision resource
@@ -50,7 +51,6 @@ void Model::loadModel(std::string m_path) {
 			for (int childIndex : node.children) {
 				const auto& child = model.nodes[childIndex];
 				if (child.name.find("collision") != std::string::npos) {
-					GLTFNode->m_collision = new Collision(node.name + "_" + child.name);
 				}
 			}
 
@@ -117,11 +117,6 @@ void Model::loadModel(std::string m_path) {
 					const uint32_t* buf = reinterpret_cast<const uint32_t*>(dataPtr);
 					for (size_t i = 0; i < indexCount; i++)
 						GLTFNode->indices.push_back(buf[i]);
-				}
-
-				// Set ConvexCollision
-				if (GLTFNode->m_collision) {
-					GLTFNode->m_collision->createConvexShape(GLTFNode);
 				}
 
 				// Materials

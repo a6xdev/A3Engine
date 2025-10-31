@@ -21,7 +21,6 @@ struct Component {
 	virtual void		process()				{};
 	virtual void		shutdown()				{};
 
-	virtual std::string getCompName() { return "Comp"; };
 	GameObject*			getObjectOwner() { return objectOwner; };
 };
 
@@ -44,6 +43,7 @@ struct ModelRenderer : Component {
 // The RigidBody and StaticBody need this component to work. Dont let me down.
 struct CollisionShape : Component {
 	Collision* m_collision;
+	JPH::RefConst<JPH::Shape> m_joltShape;
 	bool		m_disabled = false;
 
 	GizmoDebugRenderer* m_debug_renderer = nullptr;
@@ -53,9 +53,13 @@ struct CollisionShape : Component {
 	void init() override {};
 	void process() override;
 	void shutdown() override;
+	
+	void createConvexShape();
+	// Trimesh cannot be used in RigidBodies, just StaticBodies.
+	void createTrimeshShape();
 
 	Collision* getCollision() const { return m_collision; };
-	std::string getCompName() override { return "CollisionShape"; };
+	JPH::RefConst<JPH::Shape> getShape() const { return m_joltShape; };
 
 };
 
@@ -98,6 +102,7 @@ struct PhysicsBody : Component {
 	virtual void process() override {};
 	virtual void shutdown() override {};
 
+	void createTrimeshCollision(CollisionShape* BComponent, const float BMass);
 	void createConvexCollision(CollisionShape* BComponent, const float BMass);
 	void createBoxCollision(const float BMass, glm::vec3 BSize);
 	void createCapsuleCollision(const float BMass, const float CHeight, const float CRadius);

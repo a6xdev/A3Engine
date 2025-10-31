@@ -11,7 +11,7 @@ class Vertex;
 
 class Collision : public Resource {
 public:
-	Collision(std::string r_name);
+	Collision(std::string r_name, ModelGLTFNode* model_node);
 
 	void						process() override;
 	void						shutdown() override;
@@ -20,11 +20,7 @@ public:
 	void						unload() override;
 	void						hotReload() override;*/
 
-	void						createConvexShape(ModelGLTFNode* modelNode);
-
-	JPH::ShapeRefC				getConvexShape() { return m_convexShape; };
+	ModelGLTFNode* getModelNode() { return m_modelNode; };
 private:
-	std::vector<glm::vec3> m_collisionVertices;
-	std::vector<uint32_t> m_collisionIndices;
-	JPH::RefConst<JPH::Shape>	m_convexShape;
+	ModelGLTFNode* m_modelNode;
 };
