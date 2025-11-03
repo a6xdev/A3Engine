@@ -16,7 +16,14 @@ class GameObject : public EObject {
 public:
 	GameObject();
 
+	enum PROCESS_MODE {
+		ACTIVE,
+		DISABLED,
+	};
+
 	std::string					m_name = "GameObject";
+	bool						m_top_level = false;
+	PROCESS_MODE				m_processMode = PROCESS_MODE::ACTIVE;
 
 	void						init() override {};
 	void						process() override {};
@@ -43,6 +50,7 @@ public:
 	void						setScale(float x, float y, float z);
 	void						setVisibiliy(bool value) { m_visible = value; };
 	void						setParent(GameObject* obj);
+	void						setProcessMode(PROCESS_MODE mode) { m_processMode = mode; };
 
 	bool						isVisible() const { return m_visible; };
 	bool						hasParent() const { return m_parent; };

@@ -55,23 +55,20 @@ void GameObject::setParent(GameObject* obj) {
 }
 
 glm::vec3 GameObject::getGlobalPosition() const {
-	if (m_parent) {
+	if (m_parent && !m_top_level)
 		return m_parent->getGlobalPosition() + getPosition();
-	}
 	return getPosition();
 }
 
 glm::vec3 GameObject::getGlobalRotation() const {
-	if (m_parent) {
+	if (m_parent && !m_top_level)
 		return m_parent->getGlobalRotation() + getRotation();
-	}
 	return getRotation();
 }
 
 glm::mat4 GameObject::getGlobalModelMatrix() const {
-	if (m_parent != NULL) {
+	if (m_parent != NULL)
 		return m_parent->getGlobalModelMatrix() * getLocalModelMatrix();
-	}
 	return getLocalModelMatrix();
 }
 

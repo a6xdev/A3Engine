@@ -12,7 +12,7 @@
 void TestObject::init() {
 	m_name = "BoxObject";
 
-	auto* sObj_modelRenderer = addComponent<ModelRenderer>("res/models/monkey/suzanne_02.gltf", "noPath");
+	auto* sObj_modelRenderer = addComponent<ModelRenderer>("res/models/monkey/suzanne_02.gltf", "wallMaterial");
 	auto* sObj_collision = addComponent<CollisionShape>("Suzanne_collision");
 	auto* sObj_rigidBody = addComponent<RigidBody>();
 	sObj_rigidBody->createConvexCollision(sObj_collision, 1.0f);

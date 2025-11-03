@@ -11,6 +11,7 @@
 #include "../../src/scene/Camera.h"
 // Game
 #include "../objects/Player.h"
+#include "../objects/StalkerAI.h"
 #include "../objects/testObject.h"
 
 // Components Include
@@ -18,20 +19,26 @@
 
 void testScene::setupGameObjects() {
 	// Create Resources
-	Model* mapModel = new Model("map", "res/models/map/simpleMap.gltf");
-	Model* boxModel = new Model("box", "res/models/primitives/box.gltf");
+	Model* mapModel = new Model("map", "res/models/map/simpleMap.gltf", false);
+	Model* boxModel = new Model("box", "res/models/primitives/box.gltf", true);
 	Model* suzanneModel02 = new Model("suzanne_02", "res/models/monkey/suzanne_02.gltf");
 
 	Material* testMaterial = new Material("testMaterial", "noPath", "src/shaders/vs.shader", "src/shaders/fs.shader");
 	testMaterial->setAlbedoTexture("container_texture", "res/textures/container.jpg");
 
+	Material* material02 = new Material("wallMaterial", "noPath", "src/shaders/vs.shader", "src/shaders/fs.shader");
+	material02->setAlbedoTexture("wall", "res/textures/wall.jpg");
+
 	Player* playerObj = createGameObject<Player>();
 	playerObj->m_head = createGameObject<GameObject>();
 	playerObj->m_camera = createGameObject<Camera>();
 	playerObj->m_head->setParent(playerObj);
+	playerObj->m_head->setPosition(0.0f, 1.8f, 0.0f);
 	playerObj->m_camera->setParent(playerObj->m_head);
-	playerObj->m_camera->setPosition(0.0f, 1.8f, 0.0f);
-	playerObj->m_camera->setRotation(0.0f, 0.0f, 0.0f);
+	playerObj->m_characterBody->setBodyPosition(glm::vec3(1.5f, 1.0f, 3.0f));
+
+	StalkerAI* stalkerEnemy = createGameObject<StalkerAI>();
+	stalkerEnemy->m_characterBody->setBodyPosition(glm::vec3(0.0f, 2.0f, 0.0f));
 
 	GameObject* planeObj = createGameObject<GameObject>();
 	planeObj->m_name = "Map";
@@ -44,10 +51,9 @@ void testScene::setupGameObjects() {
 	GameObject* SuzanneObj = createGameObject<GameObject>();
 	auto* sObj_modelRenderer = SuzanneObj->addComponent<ModelRenderer>("res/models/monkey/suzanne_02.gltf", "noPath");
 	auto* sObj_collision = SuzanneObj->addComponent<CollisionShape>("Suzanne_collision");
-	auto* sObj_staticBody = SuzanneObj->addComponent<RigidBody>();
-	sObj_staticBody->createConvexCollision(sObj_collision, 1.0f);
-	//sObj_rigidBody->createConvexCollision(sObj_collision, 1.0f);
-	SuzanneObj->setPosition(5.0f, 2.0f, 0.0f);
+	auto* sObj_rigidBody = SuzanneObj->addComponent<RigidBody>();
+	sObj_rigidBody->createConvexCollision(sObj_collision, 1.0f);
+	sObj_rigidBody->setBodyPosition(glm::vec3(-2.0f, 2.0f, 0.0f));
 
 	//Camera* cameraObj = createGameObject<Camera>();
 

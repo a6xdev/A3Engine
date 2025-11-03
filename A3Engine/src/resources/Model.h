@@ -41,7 +41,8 @@ struct ModelGLTFNode {
 class Model : public Resource {
 public:
 	std::vector<ModelGLTFNode*> GLTFNodes;
-	Model(std::string r_name, std::string r_path);
+
+	Model(std::string r_name, std::string r_path, bool loadInternMaterial = true);
 
 	glm::mat4 GetLocalTransform(const tinygltf::Node& node);
 	/*void load() override;
@@ -52,6 +53,8 @@ private:
 	tinygltf::TinyGLTF loader;
 	std::string err;
 	std::string warn;
+
+	bool m_canLoadInternMaterial = false;
 
 	void loadModel(std::string m_path);
 };

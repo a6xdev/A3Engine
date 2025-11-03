@@ -8,13 +8,14 @@
 #include "../common/UniqueID.h"
 #include "../core/AssetManager.h"
 
-Model::Model(std::string r_name, std::string r_path) {
+Model::Model(std::string r_name, std::string r_path, bool loadInternMaterial) {
 	m_resourceID = UniqueID::getNext();
 	m_resourceName = r_name;
 	m_resourcePath = r_path;
 	m_resourceType = "Model";
 	AssetManager::registerResource(this);
 	this->loadModel(r_path);
+	m_canLoadInternMaterial = loadInternMaterial;
 }
 
 void Model::loadModel(std::string m_path) {
@@ -120,7 +121,7 @@ void Model::loadModel(std::string m_path) {
 				}
 
 				// Materials
-				if (primitive.material >= 0) {
+				if (primitive.material >= 0 && m_canLoadInternMaterial) {
 					GLTFNode->m_hasMaterial = true; // if this bool is true, you dont need create a external material
 
 					const tinygltf::Material& mat = model.materials[primitive.material];

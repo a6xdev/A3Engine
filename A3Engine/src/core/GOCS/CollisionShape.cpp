@@ -71,10 +71,6 @@ void CollisionShape::createTrimeshShape() {
 	JPH::Ref<JPH::MeshShapeSettings> trimeshSettings = new JPH::MeshShapeSettings(JTriangleList);
 	trimeshSettings->Sanitize();
 	m_joltShape = JPH::ScaledShapeSettings(trimeshSettings, JPH::Vec3Arg(10.0f, 10.0f, 10.0f)).Create().Get();
-
-	std::cout << "Shape bounds: "
-		<< m_joltShape->GetLocalBounds().mMin << " to "
-		<< m_joltShape->GetLocalBounds().mMax << std::endl;
 }
 
 // To get the glm::vec3 vertex positions and convert to JPH::Vec3

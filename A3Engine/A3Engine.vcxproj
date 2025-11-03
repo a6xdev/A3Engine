@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="game\game.h" />
     <ClInclude Include="game\objects\Player.h" />
+    <ClInclude Include="game\objects\StalkerAI.h" />
     <ClInclude Include="game\objects\testObject.h" />
     <ClInclude Include="game\scenes\testScene.h" />
     <ClInclude Include="src\common\UniqueID.h" />
@@ -949,6 +950,7 @@
   <ItemGroup>
     <ClCompile Include="game\game.cpp" />
     <ClCompile Include="game\objects\Player.cpp" />
+    <ClCompile Include="game\objects\StalkerAI.cpp" />
     <ClCompile Include="game\objects\testObject.cpp" />
     <ClCompile Include="game\scenes\testScene.cpp" />
     <ClCompile Include="glad.c">

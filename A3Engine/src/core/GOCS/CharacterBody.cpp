@@ -7,11 +7,12 @@
 #include "../../resources/Collision.h"
 
 int startFrameCount = 10;
+bool started = false;
+glm::vec3 origenPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 void CharacterBody::init() {
-	glm::vec3 OriginPos = objectOwner->getPosition();
 	glm::quat OriginRot = objectOwner->getRotationQuat();
-	JPH::RVec3Arg JPos = JPH::Vec3(OriginPos.x, OriginPos.y, OriginPos.z);
+	JPH::RVec3Arg JPos = JPH::Vec3(origenPos.x, origenPos.y, origenPos.z);
 	JPH::QuatArg JRot = JPH::Quat(OriginRot.x, OriginRot.y, OriginRot.z, OriginRot.w);
 
 	JPH::CharacterVirtualSettings* settings = new JPH::CharacterVirtualSettings();
@@ -21,8 +22,7 @@ void CharacterBody::init() {
 
 	// Create Character
 	m_character = new JPH::CharacterVirtual(settings, JPos, JRot, 0, &Physics::getPhysicsSystem());
-
-	//m_raycast = Physics::createRaycast(objectOwner, glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+	started = true;
 }
 
 void CharacterBody::process() {
@@ -50,8 +50,10 @@ void CharacterBody::shutdown() {
 }
 
 void CharacterBody::setBodyPosition(glm::vec3 pos) {
-	//m_physicsPos = pos;
-	m_character->SetPosition(JPH::Vec3Arg(pos.x, pos.y, pos.z));
+	if (started)
+		m_character->SetPosition(JPH::Vec3Arg(pos.x, pos.y, pos.z));
+	else
+		origenPos = pos;
 }
 
 bool CharacterBody::isOnFloor() const { return m_isOnFloor; }

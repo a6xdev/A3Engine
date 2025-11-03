@@ -142,4 +142,6 @@ struct StaticBody : PhysicsBody {
 	void init() override;
 	void process() override;
 	void shutdown() override;
+
+	void setBodyPosition(glm::vec3 pos);
 };
