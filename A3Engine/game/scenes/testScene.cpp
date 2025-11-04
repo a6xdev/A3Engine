@@ -37,8 +37,8 @@ void testScene::setupGameObjects() {
 	playerObj->m_camera->setParent(playerObj->m_head);
 	playerObj->m_characterBody->setBodyPosition(glm::vec3(1.5f, 1.0f, 3.0f));
 
-	StalkerAI* stalkerEnemy = createGameObject<StalkerAI>();
-	stalkerEnemy->m_characterBody->setBodyPosition(glm::vec3(0.0f, 2.0f, 0.0f));
+	/*StalkerAI* stalkerEnemy = createGameObject<StalkerAI>();
+	stalkerEnemy->m_characterBody->setBodyPosition(glm::vec3(5.0f, 2.0f, 0.0f));*/
 
 	GameObject* planeObj = createGameObject<GameObject>();
 	planeObj->m_name = "Map";
@@ -48,12 +48,12 @@ void testScene::setupGameObjects() {
 	pObj_staticBody->createTrimeshCollision(pObj_collision, 1.0f);
 
 	// I love Suzanne
-	GameObject* SuzanneObj = createGameObject<GameObject>();
+	/*GameObject* SuzanneObj = createGameObject<GameObject>();
 	auto* sObj_modelRenderer = SuzanneObj->addComponent<ModelRenderer>("res/models/monkey/suzanne_02.gltf", "noPath");
 	auto* sObj_collision = SuzanneObj->addComponent<CollisionShape>("Suzanne_collision");
 	auto* sObj_rigidBody = SuzanneObj->addComponent<RigidBody>();
 	sObj_rigidBody->createConvexCollision(sObj_collision, 1.0f);
-	sObj_rigidBody->setBodyPosition(glm::vec3(-2.0f, 2.0f, 0.0f));
+	sObj_rigidBody->setBodyPosition(glm::vec3(-2.0f, 2.0f, 0.0f));*/
 
 	//Camera* cameraObj = createGameObject<Camera>();
 
