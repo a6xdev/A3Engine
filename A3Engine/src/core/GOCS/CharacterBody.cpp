@@ -26,6 +26,8 @@ void CharacterBody::init() {
 }
 
 void CharacterBody::process() {
+	if (objectOwner->m_processMode == objectOwner->DISABLED) { return; }
+
 	if (m_character->GetGroundState() == JPH::CharacterVirtual::EGroundState::OnGround) {
 		JPH::Vec3 normal = m_character->GetGroundNormal();
 		if (normal.GetY() < 1.5f) {
@@ -41,7 +43,7 @@ void CharacterBody::process() {
 	m_character->Update(Engine::getDeltaTime(), Physics::getPhysicsSystem().GetGravity(), Physics::getPhysicsSystem().GetDefaultBroadPhaseLayerFilter(Layers::MOVING), Physics::getPhysicsSystem().GetDefaultLayerFilter(Layers::MOVING), JPH::BodyFilter(), JPH::ShapeFilter(), Physics::getTempAllocator());
 
 	JPH::Vec3 JPos = m_character->GetPosition();
-	objectOwner->setPosition(JPos.GetX(), JPos.GetY(), JPos.GetZ());
+	objectOwner->setPosition(glm::vec3(JPos.GetX(), JPos.GetY(), JPos.GetZ()));
 }
 
 void CharacterBody::shutdown() {
@@ -49,7 +51,7 @@ void CharacterBody::shutdown() {
 	Physics::getPhysicsBodyInterface().DestroyBody(m_bodyID);*/
 }
 
-void CharacterBody::setBodyPosition(glm::vec3 pos) {
+void CharacterBody::setBodyPosition(const glm::vec3 pos) {
 	if (started)
 		m_character->SetPosition(JPH::Vec3Arg(pos.x, pos.y, pos.z));
 	else
@@ -58,7 +60,7 @@ void CharacterBody::setBodyPosition(glm::vec3 pos) {
 
 bool CharacterBody::isOnFloor() const { return m_isOnFloor; }
 
-glm::vec3 CharacterBody::getLinearVelocity() { 
+glm::vec3 CharacterBody::getLinearVelocity() const {
 	JPH::Vec3 JPos = m_character->GetLinearVelocity();
 	return glm::vec3(JPos.GetX(), JPos.GetY(), JPos.GetZ());
 }

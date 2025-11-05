@@ -33,16 +33,16 @@ void GameObject::shutdownComponents() {
 void GameObject::editorProcess() {}
 
 
-void GameObject::setPosition(float x, float y, float z) {
-	m_localPosition = glm::vec3(x, y, z);
+void GameObject::setPosition(glm::vec3 pos) {
+	m_localPosition = pos;
 }
 
-void GameObject::setRotation(float x, float y, float z) {
-	m_localRotation = glm::vec3(x, y, z);
+void GameObject::setRotation(glm::vec3 rot) {
+	m_localRotation = rot;
 }
 
-void GameObject::setScale(float x, float y, float z) {
-	m_localScale = glm::vec3(x, y, z);
+void GameObject::setScale(glm::vec3 scale) {
+	m_localScale = scale;
 }
 
 void GameObject::setRotationDegrees(glm::vec3 rot) {

@@ -84,10 +84,10 @@ struct CharacterBody : Component {
 	void process() override;
 	void shutdown() override;
 
-	void setBodyPosition(glm::vec3 pos);
+	void setBodyPosition(const glm::vec3 pos);
 
 	bool isOnFloor() const;
-	glm::vec3	getLinearVelocity();
+	glm::vec3	getLinearVelocity() const;
 };
 
 struct PhysicsBody : Component {

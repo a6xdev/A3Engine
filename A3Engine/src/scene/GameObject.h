@@ -19,6 +19,7 @@ public:
 	enum PROCESS_MODE {
 		ACTIVE,
 		DISABLED,
+		COMPLETELY_DISABLED
 	};
 
 	std::string					m_name = "GameObject";
@@ -44,10 +45,10 @@ public:
 		return comp_ptr;
 	}
 
-	void						setPosition(float x, float y, float z);
-	void						setRotation(float x, float y, float z);
+	void						setPosition(glm::vec3 pos);
+	void						setRotation(glm::vec3 rot);
 	void						setRotationDegrees(glm::vec3 rot);
-	void						setScale(float x, float y, float z);
+	void						setScale(glm::vec3 scale);
 	void						setVisibiliy(bool value) { m_visible = value; };
 	void						setParent(GameObject* obj);
 	void						setProcessMode(PROCESS_MODE mode) { m_processMode = mode; };

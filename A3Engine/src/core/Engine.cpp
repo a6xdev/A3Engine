@@ -107,6 +107,7 @@ namespace Engine {
 	float getDeltaTime() { return 1.0f / 60.0f; };
 	float getPhysicsDeltaTime() { return m_deltaTime; };
 	float getEngineFPS() { return m_fps; };
+
 	bool isRunning() { return isRunning; };
 	bool isDebugMode() { return m_debugMode; }
 	bool isPaused() { return m_paused; }

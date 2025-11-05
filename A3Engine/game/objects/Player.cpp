@@ -16,7 +16,6 @@
 
 #include "testObject.h"
 
-
 Player::Player() : GameObject() {
 }
 
@@ -26,6 +25,9 @@ void Player::init() {
 
 	//m_modelRenderer = addComponent<ModelRenderer>("res/models/primitives/box.gltf", "testMaterial");
 	m_characterBody = addComponent<CharacterBody>(1.0f, 1.0f, 0.3f);
+
+	// Object Pooling
+	m_objectPool.prewarm(15);
 }
 
 void Player::process() {
@@ -38,8 +40,13 @@ void Player::process() {
 	}
 
 	if (Input::keyPressed(A3_KEY_F)) {
-		TestObject* obj = SceneManager::getCurrentScene()->createGameObject<TestObject>();
-		SceneManager::addNewGameObject(obj);
+		TestObject* obj = m_objectPool.acquire();
+		if (obj) {
+			obj->m_processMode = obj->ACTIVE;
+			obj->setVisibiliy(true);
+			//TestObject* obj = SceneManager::getCurrentScene()->createGameObject<TestObject>();
+			SceneManager::addNewGameObject(obj);
+		}
 	}
 
 	if (Input::keyPressed(A3_KEY_ESCAPE)) {
@@ -59,14 +66,14 @@ void Player::process() {
 
 		if (m_activeDebugCamera) {
 			m_camera->m_top_level = true;
-			m_camera->setPosition(m_head->getGlobalPosition().x, m_head->getGlobalPosition().y, m_head->getGlobalPosition().z);
-			m_camera->setRotation(look_rot.x, look_rot.y, look_rot.z);
+			m_camera->setPosition(m_head->getGlobalPosition());
+			m_camera->setRotation(look_rot);
 			debug_look_rot = look_rot;
 		}
 		else {
 			m_camera->m_top_level = false;
-			m_camera->setPosition(0.0f, 0.0f, 0.0f);
-			m_camera->setRotation(look_rot.x, look_rot.y, look_rot.z);
+			m_camera->setPosition(glm::vec3(0.0f));
+			m_camera->setRotation(glm::vec3(look_rot.x, look_rot.y, look_rot.z));
 			look_rot = debug_look_rot;
 		}
 	}
@@ -96,15 +103,15 @@ void Player::cameraController() {
 		look_rot.x -= mouseDelta.y;    // pitch (vertical)
 		look_rot.x = glm::clamp(look_rot.x, -89.0f, 89.0f);
 
-		setRotation(0.0f, look_rot.y, 0.0f);
-		m_head->setRotation(-look_rot.x, 0.0f, 0.0f);
+		setRotation(glm::vec3(0.0f, look_rot.y, 0.0f));
+		m_head->setRotation(glm::vec3(-look_rot.x, 0.0f, 0.0f));
 	}
 	else {		
 		debug_look_rot.y += mouseDelta.x;    // yaw (horizontal)
 		debug_look_rot.x -= mouseDelta.y;    // pitch (vertical)
 		debug_look_rot.x = glm::clamp(debug_look_rot.x, -89.0f, 89.0f);
 
-		m_camera->setRotation(-debug_look_rot.x, debug_look_rot.y, 0.0f);
+		m_camera->setRotation(glm::vec3(-debug_look_rot.x, debug_look_rot.y, 0.0f));
 	}
 
 	//std::cout << "Pitch: " << look_rot.x << " | Yaw: " << -look_rot.y << std::endl;
@@ -150,7 +157,7 @@ void Player::movementController() {
 		m_characterBody->m_velocity.z = glm::mix(m_characterBody->m_velocity.z, worldMoveDir.z * m_playerSpeed, 30.0f * Engine::getDeltaTime());
 	}
 	else {
-		// CAMERA DEBUG CONTROLLER
+		// FREE CAMERA TO DEBUG
 		glm::vec3 c_pos = m_camera->getPosition();
 		glm::vec3 cameraFront = m_camera->getCameraFront();
 		glm::vec3 cameraRight = m_camera->getCameraRight();
@@ -163,7 +170,7 @@ void Player::movementController() {
 
 		c_pos += worldMoveDir * speed;
 
-		m_camera->setPosition(c_pos.x, c_pos.y, c_pos.z);
+		m_camera->setPosition(c_pos);
 	}
 }
 

@@ -18,6 +18,7 @@ void TestObject::init() {
 	sObj_rigidBody->createConvexCollision(sObj_collision, 1.0f);
 	sObj_rigidBody->setBodyPosition(glm::vec3(0.0f, 50.0f, 0.0f));
 
+	//m_processMode = DISABLED;
 	/*auto* m_modelRenderer = addComponent<ModelRenderer>("res/models/primitives/box.gltf", "testMaterial");
 	auto* bodyCollision = addComponent<CollisionShape>("cube_collision");
 	auto* m_rigidBody = addComponent<RigidBody>();
@@ -27,8 +28,6 @@ void TestObject::init() {
 	*/
 }
 
-void TestObject::process() {
-}
+void TestObject::process() {}
 
-void TestObject::shutdown() {
-}
+void TestObject::shutdown() {}

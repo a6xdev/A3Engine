@@ -27,9 +27,9 @@ void CollisionShape::process() {
 
 		glm::vec4 worldCenter = objectOwner->getGlobalModelMatrix() * glm::vec4(center, 1.0f);
 
-		m_debug_renderer->clear();
+		/*m_debug_renderer->clear();
 		m_debug_renderer->DrawBox(objectOwner->getGlobalPosition(), size, glm::vec3(0.8f, 0.0f, 1.0f));
-		m_debug_renderer->draw();
+		m_debug_renderer->draw();*/
 	}
 }
 

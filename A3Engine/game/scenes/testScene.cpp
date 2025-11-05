@@ -33,7 +33,7 @@ void testScene::setupGameObjects() {
 	playerObj->m_head = createGameObject<GameObject>();
 	playerObj->m_camera = createGameObject<Camera>();
 	playerObj->m_head->setParent(playerObj);
-	playerObj->m_head->setPosition(0.0f, 1.8f, 0.0f);
+	playerObj->m_head->setPosition(glm::vec3(0.0f, 1.8f, 0.0f));
 	playerObj->m_camera->setParent(playerObj->m_head);
 	playerObj->m_characterBody->setBodyPosition(glm::vec3(1.5f, 1.0f, 3.0f));
 

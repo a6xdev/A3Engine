@@ -1,10 +1,12 @@
 #pragma once
 
 #include "../../src/scene/GameObject.h"
+#include "../../src/scene/ObjectPool.h"
 
 // Objects:
 class Camera;
 class FreeLookCamera;
+class TestObject;
 
 // Components
 class LineRenderer;
@@ -41,4 +43,6 @@ public:
 
 	void cameraController();
 	void movementController();
+private:
+	ObjectPool<TestObject> m_objectPool;
 };

@@ -32,8 +32,11 @@ namespace SceneManager {
 
 		if (m_currentScene && not Engine::isPaused()) {
 			for (auto* GameObject : currentSceneGameObjects) {
-				GameObject->process();
-				GameObject->updateComponents();
+				if (GameObject->m_processMode == GameObject->ACTIVE)
+					GameObject->process();
+				
+				if (GameObject->m_processMode != GameObject->COMPLETELY_DISABLED)
+					GameObject->updateComponents();
 			}
 
 			if (!pendingGameObjects.empty()) {
@@ -80,11 +83,6 @@ namespace SceneManager {
 		currentSceneGameObjects = scene->getGameObjects();
 	}
 
-	std::vector<GameObject*> getSceneGameObjects() {
-		return currentSceneGameObjects;
-	}
-
-	Scene* getCurrentScene() {
-		return m_currentScene;
-	}
+	std::vector<GameObject*> getSceneGameObjects() { return currentSceneGameObjects; }
+	Scene* getCurrentScene() { return m_currentScene; }
 }

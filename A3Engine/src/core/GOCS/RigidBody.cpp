@@ -9,6 +9,8 @@ void RigidBody::init() {
 }
 
 void RigidBody::process() {
+	if (objectOwner->m_processMode == objectOwner->DISABLED) { return; }
+
 	if (Physics::isRunning() && not m_bodyID.IsInvalid() && objectOwner->canMove()) {
 		glm::vec3 new_pos = Physics::getBodyPosition(m_bodyID);
 		glm::quat new_rot = Physics::getBodyRotation(m_bodyID);
@@ -16,8 +18,8 @@ void RigidBody::process() {
 		glm::vec3 euler = glm::eulerAngles(new_rot);
 		euler = glm::degrees(euler);
 
-		objectOwner->setPosition(new_pos.x, new_pos.y, new_pos.z);
-		objectOwner->setRotation(euler.x, euler.y, euler.z);
+		objectOwner->setPosition(new_pos);
+		objectOwner->setRotation(euler);
 	}
 }
 
