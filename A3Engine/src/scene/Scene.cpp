@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "../core/SceneManager.h"
+#include "../core/navigation/NavigationSystem.h"
 
 Scene::Scene(const std::string sceneName) {
 	m_sceneName = sceneName;

@@ -14,8 +14,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// To load gltf models
 #include <tiny_gltf/tiny_gltf.h>
 
+// Jolt Physics
 #include <Jolt/Jolt.h>
 #include <Jolt/RegisterTypes.h>
 #include <Jolt/Core/Factory.h>
@@ -32,5 +34,13 @@
 #include <Jolt/Renderer/DebugRenderer.h>
 #include <Jolt/Physics/Character/Character.h>
 #include <Jolt/Physics/Character/CharacterVirtual.h>
+
+// Recast + Detour
+#include "src/core/navigation/Recast/Recast.h"
+#include "src/core/navigation/Recast/RecastAlloc.h"
+#include "src/core/navigation/Recast/RecastAssert.h"
+#include "src/core/navigation/Detour/DetourNavMesh.h"
+#include "src/core/navigation/Detour/DetourNavMeshBuilder.h"
+#include "src/core/navigation/Detour/DetourNavMeshQuery.h"
 
 #endif // !PCH_HEADER

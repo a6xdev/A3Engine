@@ -39,6 +39,10 @@ namespace SceneManager {
 					GameObject->updateComponents();
 			}
 
+			if (m_currentScene->m_sceneNavSystem) {
+				m_currentScene->m_sceneNavSystem->process();
+			}
+
 			if (!pendingGameObjects.empty()) {
 				for (auto* obj : pendingGameObjects)
 					currentSceneGameObjects.push_back(obj);

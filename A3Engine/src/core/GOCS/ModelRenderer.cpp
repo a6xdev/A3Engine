@@ -88,10 +88,38 @@ void ModelRenderer::shutdown() {
     }
 }
 
-Model* ModelRenderer::getModel() {
+Model* ModelRenderer::getModel() const {
     return m_model;
 }
 
 void ModelRenderer::setModel(std::string r_path) {
     m_model = AssetManager::getModelByPath(r_path);
+}
+
+
+std::vector<glm::vec3> ModelRenderer::getAllNodesVertices() const {
+    for (auto* node : getModel()->GLTFNodes) {
+        std::vector<glm::vec3> new_verts;
+        const auto& verts = node->getVertices();
+
+        for (const auto& v : verts) {
+            glm::vec4 p_worldPos = objectOwner->getGlobalModelMatrix() * glm::vec4(v.pos, 1.0f);
+            new_verts.emplace_back(p_worldPos.x, p_worldPos.y, p_worldPos.z);
+        }
+        return new_verts;
+    }
+}
+
+std::vector<uint32_t> ModelRenderer::getAllNodesIndices() const {
+    for (auto* node : getModel()->GLTFNodes) {
+        std::vector<uint32_t> new_indices;
+        uint32_t baseIndex = static_cast<uint32_t>(new_indices.size());
+        const auto& indices = node->getIndices();
+
+        for (const auto& i : indices) {
+            new_indices.push_back(baseIndex + i);
+        }
+
+        return new_indices;
+    }
 }

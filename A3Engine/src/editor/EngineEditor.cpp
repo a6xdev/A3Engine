@@ -7,6 +7,8 @@
 
 #include "../resources/Resource.h"
 
+#include "../../game/objects/Player.h"
+
 namespace EngineEditor {
 	// Editor variables
 	bool m_activeProfile = false;
@@ -16,6 +18,8 @@ namespace EngineEditor {
 	void init() {}
 
 	void process() {
+		glm::vec3 playerPos = glm::vec3(Player::Get().getPosition().x, Player::Get().getPosition().y, Player::Get().getPosition().z);
+
 		// Menu Bar
 		if (ImGui::BeginMainMenuBar()) {
 			if (ImGui::BeginMenu("Debug")) {
@@ -31,7 +35,6 @@ namespace EngineEditor {
 
 			ImGui::Text("Delta: %s", std::to_string(Engine::getDeltaTime()).c_str());
 			ImGui::Text("FPS: %s", std::to_string(Engine::getEngineFPS()).c_str());
-
 			ImGui::EndMainMenuBar();
 		}
 

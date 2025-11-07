@@ -1,16 +1,22 @@
 #include "Component.h"
 #include "../Engine.h"
 
+#include "../../renderer/GizmoDebugRenderer.h"
 #include "../physics/Raycast.h"
 
 #include "../../scene/GameObject.h"
 #include "../../resources/Collision.h"
+
 
 int startFrameCount = 10;
 bool started = false;
 glm::vec3 origenPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 void CharacterBody::init() {
+	m_debug_renderer = new GizmoDebugRenderer();
+
+	m_navigationAgent = objectOwner->GetComponentByType<NavigationAgent>();
+
 	glm::quat OriginRot = objectOwner->getRotationQuat();
 	JPH::RVec3Arg JPos = JPH::Vec3(origenPos.x, origenPos.y, origenPos.z);
 	JPH::QuatArg JRot = JPH::Quat(OriginRot.x, OriginRot.y, OriginRot.z, OriginRot.w);
@@ -28,6 +34,7 @@ void CharacterBody::init() {
 void CharacterBody::process() {
 	if (objectOwner->m_processMode == objectOwner->DISABLED) { return; }
 
+	// Verify if the Character is on Ground.
 	if (m_character->GetGroundState() == JPH::CharacterVirtual::EGroundState::OnGround) {
 		JPH::Vec3 normal = m_character->GetGroundNormal();
 		if (normal.GetY() < 1.5f) {
@@ -39,11 +46,15 @@ void CharacterBody::process() {
 	}
 
 	m_character->SetLinearVelocity(JPH::Vec3Arg(m_velocity.x, m_velocity.y, m_velocity.z));
-
 	m_character->Update(Engine::getDeltaTime(), Physics::getPhysicsSystem().GetGravity(), Physics::getPhysicsSystem().GetDefaultBroadPhaseLayerFilter(Layers::MOVING), Physics::getPhysicsSystem().GetDefaultLayerFilter(Layers::MOVING), JPH::BodyFilter(), JPH::ShapeFilter(), Physics::getTempAllocator());
 
 	JPH::Vec3 JPos = m_character->GetPosition();
+
 	objectOwner->setPosition(glm::vec3(JPos.GetX(), JPos.GetY(), JPos.GetZ()));
+
+	m_debug_renderer->clear();
+	m_debug_renderer->DrawBox(objectOwner->getGlobalPosition(), glm::vec3(m_radius, m_height, m_radius), glm::vec3(1.0f, 0.0f, 0.0f));
+	m_debug_renderer->draw();
 }
 
 void CharacterBody::shutdown() {

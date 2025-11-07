@@ -43,6 +43,12 @@ public:
 
 	void cameraController();
 	void movementController();
+	void imguiDebug();
+
+	static Player& Get() {
+		static Player instance;
+		return instance;
+	}
 private:
 	ObjectPool<TestObject> m_objectPool;
 };

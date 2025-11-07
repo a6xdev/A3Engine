@@ -6,20 +6,25 @@
 class Camera;
 class GizmoDebugRenderer;
 class LineRenderer;
+
+class Player;
 // Components
 struct ModelRenderer;
 struct CharacterBody;
 struct Collision;
+class NavigationAgent;
 
 class StalkerAI : public GameObject {
 public:
+	Player* playerRef;
 	ModelRenderer* m_modelRenderer = nullptr;
 	CharacterBody* m_characterBody = nullptr;
+	NavigationAgent* m_navigationAgent = nullptr;
 
-	float	m_speed = 2.0f;
+	float	m_speed = 1.0f;
 	bool	m_canMove = false;
 
-	StalkerAI();
+	StalkerAI(Player* player) : playerRef(player) {};
 
 	void init() override;
 	void process() override;

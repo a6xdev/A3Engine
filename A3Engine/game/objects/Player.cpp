@@ -4,9 +4,12 @@
 #include "../../src/core/input/Input.h"
 #include "../../src/renderer/Renderer.h"
 #include "../../src/scene/Scene.h"
+#include "../../src/editor/ImGuiLayer.h"
 
 #include "../../src/renderer/GizmoDebugRenderer.h"
 #include "../../src/renderer/LineRenderer.h"
+
+#include "../game.h"
 
 // Components Include
 #include "../../src/core/GOCS/Component.h"
@@ -31,6 +34,7 @@ void Player::init() {
 }
 
 void Player::process() {
+	imguiDebug();
 	cameraController();
 	movementController();
 
@@ -82,10 +86,6 @@ void Player::process() {
 	if (!m_characterBody->isOnFloor()) {
 		m_characterBody->m_velocity.y += Physics::getPhysicsSystem().GetGravity().GetY() * Engine::getDeltaTime();
 	}
-
-	m_debugRenderer->clear();
-	m_debugRenderer->DrawBox(glm::vec3(getGlobalPosition().x, getGlobalPosition().y, getGlobalPosition().z), glm::vec3(0.4f, 1.0f, 0.4f), glm::vec3(0.0f, 1.0f, 0.0f));
-	m_debugRenderer->draw();
 }
 
 void Player::shutdown() {}
@@ -174,4 +174,10 @@ void Player::movementController() {
 	}
 }
 
-// Debug Camera
+void Player::imguiDebug() {
+	glm::vec3 pos = getGlobalPosition();
+
+	ImGui::Begin("Player Debug");
+	ImGui::Text("Pos: %.2f, %.2f, %.2f", pos.x, pos.y, pos.z);
+	ImGui::End();
+}
