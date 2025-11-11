@@ -4,12 +4,14 @@
 #include "../Profile.h"
 
 #include "Raycast.h"
+#include "TriggerVolume.h"
 
 namespace Physics {
 	bool m_isPaused = false;
 	bool m_isRunning = false;
 	bool m_debugPhysics = false;
 	std::vector<A3Raycast*> m_raycasts;
+	std::vector<TriggerVolume*> m_triggers;
 
 	std::vector<A3Raycast*> pendingRaycasts;
 
@@ -26,6 +28,7 @@ namespace Physics {
 	ObjectLayerPairFilterImpl object_vs_object_layer_filter;
 	MyBodyActivationListener body_activation_listener;
 	MyContactListener contact_listener;
+	TriggerListener trigger_listener;
 
 	void init() {
 		Profile::Benchmark bench("Physics", Profile::BenchmarkType::INIT);
@@ -65,8 +68,8 @@ namespace Physics {
 		//DebugRenderer::sInstance = m_debugRenderer;
 
 		// This will print all contact the bodies will do.
-		//physicsSystem.SetBodyActivationListener(&body_activation_listener);
-		//physicsSystem.SetContactListener(&contact_listener);
+		physicsSystem.SetBodyActivationListener(&body_activation_listener);
+		physicsSystem.SetContactListener(&trigger_listener);
 		physicsSystem.OptimizeBroadPhase();
 		physicsSystem.SetGravity(JPH::Vec3Arg(0.0f, -25.0f, 0.0f));
 
@@ -109,6 +112,10 @@ namespace Physics {
 			Raycast->process();
 		}
 
+		for (auto* trigger : m_triggers) {
+			trigger->process();
+		}
+
 		if (!pendingRaycasts.empty()) {
 			for (auto* Raycast : pendingRaycasts)
 				m_raycasts.push_back(Raycast);
@@ -141,6 +148,21 @@ namespace Physics {
 		A3Raycast* new_ray = new A3Raycast(owner, offset, target);
 		pendingRaycasts.push_back(new_ray);
 		return new_ray;
+	}
+
+	TriggerVolume* createTriggerVolume(glm::vec3 size, glm::vec3 pos) {
+		TriggerVolume* new_trigger = new TriggerVolume(size, pos);
+
+		JPH::BodyCreationSettings settings(JPH::BoxShapeSettings(JPH::Vec3(size.x, size.y, size.z)).Create().Get(), JPH::Vec3(pos.x, pos.y, pos.z), Quat::sIdentity(), JPH::EMotionType::Static, Layers::TRIGGER);
+		settings.mIsSensor = true;
+
+		new_trigger->m_body = getPhysicsBodyInterface().CreateBody(settings);
+		new_trigger->m_bodyID = new_trigger->m_body->GetID();
+		m_triggers.push_back(new_trigger);
+
+		new_trigger->m_body->SetUserData(reinterpret_cast<uint64_t>(new_trigger));
+		getPhysicsBodyInterface().AddBody(new_trigger->m_bodyID, EActivation::DontActivate);
+		return new_trigger;
 	}
 
 	// Create Physics Body to Return BodyID
@@ -211,6 +233,10 @@ namespace Physics {
 
 	JPH::TempAllocator& getTempAllocator() {
 		return *temp_allocator;
+	}
+
+	TriggerListener& getTriggerListener() {
+		return trigger_listener;
 	}
 
 	// Get Body Linear Velocity

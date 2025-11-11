@@ -38,7 +38,7 @@ void testScene::setupGameObjects() {
 	playerObj->m_head->setParent(playerObj);
 	playerObj->m_head->setPosition(glm::vec3(0.0f, 1.8f, 0.0f));
 	playerObj->m_camera->setParent(playerObj->m_head);
-	playerObj->m_characterBody->setBodyPosition(glm::vec3(1.5f, 0.0f, 3.0f));
+	playerObj->m_characterBody->setBodyPosition(glm::vec3(1.5f, 10.0f, 3.0f));
 
 	StalkerAI* stalkerEnemy = createGameObject<StalkerAI>(playerObj);
 	stalkerEnemy->m_characterBody->setBodyPosition(glm::vec3(5.0f, 0.0f, 0.0f));
@@ -49,6 +49,8 @@ void testScene::setupGameObjects() {
 	auto* pObj_collision = planeObj->addComponent<CollisionShape>("Plane_collision");
 	auto* pObj_staticBody = planeObj->addComponent<StaticBody>();
 	pObj_staticBody->createTrimeshCollision(pObj_collision, 1.0f);
+
+	auto* m_trigger = Physics::createTriggerVolume(glm::vec3(2.0f, 5.0f, 2.0f), glm::vec3(-2.0f, 1.8f, -5.0f));
 
 	// Create navMesh
 	m_sceneNavSystem->buildNavMesh(pObj_modelRenderer->getAllNodesVertices(), pObj_modelRenderer->getAllNodesIndices());

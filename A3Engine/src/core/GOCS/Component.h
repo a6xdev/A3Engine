@@ -96,7 +96,7 @@ private:
 };
 
 // Physics Component
-class CharacterBody : public Component {
+class CharacterBody : public Component, public JPH::CharacterContactListener {
 public:
 	glm::vec3 m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 
@@ -114,17 +114,37 @@ public:
 	void process() override;
 	void shutdown() override;
 
+	// Called whenever the character collides with a body.
+	void OnContactAdded(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) override;
+	// Called whenever the character persists colliding with a body.
+	void OnContactPersisted(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) override;
+	// Called whenever the character loses contact with a body.
+	void OnContactRemoved(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2) override;
+	// Called whenever the character collides with a virtual character.
+	void OnCharacterContactAdded(const CharacterVirtual* inCharacter, const CharacterVirtual* inOtherCharacter, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) override;
+	// Called whenever the character persists colliding with a virtual character.
+	void OnCharacterContactPersisted(const CharacterVirtual* inCharacter, const CharacterVirtual* inOtherCharacter, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) override;
+	// Called whenever the character loses contact with a virtual character.
+	void OnCharacterContactRemoved(const CharacterVirtual* inCharacter, const CharacterID& inOtherCharacterID, const SubShapeID& inSubShapeID2) override;
+	// Called whenever the character movement is solved and a constraint is hit. Allows the listener to override the resulting character velocity (e.g. by preventing sliding along certain surfaces).
+	void OnContactSolve(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, Vec3Arg inContactVelocity, const PhysicsMaterial* inContactMaterial, Vec3Arg inCharacterVelocity, Vec3& ioNewCharacterVelocity) override;
+
 	void setBodyPosition(const glm::vec3 pos);
 
 	bool isOnFloor() const;
 	glm::vec3 getLinearVelocity() const;
 private:
-	Ref<JPH::CharacterVirtual> m_character;
-	NavigationAgent* m_navigationAgent = nullptr;
-	glm::vec3 m_physicsPos = glm::vec3(0.0f);
-	bool m_isOnFloor = false;
+	Ref<JPH::CharacterVirtual>		m_character;
+	JPH::CharacterContactSettings	m_contactSettings;
+	NavigationAgent*				m_navigationAgent = nullptr;
+	glm::vec3						m_physicsPos = glm::vec3(0.0f);
 
-	GizmoDebugRenderer* m_debug_renderer = nullptr;
+	static inline bool	sPlayerCanPushOtherCharacters = true;
+	static inline bool	sOtherCharactersCanPushPlayer = true;
+
+	bool		m_isOnFloor = false;
+
+	GizmoDebugRenderer*	m_debug_renderer = nullptr;
 };
 
 class PhysicsBody : public Component {

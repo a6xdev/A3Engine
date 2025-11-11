@@ -30,13 +30,13 @@ bool NavigationSystem::buildNavMesh(const std::vector<glm::vec3> v_vertices, std
     cfg.cs = 0.3f;
     cfg.ch = 0.5f;
     cfg.walkableHeight = 2.0f;
-    cfg.walkableRadius = 0.6;
+    cfg.walkableRadius = 0.6f;
     cfg.walkableClimb = 0.9;
     cfg.walkableSlopeAngle = 45.0f;
     cfg.maxEdgeLen = 12.0f;
     cfg.maxSimplificationError = 1.3f;
-    cfg.minRegionArea = (int)rcSqr(8);
-    cfg.mergeRegionArea = (int)rcSqr(20);
+    cfg.minRegionArea = 8;
+    cfg.mergeRegionArea = 20;
     cfg.maxVertsPerPoly = 6;
     cfg.detailSampleDist = 6.0f;
     cfg.detailSampleMaxError = 1.0f;

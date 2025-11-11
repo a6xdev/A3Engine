@@ -16,9 +16,6 @@
 #include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Physics/PhysicsSettings.h>
 #include <Jolt/Physics/PhysicsSystem.h>
-#include <Jolt/Physics/Collision/RayCast.h>
-#include <Jolt/Physics/Collision/NarrowPhaseQuery.h>
-#include <Jolt/Physics/Collision/CastResult.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 #include <Jolt/Physics/Character/Character.h>
@@ -26,6 +23,10 @@
 #include <Jolt/Renderer/DebugRenderer.h>
 
 // Collisions Shapes
+#include <Jolt/Physics/Collision/RayCast.h>
+#include <Jolt/Physics/Collision/NarrowPhaseQuery.h>
+#include <Jolt/Physics/Collision/CastResult.h>
+#include <Jolt/Physics/Collision/CollideShape.h>
 #include <Jolt/Physics/Collision/Shape/ConvexHullShape.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
 #include <Jolt/Physics/Collision/Shape/SphereShape.h>
@@ -37,6 +38,7 @@
 
 class GameObject;
 class A3Raycast;
+class TriggerVolume;
 
 namespace Physics {
 	void init();
@@ -44,6 +46,7 @@ namespace Physics {
 	void shutdown();
 
 	A3Raycast* createRaycast(GameObject* owner, glm::vec3 offset, glm::vec3 target);
+	TriggerVolume* createTriggerVolume(glm::vec3 size, glm::vec3 pos);
 
 	JPH::Body* createPhysicsBody(const JPH::ShapeRefC& shape, const JPH::Vec3& position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer = Layers::MOVING);
 	JPH::Body* createBoxBody(const JPH::Vec3& halfExtent, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer);
@@ -51,14 +54,19 @@ namespace Physics {
 	JPH::Body* createCapsuleBody(const float height, const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties, JPH::ObjectLayer layer);
 	//JPH::Body* createPlaneBody(const float radius, const JPH::Vec3 position, JPH::EMotionType motionType, JPH::MassProperties mass_properties);
 
+
 	void moveKinematic(JPH::BodyID body, glm::vec3 targetPos, glm::quat targetRot);
 
 	void setBodyPosition(JPH::BodyID body, glm::vec3 pos);
 	void setBodyLinearVelocity(JPH::BodyID body, glm::vec3 velocity);
 
 	JPH::BodyInterface& getPhysicsBodyInterface();
+	JPH::BodyLockInterface getPhysicsBodyLockInterface();
 	JPH::PhysicsSystem& getPhysicsSystem();
 	JPH::TempAllocator& getTempAllocator();
+
+	TriggerListener& getTriggerListener();
+
 	glm::vec3 getBodyLinearVelocity(JPH::BodyID body);
 	glm::vec3 getBodyAngularVelocity(JPH::BodyID body);
 	glm::vec3 getBodyPosition(JPH::BodyID body);

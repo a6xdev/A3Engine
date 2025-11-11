@@ -229,6 +229,7 @@
     <ClInclude Include="src\scene\GameObject.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\Timer.h" />
+    <ClInclude Include="src\core\physics\TriggerVolume.h" />
     <ClInclude Include="thirdparty\include\glad\glad.h" />
     <ClInclude Include="thirdparty\include\GLFW\glfw3.h" />
     <ClInclude Include="thirdparty\include\GLFW\glfw3native.h" />
@@ -1083,6 +1084,7 @@
     <ClCompile Include="src\scene\GameObject.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\Timer.cpp" />
+    <ClCompile Include="src\core\physics\TriggerVolume.cpp" />
     <ClCompile Include="thirdparty\include\glm\detail\glm.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

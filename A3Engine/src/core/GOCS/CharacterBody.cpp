@@ -3,10 +3,10 @@
 
 #include "../../renderer/GizmoDebugRenderer.h"
 #include "../physics/Raycast.h"
+#include "../physics/TriggerVolume.h"
 
 #include "../../scene/GameObject.h"
 #include "../../resources/Collision.h"
-
 
 int startFrameCount = 10;
 bool started = false;
@@ -28,6 +28,7 @@ void CharacterBody::init() {
 
 	// Create Character
 	m_character = new JPH::CharacterVirtual(settings, JPos, JRot, 0, &Physics::getPhysicsSystem());
+	m_character->SetListener(this);
 	started = true;
 }
 
@@ -68,6 +69,44 @@ void CharacterBody::setBodyPosition(const glm::vec3 pos) {
 	else
 		origenPos = pos;
 }
+
+// This section is only to verify if this fuck is colliding with some type of body or character
+
+void CharacterBody::OnContactAdded(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) {
+	if (inCharacter == m_character) {
+		JPH::BodyLockRead lock(Physics::getPhysicsSystem().GetBodyLockInterface(), inBodyID2);
+		if (lock.Succeeded()) {
+			const JPH::Body& body = lock.GetBody();
+			if (body.IsSensor()) {
+				TriggerVolume* trigger = reinterpret_cast<TriggerVolume*>(body.GetUserData());
+				if (trigger) {
+					trigger->onCharacterTriggeredEnter(this);
+				}
+			}
+		}
+	}
+}
+
+void CharacterBody::OnContactPersisted(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) {}
+void CharacterBody::OnContactRemoved(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2) {
+	if (inCharacter == m_character) {
+		JPH::BodyLockRead lock(Physics::getPhysicsSystem().GetBodyLockInterface(), inBodyID2);
+		if (lock.Succeeded()) {
+			const JPH::Body& body = lock.GetBody();
+			if (body.IsSensor()) {
+				TriggerVolume* trigger = reinterpret_cast<TriggerVolume*>(body.GetUserData());
+				if (trigger) {
+					trigger->onCharacterTriggeredExited(this);
+				}
+			}
+		}
+	}
+}
+void CharacterBody::OnCharacterContactAdded(const CharacterVirtual* inCharacter, const CharacterVirtual* inOtherCharacter, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) {}
+void CharacterBody::OnCharacterContactPersisted(const CharacterVirtual* inCharacter, const CharacterVirtual* inOtherCharacter, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, CharacterContactSettings& ioSettings) {}
+void CharacterBody::OnCharacterContactRemoved(const CharacterVirtual* inCharacter, const CharacterID& inOtherCharacterID, const SubShapeID& inSubShapeID2) {}
+void CharacterBody::OnContactSolve(const CharacterVirtual* inCharacter, const BodyID& inBodyID2, const SubShapeID& inSubShapeID2, RVec3Arg inContactPosition, Vec3Arg inContactNormal, Vec3Arg inContactVelocity, const PhysicsMaterial* inContactMaterial, Vec3Arg inCharacterVelocity, Vec3& ioNewCharacterVelocity) {}
+
 
 bool CharacterBody::isOnFloor() const { return m_isOnFloor; }
 

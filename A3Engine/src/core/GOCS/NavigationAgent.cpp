@@ -75,9 +75,9 @@ bool NavigationAgent::setTargetPosition(glm::vec3 target) {
 	m_navQuery->findNearestPoly(glm::value_ptr(target), extents, &filter, &endRef, nearestEnd);
 
 	if (!startRef || !endRef) {
-		std::cout << "StartRef: " << startRef << std::endl;
+		/*std::cout << "StartRef: " << startRef << std::endl;
 		std::cout << "EndRef: " << endRef << std::endl;
-		std::cout << "NavigationAgent returned (startRef or endRef) 'false'" << std::endl;
+		std::cout << "NavigationAgent returned (startRef or endRef) 'false'" << std::endl;*/
 		return false;
 	}
 

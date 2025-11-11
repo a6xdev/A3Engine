@@ -2061,6 +2061,9 @@
     <ClInclude Include="src\core\navigation\Recast\RecastAssert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\physics\TriggerVolume.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="thirdparty\include\glm\detail\func_common.inl">
@@ -3197,6 +3200,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\GOCS\NavigationAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\physics\TriggerVolume.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
