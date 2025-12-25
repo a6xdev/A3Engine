@@ -1,0 +1,27 @@
+{
+  "name": "a3-engine",
+  "version-string": "0.1.0",
+  "dependencies": [
+    "glad",
+    "glfw3",
+    "glm",
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental",
+        "glfw-binding",
+        "opengl3-binding"
+      ]
+    },
+    "imgui-node-editor",
+    "imguizmo",
+    {
+      "name": "joltphysics",
+      "features": [
+        "debugrenderer",
+        "profiler"
+      ]
+    },
+    "nlohmann-json"
+  ]
+}
