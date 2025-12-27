@@ -1,21 +1,36 @@
+#include <filesystem>
+#include <iostream>
+
 #include <engine/Core.hpp>
 #include <engine/engine.hpp>
 #include <engine/Renderer.hpp>
 #include <engine/ImGuiLayer.hpp>
+#include <engine/input/Input.hpp>
+#include <engine/assets/asset.hpp>
 
-#include "Editor.hpp"
+#include "IconsLibrary.hpp"
+#include "EditorPanel.hpp"
+#include "EditorContext.hpp"
+
+IconRect currentRect;
 
 int main() {
     Renderer::Init();
+    Input::Init();
     ImGuiLayer::Init();
+    IconsLibrary::LoadIconAtlas();
+
     ImGui::SetCurrentContext(ImGuiLayer::GetContext());
 
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
+    Texture2D* texture_test = new Texture2D(1, "assets/icons.png");
+
     while (!glfwWindowShouldClose(Renderer::GetCurrentA3Window()->GetCurrentGLWindow())) {
         Renderer::BeginFrame();
+        Input::Update();
         ImGuiLayer::BeginFrame();
 
         static bool opt_fullscreen = true;
@@ -38,30 +53,30 @@ int main() {
         ImGuiID dockspace_id = ImGui::GetID("A3_DockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        // Menu Bar
-        if (ImGui::BeginMenuBar()) {
-            if (ImGui::BeginMenu("File")) {
-                if (ImGui::MenuItem("Exit")) {}
-                ImGui::EndMenu();
-            }
+        ImGui::ShowDemoWindow();
+        EditorContext::Update();
 
-            if (ImGui::BeginMenu("Edit")) {
-                if (ImGui::MenuItem("Exit")) {}
-                ImGui::EndMenu();
-            }
+        IconRect icon = currentRect;
 
-            ImGui::EndMenuBar();
+        ImGui::Begin("Teste");
+
+        if (ImGui::Button("build")) { currentRect = IconsLibrary::GetIcon("build"); }
+        if (ImGui::Button("redo")) { currentRect = IconsLibrary::GetIcon("redo"); }
+        if (ImGui::Button("controller")) { currentRect = IconsLibrary::GetIcon("controller"); }
+        if (ImGui::Button("folder")) { currentRect = IconsLibrary::GetIcon("folder"); }
+        if (ImGui::Button("save")) { currentRect = IconsLibrary::GetIcon("save"); }
+        if (ImGui::Button("undo")) { currentRect = IconsLibrary::GetIcon("undo"); }
+
+        if (ImGui::ImageButton("Teste", IconsLibrary::GetAtlasTextureID(), ImVec2(64, 64), icon.uv0, icon.uv1)) {
+            std::cout << "AAAAA AFOI" << std::endl;
         }
         ImGui::End();
 
+        if (Input::RightMouseDown()) {
+            std::cout << "Oi" << std::endl;
+        }
 
-        ImGui::ShowDemoWindow();
-        Editor::ShowToolbar();
-
-        ImGui::Begin("OPa");
-        ImGui::Text("Oi");
         ImGui::End();
-
         ImGuiLayer::EndFrame();
         Renderer::EndFrame();
     }

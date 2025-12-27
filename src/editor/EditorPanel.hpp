@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Editor {
+namespace EditorPanel {
 	void ShowTabs();
 	void ShowToolbar();
 }

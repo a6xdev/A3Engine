@@ -1,3 +1,4 @@
+# thanks aplok (Twitter/X: @GabrielAplok)
 cmake_minimum_required(VERSION 3.28)
 
 project(a3-engine
@@ -40,11 +41,23 @@ add_library(a3-lib SHARED
     "src/engine/Engine.cpp"
     "src/engine/Renderer.cpp"
     "src/engine/ImGuiLayer.cpp"
+    "src/engine/input/Input.cpp"
+
+    # Assets
+    "src/engine/assets/asset.cpp"
+    "src/engine/assets/Texture2D.cpp"
+
+    # External
+    "src/engine/external/stb/stb_image.cpp"
+    "src/engine/external/stb/stb_image_write.cpp"
 )
 
 target_compile_definitions(a3-lib PRIVATE A3_EXPORT)
 
-target_include_directories(a3-lib PUBLIC ${A3_INCLUDE_DIRS})
+target_include_directories(a3-lib 
+    PUBLIC ${A3_INCLUDE_DIRS}
+    PRIVATE "src/engine/external"
+)
 target_compile_definitions(a3-lib PRIVATE GLM_ENABLE_EXPERIMENTAL)
 target_compile_features(a3-lib PUBLIC cxx_std_23)
 
@@ -75,18 +88,71 @@ function(copy_shaders TARGET_NAME)
     )
 endfunction()
 
+# ------------------------------
 # ---- A3 Editor Executable ----
+# ------------------------------
+
 add_executable(a3-editor 
-    "src/editor/Editor.cpp"
     "src/editor/Main.cpp"
+    "src/editor/EditorPanel.cpp"
+    "src/editor/EditorContext.cpp"
+    "src/editor/panels/AssetBrowser.cpp"
+ "src/editor/IconsLibrary.cpp")
+
+set_target_properties(a3-editor PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/editor"
+)
+
+add_custom_command(TARGET a3-editor POST_BUILD
+# Copy a3-ib
+    COMMAND ${CMAKE_COMMAND} -E copy 
+        "$<TARGET_FILE:a3-lib>" 
+        "$<TARGET_FILE_DIR:a3-editor>"
+
+# Make Assets Dir
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        "$<TARGET_FILE_DIR:a3-editor>/assets"
+
+# Copy assets to build dir
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/editor/assets"
+        "$<TARGET_FILE_DIR:a3-editor>/assets"
 )
 
 target_link_libraries(a3-editor PRIVATE a3-lib)
 target_include_directories(a3-editor PRIVATE ${A3_INCLUDE_DIRS} )
 copy_shaders(a3-editor)
 
+target_compile_definitions(a3-editor PRIVATE 
+    A3_PROJECT_ROOT="${A3_INCLUDE_DIRS}"
+)
+
+# ----------------------------
 # ---- A3 Game Executable ----
-add_executable(a3-game "src/runtime/Game.cpp")
+# ----------------------------
+add_executable(a3-game 
+    "src/runtime/Game.cpp"
+)
+
+set_target_properties(a3-game PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/game"
+)
+
+add_custom_command(TARGET a3-game POST_BUILD
+# Copy a3-ib
+    COMMAND ${CMAKE_COMMAND} -E copy
+        "$<TARGET_FILE:a3-lib>" 
+        "$<TARGET_FILE_DIR:a3-game>"
+
+# Make Assets Dir
+    COMMAND ${CMAKE_COMMAND} -E make_directory 
+        "$<TARGET_FILE_DIR:a3-editor>/assets"
+
+# Copy assets to build dir
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/editor/assets"
+        "$<TARGET_FILE_DIR:a3-editor>/assets"
+)
 
 target_link_libraries(a3-game PRIVATE a3-lib)
 target_include_directories(a3-game PRIVATE ${A3_INCLUDE_DIRS} )

@@ -1,7 +1,15 @@
-#include "Editor.hpp"
+#include "EditorPanel.hpp"
 #include <engine/ImGuiLayer.hpp>
 
-namespace Editor {
+namespace EditorPanel {
+
+    // ASSET BROWSER
+    void AssetBrowser() {
+
+    }
+
+
+
     void ShowTabs() {
     }
 
