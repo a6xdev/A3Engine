@@ -15,7 +15,7 @@
 IconRect currentRect;
 
 int main() {
-    Renderer::Init();
+    Renderer::Init("A3Engine Editor");
     Input::Init();
     ImGuiLayer::Init();
     IconsLibrary::LoadIconAtlas();
@@ -56,25 +56,9 @@ int main() {
         ImGui::ShowDemoWindow();
         EditorContext::Update();
 
-        IconRect icon = currentRect;
-
-        ImGui::Begin("Teste");
-
-        if (ImGui::Button("build")) { currentRect = IconsLibrary::GetIcon("build"); }
-        if (ImGui::Button("redo")) { currentRect = IconsLibrary::GetIcon("redo"); }
-        if (ImGui::Button("controller")) { currentRect = IconsLibrary::GetIcon("controller"); }
-        if (ImGui::Button("folder")) { currentRect = IconsLibrary::GetIcon("folder"); }
-        if (ImGui::Button("save")) { currentRect = IconsLibrary::GetIcon("save"); }
-        if (ImGui::Button("undo")) { currentRect = IconsLibrary::GetIcon("undo"); }
-
-        if (ImGui::ImageButton("Teste", IconsLibrary::GetAtlasTextureID(), ImVec2(64, 64), icon.uv0, icon.uv1)) {
-            std::cout << "AAAAA AFOI" << std::endl;
-        }
-        ImGui::End();
-
-        if (Input::RightMouseDown()) {
+        /*if (Input::RightMouseDown()) {
             std::cout << "Oi" << std::endl;
-        }
+        }*/
 
         ImGui::End();
         ImGuiLayer::EndFrame();

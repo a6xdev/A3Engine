@@ -1,7 +1,7 @@
 #include "EditorContext.hpp"
 #include <engine/ImGuiLayer.hpp>
 
-#include "panels/AssetBrowser.hpp"
+#include "panels/ContentBrowser.hpp"
 
 namespace EditorContext {
 	void Init();
@@ -26,6 +26,6 @@ namespace EditorContext {
             ImGui::EndMenuBar();
         }
 
-        AssetBrowser::Render();
+        ContentBrowser::Render();
 	}
 }

@@ -19,7 +19,7 @@ private:
 };
 
 namespace Renderer {
-	A3_API int Init();
+	A3_API int Init(std::string window_name);
 
 	A3_API void BeginFrame();
 	A3_API void EndFrame();

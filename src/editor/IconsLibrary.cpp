@@ -36,7 +36,7 @@ namespace IconsLibrary {
             g_iconRegistry[iconName] = rect;
         }
 
-        DebugLogIcons();
+        //DebugLogIcons();
 	}
 
     void DebugLogIcons() {

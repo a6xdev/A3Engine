@@ -8,7 +8,7 @@ namespace A3Engine {
 	bool isRunning = false;
 
 	void Init() {
-		Renderer::Init();
+		Renderer::Init(m_projectName);
 
 		stbi_set_flip_vertically_on_load(true);
 

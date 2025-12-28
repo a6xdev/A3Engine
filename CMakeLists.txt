@@ -96,8 +96,10 @@ add_executable(a3-editor
     "src/editor/Main.cpp"
     "src/editor/EditorPanel.cpp"
     "src/editor/EditorContext.cpp"
-    "src/editor/panels/AssetBrowser.cpp"
- "src/editor/IconsLibrary.cpp")
+    "src/editor/panels/ContentBrowser.cpp"
+    "src/editor/IconsLibrary.cpp"
+    "src/editor/AssetManager.cpp"
+)
 
 set_target_properties(a3-editor PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/editor"
@@ -125,6 +127,7 @@ copy_shaders(a3-editor)
 
 target_compile_definitions(a3-editor PRIVATE 
     A3_PROJECT_ROOT="${A3_INCLUDE_DIRS}"
+    A3_GAME_ROOT="${A3_INCLUDE_DIRS}/runtime"
 )
 
 # ----------------------------

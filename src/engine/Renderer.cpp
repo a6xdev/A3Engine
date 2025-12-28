@@ -7,13 +7,13 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 namespace Renderer {
 	std::unique_ptr<A3Window> currentWindow;
 
-	A3_API int Init() {
+	A3_API int Init(std::string window_name) {
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		currentWindow = std::make_unique<A3Window>(A3Engine::m_projectName, 1024, 600);
+		currentWindow = std::make_unique<A3Window>(window_name, 1024, 600);
 
 		glfwSetFramebufferSizeCallback(currentWindow->GetCurrentGLWindow(), framebufferSizeCallback);
 
