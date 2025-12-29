@@ -1,0 +1,152 @@
+Package: vcpkg-cmake-config
+Version: 2024-05-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 1f5df58974e5ed3389cdd6277786d340295945578844d3a1ea44f1cb98842ce3
+Status: install ok installed
+
+Package: vcpkg-cmake
+Version: 2024-04-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 5302d9461c45e2964bd107c124885918adb80acabdb3cd6477ca3cd0f67aba8f
+Status: install ok installed
+
+Package: egl-registry
+Version: 2024-01-25
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 89e52f8dee2a4b707ba3f066205e14a13119a35ad945c6566cb7bd0b9b04fe7b
+Description: EGL API and Extension Registry
+Status: install ok installed
+
+Package: opengl-registry
+Version: 2024-02-10
+Port-Version: 1
+Depends: egl-registry
+Architecture: x64-windows
+Multi-Arch: same
+Abi: b6bade88bffb75609067cb07755192e006cacdb8cacbf277546e9cbd62aa654c
+Description: OpenGL, OpenGL ES, and OpenGL ES-SC API and Extension Registry
+Status: install ok installed
+
+Package: glad
+Version: 0.1.36
+Depends: egl-registry, opengl-registry, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 8c5fb2502a367979b85c3ea207c9dc0b6debbba65b1c21a6b644becef114dcc7
+Description: Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specs.
+Default-Features: loader
+Status: install ok installed
+
+Package: glad
+Feature: loader
+Architecture: x64-windows
+Multi-Arch: same
+Description: Generate loader logic.
+Status: install ok installed
+
+Package: glfw3
+Version: 3.4
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: aa74882343c67a23b19ad24c9fe31d926752d048ee7031db3024d0a1b416a256
+Description: GLFW is a free, Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan application development. It provides a simple, platform-independent API for creating windows, contexts and surfaces, reading input, handling events, etc.
+Status: install ok installed
+
+Package: glm
+Version: 1.0.2
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: ddaa02d5045a02e234a7117f92b45f6959add64b31182e3280f318823fa90782
+Description: OpenGL Mathematics (GLM)
+Status: install ok installed
+
+Package: imgui
+Version: 1.91.9
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 986ff31437e02d4d3cd880393fabaf4d57cdeec70451fe7354ef938ac3f2df60
+Description: Bloat-free Immediate Mode Graphical User interface for C++ with minimal dependencies.
+Status: install ok installed
+
+Package: imgui
+Feature: docking-experimental
+Architecture: x64-windows
+Multi-Arch: same
+Description: Build with docking support
+Status: install ok installed
+
+Package: imgui
+Feature: glfw-binding
+Depends: glfw3
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available GLFW binding
+Status: install ok installed
+
+Package: imgui
+Feature: opengl3-binding
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available OpenGL3/ES/ES2 (modern) binding
+Status: install ok installed
+
+Package: imgui-node-editor
+Version: 0.9.3
+Port-Version: 2
+Depends: imgui, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 4c4ba404dcccb8f2cfd173c92afbd330174612efaf96101761b4cb8dd36638be
+Description: Node Editor built using Dear ImGui
+Status: install ok installed
+
+Package: imguizmo
+Version: 2024-05-29
+Port-Version: 1
+Depends: imgui, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: f72db53af885ececf38b2f147f2c7afbdcc9df96b621d8cd0489755a5556e30a
+Description: Immediate mode 3D gizmo for scene editing and other controls based on Dear ImGui
+Status: install ok installed
+
+Package: joltphysics
+Version: 5.4.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 5583899e52a3e47e9716b6e2c582421ad4f8bb5397ffaa685ce679696a86b455
+Description: A multi core friendly rigid body physics and collision detection library suitable for games and VR applications
+Status: install ok installed
+
+Package: joltphysics
+Feature: debugrenderer
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enable debug renderer in Debug and Release builds
+Status: install ok installed
+
+Package: joltphysics
+Feature: profiler
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enable the profiler in Debug and Release builds
+Status: install ok installed
+
+Package: nlohmann-json
+Version: 3.12.0
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 1dce99859170c0173c57d03c51b0a198c1852e99c302c1c8c80404e9cb9fa11f
+Description: JSON for Modern C++
+Status: install ok installed
+
